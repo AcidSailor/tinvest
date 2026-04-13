@@ -1,0 +1,34 @@
+version: "3"
+
+tasks:
+  proto:
+    desc: Generate Go code from T-Invest proto contracts
+    cmds:
+      - |
+        [ -d tmp/invest-contracts ] || git clone --depth 1 --branch 1.48 \
+          https://opensource.tbank.ru/invest/invest-contracts.git \
+          tmp/invest-contracts
+      - buf generate tmp/invest-contracts/src/docs/contracts
+    sources:
+      - tmp/invest-contracts/src/docs/contracts/**/*.proto
+      - buf.gen.yaml
+    generates:
+      - pb/**/*.go
+
+  test:
+    desc: Run tests
+    cmds:
+      - go test ./...
+
+  lint:
+    desc: Run linters
+    cmds:
+      - gofmt -w .
+      - golangci-lint fmt ./...
+      - golangci-lint run ./...
+
+  check:
+    desc: Run linting and tests
+    cmds:
+      - task: lint
+      - task: test
