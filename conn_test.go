@@ -11,13 +11,13 @@ import (
 func TestNewConn_NilConfig(t *testing.T) {
 	_, err := NewConn(context.Background(), nil)
 	require.Error(t, err)
-	assert.ErrorIs(t, err, ErrTInvestClient)
+	assert.ErrorIs(t, err, ErrClient)
 }
 
 func TestNewConn_MissingToken(t *testing.T) {
 	_, err := NewConn(context.Background(), NewConnConfig(EndpointProduction, ""))
 	require.Error(t, err)
-	assert.ErrorIs(t, err, ErrTInvestClient)
+	assert.ErrorIs(t, err, ErrClient)
 }
 
 func TestNewConn_WithToken(t *testing.T) {

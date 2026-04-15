@@ -39,13 +39,13 @@ func (c *ConnConfig) WithAppName(name string) *ConnConfig {
 // Validate checks that the ConnConfig is valid before use.
 func (c *ConnConfig) Validate() error {
 	if c == nil {
-		return fmt.Errorf("%w: %w: conn config", ErrTInvestClient, ErrNil)
+		return fmt.Errorf("%w: ConnConfig: %w", ErrClient, ErrNil)
 	}
 	if c.endpoint == "" {
-		return fmt.Errorf("%w: %w: empty endpoint", ErrTInvestClient, ErrInvalidConfig)
+		return fmt.Errorf("%w: empty endpoint: %w", ErrClient, ErrInvalidConfig)
 	}
 	if c.token == "" {
-		return fmt.Errorf("%w: %w: empty token", ErrTInvestClient, ErrInvalidConfig)
+		return fmt.Errorf("%w: empty token: %w", ErrClient, ErrInvalidConfig)
 	}
 	return nil
 }
@@ -63,7 +63,7 @@ func NewClientConfig() *ClientConfig {
 // Validate checks that the ClientConfig is valid before use.
 func (c *ClientConfig) Validate() error {
 	if c == nil {
-		return fmt.Errorf("%w: %w: client config", ErrTInvestClient, ErrNil)
+		return fmt.Errorf("%w: ClientConfig: %w", ErrClient, ErrNil)
 	}
 	return nil
 }

@@ -2,14 +2,14 @@ package tinvest
 
 import "errors"
 
-// ErrTInvestClient is the sentinel error for the tinvest package.
+// ErrClient is the sentinel error for the tinvest package.
 // Errors returned by this package's own validation and conversion functions wrap it,
-// enabling callers to detect them with errors.Is(err, ErrTInvestClient).
+// enabling callers to detect them with errors.Is(err, ErrClient).
 // Errors from gRPC RPC calls are passed through unwrapped.
-var ErrTInvestClient = errors.New("tinvest client")
+var ErrClient = errors.New("tinvest client")
 
 // Sub-sentinel errors for finer-grained errors.Is matching.
-// All wrap ErrTInvestClient, so errors.Is(err, ErrTInvestClient) still works.
+// All wrap ErrClient, so errors.Is(err, ErrClient) still works.
 var (
 	// ErrNil indicates a required argument was nil.
 	ErrNil = errors.New("nil")

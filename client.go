@@ -41,7 +41,7 @@ type Client struct {
 // Returns an error if conn is nil or if config fails validation.
 func NewClient(conn *grpc.ClientConn, config *ClientConfig) (*Client, error) {
 	if conn == nil {
-		return nil, fmt.Errorf("%w: %w: conn", ErrTInvestClient, ErrNil)
+		return nil, fmt.Errorf("%w: conn: %w", ErrClient, ErrNil)
 	}
 	if err := config.Validate(); err != nil {
 		return nil, err
