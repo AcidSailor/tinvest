@@ -33,7 +33,7 @@ func NewConn(ctx context.Context, connConfig *ConnConfig) (*grpc.ClientConn, err
 		grpc.WithStatsHandler(otelHandler),
 	)
 	if err != nil {
-		return nil, fmt.Errorf("%w: %s: %w", ErrTInvestClient, connConfig.endpoint, err)
+		return nil, fmt.Errorf("%w: %s: %w", ErrClient, connConfig.endpoint, err)
 	}
 
 	slog.InfoContext(ctx, "tinvest connection created",

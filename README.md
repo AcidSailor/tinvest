@@ -110,10 +110,10 @@ Financial values support up to 9 fractional digits.
 
 ## Error Handling
 
-Errors originating inside the `tinvest` package (validation, conversion) wrap `ErrTInvestClient` and can be detected with `errors.Is`:
+Errors originating inside the `tinvest` package (validation, conversion) wrap `ErrClient` and can be detected with `errors.Is`:
 
 ```go
-if errors.Is(err, tinvest.ErrTInvestClient) {
+if errors.Is(err, tinvest.ErrClient) {
     // configuration or conversion error
 }
 ```

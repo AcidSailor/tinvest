@@ -6,9 +6,9 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestErrTInvestClient(t *testing.T) {
-	assert.NotNil(t, ErrTInvestClient)
-	assert.Equal(t, "tinvest client", ErrTInvestClient.Error())
+func TestErrClient(t *testing.T) {
+	assert.NotNil(t, ErrClient)
+	assert.Equal(t, "tinvest client", ErrClient.Error())
 }
 
 func TestSubSentinelErrors(t *testing.T) {

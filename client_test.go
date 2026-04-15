@@ -37,7 +37,7 @@ func TestNewClient_NilConn(t *testing.T) {
 	client, err := NewClient(nil, NewClientConfig())
 	assert.Nil(t, client)
 	require.Error(t, err)
-	assert.ErrorIs(t, err, ErrTInvestClient)
+	assert.ErrorIs(t, err, ErrClient)
 	assert.ErrorIs(t, err, ErrNil)
 }
 
@@ -51,6 +51,6 @@ func TestNewClient_NilConfig(t *testing.T) {
 	client, err := NewClient(conn, nil)
 	assert.Nil(t, client)
 	require.Error(t, err)
-	assert.ErrorIs(t, err, ErrTInvestClient)
+	assert.ErrorIs(t, err, ErrClient)
 	assert.ErrorIs(t, err, ErrNil)
 }

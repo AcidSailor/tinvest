@@ -40,7 +40,7 @@ func TestQuotationToDecimal(t *testing.T) {
 			result, err := QuotationToDecimal(tt.q)
 			if tt.wantErr {
 				require.Error(t, err)
-				assert.ErrorIs(t, err, ErrTInvestClient)
+				assert.ErrorIs(t, err, ErrClient)
 				assert.ErrorIs(t, err, ErrNil)
 				return
 			}
@@ -74,7 +74,7 @@ func TestDecimalToQuotation(t *testing.T) {
 			q, err := DecimalToQuotation(d)
 			if tt.wantErr {
 				require.Error(t, err)
-				assert.ErrorIs(t, err, ErrTInvestClient)
+				assert.ErrorIs(t, err, ErrClient)
 				assert.ErrorIs(t, err, ErrOverflow)
 				return
 			}
@@ -105,7 +105,7 @@ func TestMoneyValueToDecimal(t *testing.T) {
 			result, err := MoneyValueToDecimal(tt.m)
 			if tt.wantErr {
 				require.Error(t, err)
-				assert.ErrorIs(t, err, ErrTInvestClient)
+				assert.ErrorIs(t, err, ErrClient)
 				assert.ErrorIs(t, err, ErrNil)
 				return
 			}
@@ -137,7 +137,7 @@ func TestDecimalToMoneyValue(t *testing.T) {
 			m, err := DecimalToMoneyValue(mustParse(tt.input), tt.currency)
 			if tt.wantErr {
 				require.Error(t, err)
-				assert.ErrorIs(t, err, ErrTInvestClient)
+				assert.ErrorIs(t, err, ErrClient)
 				assert.ErrorIs(t, err, ErrOverflow)
 				return
 			}
