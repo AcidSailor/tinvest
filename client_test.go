@@ -10,7 +10,10 @@ import (
 )
 
 func TestNewClient_AllServicesInitialized(t *testing.T) {
-	conn, err := grpc.NewClient("passthrough:///dummy", grpc.WithTransportCredentials(insecure.NewCredentials()))
+	conn, err := grpc.NewClient(
+		"passthrough:///dummy",
+		grpc.WithTransportCredentials(insecure.NewCredentials()),
+	)
 	require.NoError(t, err)
 	defer func() {
 		require.NoError(t, conn.Close())
@@ -42,7 +45,10 @@ func TestNewClient_NilConn(t *testing.T) {
 }
 
 func TestNewClient_NilConfig(t *testing.T) {
-	conn, err := grpc.NewClient("passthrough:///dummy", grpc.WithTransportCredentials(insecure.NewCredentials()))
+	conn, err := grpc.NewClient(
+		"passthrough:///dummy",
+		grpc.WithTransportCredentials(insecure.NewCredentials()),
+	)
 	require.NoError(t, err)
 	defer func() {
 		require.NoError(t, conn.Close())

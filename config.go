@@ -21,7 +21,7 @@ type ConnConfig struct {
 
 // NewConnConfig creates a ConnConfig with the required endpoint and API token.
 // Use EndpointProduction or EndpointSandbox as the endpoint value.
-func NewConnConfig(endpoint string, token string) *ConnConfig {
+func NewConnConfig(endpoint, token string) *ConnConfig {
 	return &ConnConfig{
 		token:    token,
 		endpoint: endpoint,
@@ -52,8 +52,7 @@ func (c *ConnConfig) Validate() error {
 
 // ClientConfig holds configuration for the Client created by NewClient.
 // Build with NewClientConfig.
-type ClientConfig struct {
-}
+type ClientConfig struct{}
 
 // NewClientConfig creates a ClientConfig with default values.
 func NewClientConfig() *ClientConfig {

@@ -17,6 +17,3 @@ Go client library for the T-Invest (Tinkoff Investments) gRPC API.
 ## Proto generation
 
 Proto sources are cloned at build time from `https://opensource.tbank.ru/invest/invest-contracts.git` into `tmp/invest-contracts/`.
-
-## Notes
-- MCP server lives in the separate `tinvestmcp` repo

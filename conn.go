@@ -15,7 +15,10 @@ import (
 // The connection is lazy (grpc.NewClient default) — no actual TCP dial until the first RPC.
 // The caller owns the connection lifecycle and is responsible for calling conn.Close().
 // ctx is used for structured logging and trace propagation.
-func NewConn(ctx context.Context, connConfig *ConnConfig) (*grpc.ClientConn, error) {
+func NewConn(
+	ctx context.Context,
+	connConfig *ConnConfig,
+) (*grpc.ClientConn, error) {
 	if err := connConfig.Validate(); err != nil {
 		return nil, err
 	}
@@ -33,7 +36,12 @@ func NewConn(ctx context.Context, connConfig *ConnConfig) (*grpc.ClientConn, err
 		grpc.WithStatsHandler(otelHandler),
 	)
 	if err != nil {
-		return nil, fmt.Errorf("%w: %s: %w", ErrClient, connConfig.endpoint, err)
+		return nil, fmt.Errorf(
+			"%w: %s: %w",
+			ErrClient,
+			connConfig.endpoint,
+			err,
+		)
 	}
 
 	slog.InfoContext(ctx, "tinvest connection created",

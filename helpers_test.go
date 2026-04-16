@@ -25,10 +25,25 @@ func TestQuotationToDecimal(t *testing.T) {
 		expected string
 		wantErr  bool
 	}{
-		{"positive", &pb.Quotation{Units: 114, Nano: 250000000}, "114.25", false},
+		{
+			"positive",
+			&pb.Quotation{Units: 114, Nano: 250000000},
+			"114.25",
+			false,
+		},
 		{"zero", &pb.Quotation{Units: 0, Nano: 0}, "0", false},
-		{"negative", &pb.Quotation{Units: -200, Nano: -500000000}, "-200.5", false},
-		{"negative zero units", &pb.Quotation{Units: 0, Nano: -100000000}, "-0.1", false},
+		{
+			"negative",
+			&pb.Quotation{Units: -200, Nano: -500000000},
+			"-200.5",
+			false,
+		},
+		{
+			"negative zero units",
+			&pb.Quotation{Units: 0, Nano: -100000000},
+			"-0.1",
+			false,
+		},
 		{"units only", &pb.Quotation{Units: 42, Nano: 0}, "42", false},
 		{"nano only", &pb.Quotation{Units: 0, Nano: 100000000}, "0.1", false},
 		{"small nano", &pb.Quotation{Units: 1, Nano: 1}, "1.000000001", false},
@@ -92,11 +107,36 @@ func TestMoneyValueToDecimal(t *testing.T) {
 		expected string
 		wantErr  bool
 	}{
-		{"positive", &pb.MoneyValue{Currency: "rub", Units: 100, Nano: 500000000}, "100.5", false},
-		{"zero", &pb.MoneyValue{Currency: "rub", Units: 0, Nano: 0}, "0", false},
-		{"negative", &pb.MoneyValue{Currency: "rub", Units: -50, Nano: -250000000}, "-50.25", false},
-		{"negative zero units", &pb.MoneyValue{Currency: "rub", Units: 0, Nano: -100000000}, "-0.1", false},
-		{"nano only", &pb.MoneyValue{Currency: "usd", Units: 0, Nano: 1}, "0.000000001", false},
+		{
+			"positive",
+			&pb.MoneyValue{Currency: "rub", Units: 100, Nano: 500000000},
+			"100.5",
+			false,
+		},
+		{
+			"zero",
+			&pb.MoneyValue{Currency: "rub", Units: 0, Nano: 0},
+			"0",
+			false,
+		},
+		{
+			"negative",
+			&pb.MoneyValue{Currency: "rub", Units: -50, Nano: -250000000},
+			"-50.25",
+			false,
+		},
+		{
+			"negative zero units",
+			&pb.MoneyValue{Currency: "rub", Units: 0, Nano: -100000000},
+			"-0.1",
+			false,
+		},
+		{
+			"nano only",
+			&pb.MoneyValue{Currency: "usd", Units: 0, Nano: 1},
+			"0.000000001",
+			false,
+		},
 		{"nil returns error", nil, "", true},
 	}
 
@@ -178,9 +218,18 @@ func TestRoundTrip_MoneyValue(t *testing.T) {
 		name string
 		m    *pb.MoneyValue
 	}{
-		{"positive", &pb.MoneyValue{Currency: "rub", Units: 123, Nano: 456789000}},
-		{"negative", &pb.MoneyValue{Currency: "rub", Units: -123, Nano: -456789000}},
-		{"negative zero units", &pb.MoneyValue{Currency: "rub", Units: 0, Nano: -100000000}},
+		{
+			"positive",
+			&pb.MoneyValue{Currency: "rub", Units: 123, Nano: 456789000},
+		},
+		{
+			"negative",
+			&pb.MoneyValue{Currency: "rub", Units: -123, Nano: -456789000},
+		},
+		{
+			"negative zero units",
+			&pb.MoneyValue{Currency: "rub", Units: 0, Nano: -100000000},
+		},
 	}
 
 	for _, tt := range tests {
