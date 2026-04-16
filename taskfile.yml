@@ -15,20 +15,20 @@ tasks:
     generates:
       - pb/**/*.go
 
-  test:
-    desc: Run tests
-    cmds:
-      - go test ./...
-
   lint:
     desc: Run linters
     cmds:
       - gofmt -w .
       - golangci-lint fmt ./...
-      - golangci-lint run ./...
+      - golangci-lint run --fix ./...
+
+  test:
+    desc: Run tests
+    cmds:
+      - go test ./...
 
   check:
-    desc: Run linting and tests
+    desc: Run tests and linters
     cmds:
       - task: lint
       - task: test

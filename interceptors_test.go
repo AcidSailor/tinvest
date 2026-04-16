@@ -15,19 +15,32 @@ func extractOutgoingMetadata(ctx context.Context) metadata.MD {
 	return md
 }
 
-func captureUnaryCtx(t *testing.T, interceptor grpc.UnaryClientInterceptor) context.Context {
+func captureUnaryCtx(
+	t *testing.T,
+	interceptor grpc.UnaryClientInterceptor,
+) context.Context {
 	t.Helper()
 	var captured context.Context
 	invoker := func(ctx context.Context, _ string, _, _ any, _ *grpc.ClientConn, _ ...grpc.CallOption) error {
 		captured = ctx
 		return nil
 	}
-	err := interceptor(context.Background(), "/test/Method", nil, nil, nil, invoker)
+	err := interceptor(
+		context.Background(),
+		"/test/Method",
+		nil,
+		nil,
+		nil,
+		invoker,
+	)
 	require.NoError(t, err)
 	return captured
 }
 
-func captureStreamCtx(t *testing.T, interceptor grpc.StreamClientInterceptor) context.Context {
+func captureStreamCtx(
+	t *testing.T,
+	interceptor grpc.StreamClientInterceptor,
+) context.Context {
 	t.Helper()
 	var captured context.Context
 	streamer := func(
@@ -40,7 +53,13 @@ func captureStreamCtx(t *testing.T, interceptor grpc.StreamClientInterceptor) co
 		captured = ctx
 		return nil, nil
 	}
-	_, err := interceptor(context.Background(), nil, nil, "/test/Stream", streamer)
+	_, err := interceptor(
+		context.Background(),
+		nil,
+		nil,
+		"/test/Stream",
+		streamer,
+	)
 	require.NoError(t, err)
 	return captured
 }
@@ -92,7 +111,17 @@ func TestUnaryInterceptor_PropagatesInvokerError(t *testing.T) {
 	invoker := func(ctx context.Context, _ string, _, _ any, _ *grpc.ClientConn, _ ...grpc.CallOption) error {
 		return want
 	}
-	err := unaryAuthInterceptor("tok", AppName)(context.Background(), "/test/Method", nil, nil, nil, invoker)
+	err := unaryAuthInterceptor(
+		"tok",
+		AppName,
+	)(
+		context.Background(),
+		"/test/Method",
+		nil,
+		nil,
+		nil,
+		invoker,
+	)
 
 	assert.ErrorIs(t, err, want)
 }
@@ -102,13 +131,27 @@ func TestStreamInterceptor_PropagatesStreamerError(t *testing.T) {
 	streamer := func(ctx context.Context, _ *grpc.StreamDesc, _ *grpc.ClientConn, _ string, _ ...grpc.CallOption) (grpc.ClientStream, error) {
 		return nil, want
 	}
-	_, err := streamAuthInterceptor("tok", AppName)(context.Background(), nil, nil, "/test/Stream", streamer)
+	_, err := streamAuthInterceptor(
+		"tok",
+		AppName,
+	)(
+		context.Background(),
+		nil,
+		nil,
+		"/test/Stream",
+		streamer,
+	)
 
 	assert.ErrorIs(t, err, want)
 }
 
 func TestInjectMetadata_OverwritesExistingAuth(t *testing.T) {
-	existing := metadata.Pairs("authorization", "Bearer old-token", "x-app-name", "old-app")
+	existing := metadata.Pairs(
+		"authorization",
+		"Bearer old-token",
+		"x-app-name",
+		"old-app",
+	)
 	ctx := metadata.NewOutgoingContext(context.Background(), existing)
 
 	ctx = injectMetadata(ctx, "new-token", "new-app")

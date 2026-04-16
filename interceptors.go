@@ -10,7 +10,10 @@ import (
 // injectMetadata adds the bearer token and x-app-name headers to the outgoing
 // gRPC context. The x-app-name header is omitted when appName is empty.
 // Existing authorization and x-app-name values are overwritten.
-func injectMetadata(ctx context.Context, token, appName string) context.Context {
+func injectMetadata(
+	ctx context.Context,
+	token, appName string,
+) context.Context {
 	pairs := []string{"authorization", "Bearer " + token}
 	if appName != "" {
 		pairs = append(pairs, "x-app-name", appName)
@@ -40,7 +43,13 @@ func unaryAuthInterceptor(token, appName string) grpc.UnaryClientInterceptor {
 		invoker grpc.UnaryInvoker,
 		opts ...grpc.CallOption,
 	) error {
-		return invoker(injectMetadata(ctx, token, appName), method, req, reply, cc, opts...)
+		return invoker(
+			injectMetadata(ctx, token, appName),
+			method,
+			req,
+			reply,
+			cc,
+			opts...)
 	}
 }
 
@@ -55,6 +64,11 @@ func streamAuthInterceptor(token, appName string) grpc.StreamClientInterceptor {
 		streamer grpc.Streamer,
 		opts ...grpc.CallOption,
 	) (grpc.ClientStream, error) {
-		return streamer(injectMetadata(ctx, token, appName), desc, cc, method, opts...)
+		return streamer(
+			injectMetadata(ctx, token, appName),
+			desc,
+			cc,
+			method,
+			opts...)
 	}
 }
