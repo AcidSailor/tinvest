@@ -68,6 +68,18 @@ func DecimalToMoneyValue(
 	return &pb.MoneyValue{Currency: currency, Units: units, Nano: nano}, nil
 }
 
+// MoneyValueToQuotation converts a proto MoneyValue to a Quotation, dropping
+// the currency. Returns an error if moneyValue is nil or has mixed signs.
+func MoneyValueToQuotation(moneyValue *pb.MoneyValue) (*pb.Quotation, error) {
+	if moneyValue == nil {
+		return nil, fmt.Errorf("%w: moneyValue: %w", ErrClient, ErrNil)
+	}
+	if err := validateSigns(moneyValue.Units, moneyValue.Nano); err != nil {
+		return nil, err
+	}
+	return &pb.Quotation{Units: moneyValue.Units, Nano: moneyValue.Nano}, nil
+}
+
 func unitsNanoToDecimal(units int64, nano int32) (udecimal.Decimal, error) {
 	if err := validateSigns(units, nano); err != nil {
 		return udecimal.Decimal{}, err

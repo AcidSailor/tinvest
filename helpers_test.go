@@ -194,6 +194,55 @@ func TestDecimalToMoneyValue(t *testing.T) {
 	}
 }
 
+func TestMoneyValueToQuotation(t *testing.T) {
+	tests := []struct {
+		name    string
+		m       *pb.MoneyValue
+		units   int64
+		nano    int32
+		wantErr bool
+	}{
+		{
+			"positive",
+			&pb.MoneyValue{Currency: "rub", Units: 250, Nano: 500000000},
+			250,
+			500000000,
+			false,
+		},
+		{
+			"negative",
+			&pb.MoneyValue{Currency: "rub", Units: -1, Nano: -500000000},
+			-1,
+			-500000000,
+			false,
+		},
+		{"nil", nil, 0, 0, true},
+		{
+			"mixed sign",
+			&pb.MoneyValue{Currency: "rub", Units: 1, Nano: -500000000},
+			0,
+			0,
+			true,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			q, err := MoneyValueToQuotation(tt.m)
+			if tt.wantErr {
+				require.Error(t, err)
+				assert.ErrorIs(t, err, ErrClient)
+				if tt.m != nil {
+					assert.ErrorIs(t, err, ErrConversion)
+				}
+				return
+			}
+			require.NoError(t, err)
+			assert.Equal(t, tt.units, q.Units)
+			assert.Equal(t, tt.nano, q.Nano)
+		})
+	}
+}
+
 func TestRoundTrip_Quotation(t *testing.T) {
 	tests := []struct {
 		name string
