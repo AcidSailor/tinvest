@@ -48,6 +48,7 @@ func TestQuotationToDecimal(t *testing.T) {
 		{"nano only", &pb.Quotation{Units: 0, Nano: 100000000}, "0.1", false},
 		{"small nano", &pb.Quotation{Units: 1, Nano: 1}, "1.000000001", false},
 		{"nil returns error", nil, "", true},
+		{"mixed sign", &pb.Quotation{Units: 1, Nano: -500000000}, "", true},
 	}
 
 	for _, tt := range tests {
@@ -56,7 +57,6 @@ func TestQuotationToDecimal(t *testing.T) {
 			if tt.wantErr {
 				require.Error(t, err)
 				assert.ErrorIs(t, err, ErrClient)
-				assert.ErrorIs(t, err, ErrNil)
 				return
 			}
 			require.NoError(t, err)
@@ -138,6 +138,12 @@ func TestMoneyValueToDecimal(t *testing.T) {
 			false,
 		},
 		{"nil returns error", nil, "", true},
+		{
+			"mixed sign",
+			&pb.MoneyValue{Currency: "rub", Units: -1, Nano: 500000000},
+			"",
+			true,
+		},
 	}
 
 	for _, tt := range tests {
@@ -146,7 +152,6 @@ func TestMoneyValueToDecimal(t *testing.T) {
 			if tt.wantErr {
 				require.Error(t, err)
 				assert.ErrorIs(t, err, ErrClient)
-				assert.ErrorIs(t, err, ErrNil)
 				return
 			}
 			require.NoError(t, err)
