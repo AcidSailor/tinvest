@@ -69,6 +69,9 @@ func DecimalToMoneyValue(
 }
 
 func unitsNanoToDecimal(units int64, nano int32) (udecimal.Decimal, error) {
+	if err := validateSigns(units, nano); err != nil {
+		return udecimal.Decimal{}, err
+	}
 	u, err := udecimal.NewFromInt64(units, 0)
 	if err != nil {
 		return udecimal.Decimal{}, fmt.Errorf(
