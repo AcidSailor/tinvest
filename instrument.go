@@ -44,7 +44,8 @@ func PerLotMoney(
 	instrument *pb.Instrument,
 ) (*pb.MoneyValue, error) {
 	if instrument == nil {
-		return nil, fmt.Errorf("%w: instrument: %w", ErrClient, ErrNil)
+		return nil, fmt.Errorf("%w: instrument: %w",
+			ErrClient, ErrNil)
 	}
 	lot := instrument.GetLot()
 	if lot <= 0 {

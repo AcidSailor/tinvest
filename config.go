@@ -1,6 +1,8 @@
 package tinvest
 
-import "fmt"
+import (
+	"fmt"
+)
 
 const (
 	// EndpointProduction is the T-Invest live trading API endpoint.
@@ -38,14 +40,21 @@ func (c *ConnConfig) WithAppName(name string) *ConnConfig {
 
 // Validate checks that the ConnConfig is valid before use.
 func (c *ConnConfig) Validate() error {
-	if c == nil {
-		return fmt.Errorf("%w: ConnConfig: %w", ErrClient, ErrNil)
+	f := func() error {
+		if c == nil {
+			return fmt.Errorf("ConnConfig: %w", ErrNil)
+		}
+		if c.endpoint == "" {
+			return fmt.Errorf("empty endpoint: %w", ErrInvalidConfig)
+		}
+		if c.token == "" {
+			return fmt.Errorf("empty token: %w", ErrInvalidConfig)
+		}
+		return nil
 	}
-	if c.endpoint == "" {
-		return fmt.Errorf("%w: empty endpoint: %w", ErrClient, ErrInvalidConfig)
-	}
-	if c.token == "" {
-		return fmt.Errorf("%w: empty token: %w", ErrClient, ErrInvalidConfig)
+	err := f()
+	if err != nil {
+		return fmt.Errorf("%w: %w", ErrClient, err)
 	}
 	return nil
 }
@@ -61,8 +70,15 @@ func NewClientConfig() *ClientConfig {
 
 // Validate checks that the ClientConfig is valid before use.
 func (c *ClientConfig) Validate() error {
-	if c == nil {
-		return fmt.Errorf("%w: ClientConfig: %w", ErrClient, ErrNil)
+	f := func() error {
+		if c == nil {
+			return fmt.Errorf("ClientConfig: %w", ErrNil)
+		}
+		return nil
+	}
+	err := f()
+	if err != nil {
+		return fmt.Errorf("%w: %w", ErrClient, err)
 	}
 	return nil
 }

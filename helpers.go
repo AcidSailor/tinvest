@@ -84,71 +84,73 @@ func unitsNanoToDecimal(units int64, nano int32) (udecimal.Decimal, error) {
 	if err := validateSigns(units, nano); err != nil {
 		return udecimal.Decimal{}, err
 	}
-	u, err := udecimal.NewFromInt64(units, 0)
-	if err != nil {
-		return udecimal.Decimal{}, fmt.Errorf(
-			"%w: units: %w: %w",
-			ErrClient,
-			ErrConversion,
-			err,
-		)
+	f := func() (udecimal.Decimal, error) {
+		u, err := udecimal.NewFromInt64(units, 0)
+		if err != nil {
+			return udecimal.Decimal{}, fmt.Errorf(
+				"units: %w: %w",
+				ErrConversion,
+				err,
+			)
+		}
+		n, err := udecimal.NewFromInt64(int64(nano), nanoPrecision)
+		if err != nil {
+			return udecimal.Decimal{}, fmt.Errorf(
+				"nano: %w: %w",
+				ErrConversion,
+				err,
+			)
+		}
+		return u.Add(n), nil
 	}
-	n, err := udecimal.NewFromInt64(int64(nano), nanoPrecision)
+	d, err := f()
 	if err != nil {
-		return udecimal.Decimal{}, fmt.Errorf(
-			"%w: nano: %w: %w",
-			ErrClient,
-			ErrConversion,
-			err,
-		)
+		return udecimal.Decimal{}, fmt.Errorf("%w: %w", ErrClient, err)
 	}
-	return u.Add(n), nil
+	return d, nil
 }
 
 func decimalToUnitsNano(d udecimal.Decimal) (int64, int32, error) {
-	units := d.Trunc(0)
+	f := func() (int64, int32, error) {
+		units := d.Trunc(0)
+		frac := d.Sub(units)
+		nanoDecimal := frac.Mul(nanoFactor).Trunc(0)
 
-	frac := d.Sub(units)
-	nanoDecimal := frac.Mul(nanoFactor).Trunc(0)
+		u, err := units.Int64()
+		if err != nil {
+			return 0, 0, fmt.Errorf("units: %w: %w", ErrOverflow, err)
+		}
+		n, err := nanoDecimal.Int64()
+		if err != nil {
+			return 0, 0, fmt.Errorf("nano: %w: %w", ErrOverflow, err)
+		}
+		if n > math.MaxInt32 || n < math.MinInt32 {
+			return 0, 0, fmt.Errorf(
+				"nano value %d exceeds int32 range: %w",
+				n,
+				ErrOverflow,
+			)
+		}
+		nano := int32(n)
 
-	u, err := units.Int64()
+		// Round-trip check: reject decimals whose precision exceeds 9 fractional digits,
+		// since the units/nano representation would silently truncate them.
+		reconstructed, err := unitsNanoToDecimal(u, nano)
+		if err != nil {
+			return 0, 0, err
+		}
+		// udecimal.Equal compares by value (1.50 == 1.5), which is intentional here.
+		if !reconstructed.Equal(d) {
+			return 0, 0, fmt.Errorf(
+				"decimal precision exceeds 9 fractional digits: %w",
+				ErrOverflow,
+			)
+		}
+		return u, nano, nil
+	}
+	u, nano, err := f()
 	if err != nil {
-		return 0, 0, fmt.Errorf(
-			"%w: units: %w: %w",
-			ErrClient,
-			ErrOverflow,
-			err,
-		)
+		return 0, 0, fmt.Errorf("%w: %w", ErrClient, err)
 	}
-	n, err := nanoDecimal.Int64()
-	if err != nil {
-		return 0, 0, fmt.Errorf("%w: nano: %w: %w", ErrClient, ErrOverflow, err)
-	}
-
-	if n > math.MaxInt32 || n < math.MinInt32 {
-		return 0, 0, fmt.Errorf(
-			"%w: nano value %d exceeds int32 range: %w",
-			ErrClient,
-			n,
-			ErrOverflow,
-		)
-	}
-	nano := int32(n)
-
-	// Round-trip check: reject decimals whose precision exceeds 9 fractional digits,
-	// since the units/nano representation would silently truncate them.
-	reconstructed, err := unitsNanoToDecimal(u, nano)
-	if err != nil {
-		return 0, 0, err
-	}
-	// udecimal.Equal compares by value (1.50 == 1.5), which is intentional here.
-	if !reconstructed.Equal(d) {
-		return 0, 0, fmt.Errorf(
-			"%w: decimal precision exceeds 9 fractional digits: %w",
-			ErrClient,
-			ErrOverflow,
-		)
-	}
-
 	return u, nano, nil
 }

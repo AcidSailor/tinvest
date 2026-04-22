@@ -3,6 +3,8 @@ package tinvest
 import (
 	"fmt"
 
+	"github.com/quagmt/udecimal"
+
 	pb "github.com/acidsailor/tinvest/pb"
 )
 
@@ -14,41 +16,45 @@ import (
 func FuturesPointValue(
 	margin *pb.GetFuturesMarginResponse,
 ) (*pb.Quotation, error) {
-	if margin == nil {
-		return nil, fmt.Errorf("%w: margin: %w", ErrClient, ErrNil)
+	f := func() (udecimal.Decimal, error) {
+		if margin == nil {
+			return udecimal.Decimal{}, fmt.Errorf("margin: %w", ErrNil)
+		}
+		step := margin.GetMinPriceIncrement()
+		stepValue := margin.GetMinPriceIncrementAmount()
+		if step == nil || stepValue == nil {
+			return udecimal.Decimal{}, fmt.Errorf(
+				"futures margin missing price increment: %w",
+				ErrNil,
+			)
+		}
+		stepDec, err := QuotationToDecimal(step)
+		if err != nil {
+			return udecimal.Decimal{}, err
+		}
+		if stepDec.IsZero() {
+			return udecimal.Decimal{}, fmt.Errorf(
+				"futures step is zero: %w",
+				ErrConversion,
+			)
+		}
+		stepValDec, err := QuotationToDecimal(stepValue)
+		if err != nil {
+			return udecimal.Decimal{}, err
+		}
+		pv, err := stepValDec.Div(stepDec)
+		if err != nil {
+			return udecimal.Decimal{}, fmt.Errorf(
+				"point value div: %w: %w",
+				ErrConversion,
+				err,
+			)
+		}
+		return pv, nil
 	}
-	step := margin.GetMinPriceIncrement()
-	stepValue := margin.GetMinPriceIncrementAmount()
-	if step == nil || stepValue == nil {
-		return nil, fmt.Errorf(
-			"%w: futures margin missing price increment: %w",
-			ErrClient,
-			ErrNil,
-		)
-	}
-	stepDec, err := QuotationToDecimal(step)
+	pv, err := f()
 	if err != nil {
-		return nil, err
-	}
-	if stepDec.IsZero() {
-		return nil, fmt.Errorf(
-			"%w: futures step is zero: %w",
-			ErrClient,
-			ErrConversion,
-		)
-	}
-	stepValDec, err := QuotationToDecimal(stepValue)
-	if err != nil {
-		return nil, err
-	}
-	pv, err := stepValDec.Div(stepDec)
-	if err != nil {
-		return nil, fmt.Errorf(
-			"%w: point value div: %w: %w",
-			ErrClient,
-			ErrConversion,
-			err,
-		)
+		return nil, fmt.Errorf("%w: %w", ErrClient, err)
 	}
 	return DecimalToQuotation(pv)
 }
