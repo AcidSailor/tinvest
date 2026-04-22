@@ -11,8 +11,10 @@ Go client library for the T-Invest (Tinkoff Investments) gRPC API.
 ## Tasks
 
 - `task proto` — regenerate `pb/` from upstream T-Invest proto contracts
+- `task lint` — run formatters (gofumpt + golines) and linters with autofix
+- `task ci` — read-only fmt + lint verification (fail-fast; used by GitHub Actions)
 - `task test` — run tests
-- `task lint` — run gofmt + golangci-lint
+- `task check` — local composite: `task lint` + `task test`
 
 ## Proto generation
 

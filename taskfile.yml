@@ -16,11 +16,16 @@ tasks:
       - pb/**/*.go
 
   lint:
-    desc: Run linters
+    desc: Run formatters + linters with autofix (mutates files)
     cmds:
-      - gofmt -w .
-      - golangci-lint fmt ./...
-      - golangci-lint run --fix ./...
+      - golangci-lint fmt
+      - golangci-lint run --fix
+
+  ci:
+    desc: Read-only fmt + lint verification for CI (fail-fast)
+    cmds:
+      - golangci-lint fmt --diff
+      - golangci-lint run
 
   test:
     desc: Run tests
@@ -28,7 +33,7 @@ tasks:
       - go test ./...
 
   check:
-    desc: Run tests and linters
+    desc: Local composite — lint (mutating) + tests
     cmds:
       - task: lint
       - task: test
