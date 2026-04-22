@@ -1,6 +1,6 @@
 # tinvest
 
-Go client library for the [T-Invest (Tinkoff Investments) gRPC API](https://opensource.tbank.ru/invest/invest-contracts).
+Go client library for the [T-Invest (T-Bank Investments) gRPC API](https://opensource.tbank.ru/invest/invest-contracts).
 
 ## Installation
 
@@ -155,6 +155,18 @@ task lint
 ```
 
 Proto sources are fetched from `https://opensource.tbank.ru/invest/invest-contracts.git` into `tmp/invest-contracts/` at build time.
+
+## Disclaimer
+
+This library is provided "as is", without warranty of any kind. The author assumes **no financial, legal, or other liability** for any losses, damages, or consequences arising from the use of this library, including but not limited to losses incurred through trading, order placement, or interaction with the T-Invest API.
+
+Nothing in this library, its documentation, or examples constitutes **investment advice, a recommendation, or solicitation** to buy or sell any financial instrument. All trading decisions are solely the responsibility of the user. Consult a licensed financial advisor before making investment decisions.
+
+## Отказ от ответственности
+
+Библиотека предоставляется «как есть», без каких-либо гарантий. Автор **не несёт финансовой, юридической или иной ответственности** за любые убытки, ущерб или последствия, возникшие в результате использования этой библиотеки, включая, но не ограничиваясь, убытки от торговли, выставления ордеров или взаимодействия с API T-Invest.
+
+Ничто в этой библиотеке, её документации или примерах **не является индивидуальной инвестиционной рекомендацией**, предложением или побуждением к покупке или продаже каких-либо финансовых инструментов. Все торговые решения принимаются пользователем самостоятельно и под его ответственность. Перед принятием инвестиционных решений проконсультируйтесь с лицензированным финансовым советником.
 
 ## License
 

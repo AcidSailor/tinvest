@@ -1,6 +1,6 @@
 # tinvest
 
-Go client library for the T-Invest (Tinkoff Investments) gRPC API.
+Go client library for the T-Invest (T-Bank Investments) gRPC API.
 
 ## Structure
 
