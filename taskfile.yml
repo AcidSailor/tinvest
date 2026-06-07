@@ -66,3 +66,9 @@ tasks:
     cmds:
       - go run github.com/oapi-codegen/oapi-codegen/v2/cmd/oapi-codegen@v2.5.0 -config oapi-codegen.yaml spec/spec.yaml
       - gofmt -w rest/models.gen.go
+
+  rest:
+    desc: Regenerate REST artifacts from the committed upstream spec (overlay + deref + models)
+    cmds:
+      - task: deref
+      - task: gen # runs `overlay` first via its deps
