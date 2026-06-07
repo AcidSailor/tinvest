@@ -2,24 +2,12 @@ package tinvest
 
 import (
 	"fmt"
-	"math"
 
 	"github.com/quagmt/udecimal"
 
+	"github.com/acidsailor/tinvest/money"
 	pb "github.com/acidsailor/tinvest/pb"
 )
-
-const nanoPrecision = 9
-
-// nanoFactor is 10^9 for units/nano ↔ decimal conversion. Panic is intentional —
-// the value is a compile-time constant that must never fail to parse.
-var nanoFactor = func() udecimal.Decimal {
-	d, err := udecimal.NewFromInt64(1_000_000_000, 0)
-	if err != nil {
-		panic("tinvest: invalid nano factor: " + err.Error())
-	}
-	return d
-}()
 
 // QuotationToDecimal converts a proto Quotation to udecimal.Decimal.
 // Returns an error if quotation is nil.
@@ -31,14 +19,18 @@ func QuotationToDecimal(quotation *pb.Quotation) (udecimal.Decimal, error) {
 			ErrNil,
 		)
 	}
-	return unitsNanoToDecimal(quotation.Units, quotation.Nano)
+	d, err := money.UnitsNanoToDecimal(quotation.Units, quotation.Nano)
+	if err != nil {
+		return udecimal.Decimal{}, fmt.Errorf("%w: %w", ErrClient, err)
+	}
+	return d, nil
 }
 
 // DecimalToQuotation converts a udecimal.Decimal to a proto Quotation.
 func DecimalToQuotation(d udecimal.Decimal) (*pb.Quotation, error) {
-	units, nano, err := decimalToUnitsNano(d)
+	units, nano, err := money.DecimalToUnitsNano(d)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("%w: %w", ErrClient, err)
 	}
 	return &pb.Quotation{Units: units, Nano: nano}, nil
 }
@@ -53,7 +45,11 @@ func MoneyValueToDecimal(moneyValue *pb.MoneyValue) (udecimal.Decimal, error) {
 			ErrNil,
 		)
 	}
-	return unitsNanoToDecimal(moneyValue.Units, moneyValue.Nano)
+	d, err := money.UnitsNanoToDecimal(moneyValue.Units, moneyValue.Nano)
+	if err != nil {
+		return udecimal.Decimal{}, fmt.Errorf("%w: %w", ErrClient, err)
+	}
+	return d, nil
 }
 
 // DecimalToMoneyValue converts a udecimal.Decimal and currency to a proto MoneyValue.
@@ -61,9 +57,9 @@ func DecimalToMoneyValue(
 	d udecimal.Decimal,
 	currency string,
 ) (*pb.MoneyValue, error) {
-	units, nano, err := decimalToUnitsNano(d)
+	units, nano, err := money.DecimalToUnitsNano(d)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("%w: %w", ErrClient, err)
 	}
 	return &pb.MoneyValue{Currency: currency, Units: units, Nano: nano}, nil
 }
@@ -74,83 +70,11 @@ func MoneyValueToQuotation(moneyValue *pb.MoneyValue) (*pb.Quotation, error) {
 	if moneyValue == nil {
 		return nil, fmt.Errorf("%w: moneyValue: %w", ErrClient, ErrNil)
 	}
-	if err := validateSigns(moneyValue.Units, moneyValue.Nano); err != nil {
-		return nil, err
+	if err := money.ValidateSigns(
+		moneyValue.Units,
+		moneyValue.Nano,
+	); err != nil {
+		return nil, fmt.Errorf("%w: %w", ErrClient, err)
 	}
 	return &pb.Quotation{Units: moneyValue.Units, Nano: moneyValue.Nano}, nil
-}
-
-func unitsNanoToDecimal(units int64, nano int32) (udecimal.Decimal, error) {
-	if err := validateSigns(units, nano); err != nil {
-		return udecimal.Decimal{}, err
-	}
-	f := func() (udecimal.Decimal, error) {
-		u, err := udecimal.NewFromInt64(units, 0)
-		if err != nil {
-			return udecimal.Decimal{}, fmt.Errorf(
-				"units: %w: %w",
-				ErrConversion,
-				err,
-			)
-		}
-		n, err := udecimal.NewFromInt64(int64(nano), nanoPrecision)
-		if err != nil {
-			return udecimal.Decimal{}, fmt.Errorf(
-				"nano: %w: %w",
-				ErrConversion,
-				err,
-			)
-		}
-		return u.Add(n), nil
-	}
-	d, err := f()
-	if err != nil {
-		return udecimal.Decimal{}, fmt.Errorf("%w: %w", ErrClient, err)
-	}
-	return d, nil
-}
-
-func decimalToUnitsNano(d udecimal.Decimal) (int64, int32, error) {
-	f := func() (int64, int32, error) {
-		units := d.Trunc(0)
-		frac := d.Sub(units)
-		nanoDecimal := frac.Mul(nanoFactor).Trunc(0)
-
-		u, err := units.Int64()
-		if err != nil {
-			return 0, 0, fmt.Errorf("units: %w: %w", ErrOverflow, err)
-		}
-		n, err := nanoDecimal.Int64()
-		if err != nil {
-			return 0, 0, fmt.Errorf("nano: %w: %w", ErrOverflow, err)
-		}
-		if n > math.MaxInt32 || n < math.MinInt32 {
-			return 0, 0, fmt.Errorf(
-				"nano value %d exceeds int32 range: %w",
-				n,
-				ErrOverflow,
-			)
-		}
-		nano := int32(n)
-
-		// Round-trip check: reject decimals whose precision exceeds 9 fractional digits,
-		// since the units/nano representation would silently truncate them.
-		reconstructed, err := unitsNanoToDecimal(u, nano)
-		if err != nil {
-			return 0, 0, err
-		}
-		// udecimal.Equal compares by value (1.50 == 1.5), which is intentional here.
-		if !reconstructed.Equal(d) {
-			return 0, 0, fmt.Errorf(
-				"decimal precision exceeds 9 fractional digits: %w",
-				ErrOverflow,
-			)
-		}
-		return u, nano, nil
-	}
-	u, nano, err := f()
-	if err != nil {
-		return 0, 0, fmt.Errorf("%w: %w", ErrClient, err)
-	}
-	return u, nano, nil
 }
