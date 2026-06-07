@@ -4,9 +4,8 @@ info:
   title: tinvest codegen patches
   version: 0.1.0
 actions:
-  # kin-openapi (oapi-codegen v2) hard-errors on the 3.1 numeric exclusiveMinimum
-  # form; it is a constraint irrelevant to models-only output.
-  - target: $..exclusiveMinimum
-    remove: true
-  - target: $..exclusiveMaximum
-    remove: true
+  # The upstream spec is OpenAPI 3.0.1; no exclusiveMinimum/Maximum fixups needed.
+  # Annotate the info block to confirm the overlay was applied.
+  - target: $.info
+    update:
+      x-codegen-patched: true

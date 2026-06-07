@@ -1,0 +1,7 @@
+# oapi-codegen v2 — plain-struct models only, into package rest.
+package: rest
+output: rest/models.gen.go
+generate:
+  models: true
+output-options:
+  skip-prune: true
