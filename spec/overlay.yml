@@ -1,0 +1,12 @@
+overlay: 1.0.0
+x-speakeasy-jsonpath: rfc9535
+info:
+  title: tinvest codegen patches
+  version: 0.1.0
+actions:
+  # kin-openapi (oapi-codegen v2) hard-errors on the 3.1 numeric exclusiveMinimum
+  # form; it is a constraint irrelevant to models-only output.
+  - target: $..exclusiveMinimum
+    remove: true
+  - target: $..exclusiveMaximum
+    remove: true

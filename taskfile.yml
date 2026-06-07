@@ -37,3 +37,32 @@ tasks:
     cmds:
       - task: lint
       - task: test
+
+  spec:
+    desc: Download the upstream T-Invest OpenAPI spec (committed verbatim)
+    vars:
+      SPEC_URL: https://opensource.tbank.ru/invest/invest-contracts/-/raw/master/src/docs/swagger-ui/openapi.yaml
+    cmds:
+      - curl -fsSL "{{.SPEC_URL}}" -o spec/spec-upstream.yaml
+
+  overlay:
+    desc: Apply spec/overlay.yml -> spec/spec.yaml (oapi-codegen input)
+    cmds:
+      - >
+        docker run --rm -v "$PWD/spec:/work" ghcr.io/speakeasy-api/speakeasy:latest
+        overlay apply -s /work/spec-upstream.yaml -o /work/overlay.yml
+        --out /work/spec.yaml --strict
+
+  deref:
+    desc: Dereference upstream -> spec/spec-deref.json (MCP schema source)
+    cmds:
+      - >
+        docker run --rm -v "$PWD/spec:/work" ghcr.io/redocly/cli:latest
+        bundle /work/spec-upstream.yaml -o /work/spec-deref.json --dereferenced
+
+  gen:
+    desc: Generate plain-struct models into rest/models.gen.go
+    deps: [overlay]
+    cmds:
+      - go run github.com/oapi-codegen/oapi-codegen/v2/cmd/oapi-codegen@v2.5.0 -config oapi-codegen.yaml spec/spec.yaml
+      - gofmt -w rest/models.gen.go
