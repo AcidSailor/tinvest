@@ -35,7 +35,9 @@ const (
 var nanoFactor = func() udecimal.Decimal {
 	d, err := udecimal.NewFromInt64(1_000_000_000, 0)
 	if err != nil {
-		panic("tinvest/money: invalid nano factor: " + err.Error())
+		panic(
+			fmt.Errorf("%w: invalid nano factor: %w", Err, err),
+		)
 	}
 	return d
 }()

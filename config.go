@@ -4,15 +4,6 @@ import (
 	"fmt"
 )
 
-const (
-	// EndpointProduction is the T-Invest live trading API endpoint.
-	EndpointProduction = "invest-public-api.tinkoff.ru:443"
-	// EndpointSandbox is the T-Invest sandbox API endpoint for testing without real money.
-	EndpointSandbox = "sandbox-invest-public-api.tinkoff.ru:443"
-	// AppName is the default x-app-name header value identifying this client library.
-	AppName = "github.com/acidsailor/tinvest"
-)
-
 // ConnConfig holds configuration for the gRPC connection created by NewConn.
 // Build with NewConnConfig and use WithAppName to override the default app name.
 type ConnConfig struct {

@@ -10,6 +10,7 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
+	"github.com/acidsailor/tinvest"
 	"github.com/acidsailor/tinvest/rest"
 )
 
@@ -73,9 +74,9 @@ func TestClient_APIError(t *testing.T) {
 func TestNewClient_Validation(t *testing.T) {
 	_, err := rest.NewClient("", "tkn")
 	require.ErrorIs(t, err, rest.ErrClient)
-	_, err = rest.NewClient(rest.EndpointProduction, "")
+	_, err = rest.NewClient(tinvest.EndpointProductionREST, "")
 	require.ErrorIs(t, err, rest.ErrClient)
-	_, err = rest.NewClient(rest.EndpointProduction, "tkn",
+	_, err = rest.NewClient(tinvest.EndpointProductionREST, "tkn",
 		rest.WithHTTPClient(nil))
 	require.ErrorIs(t, err, rest.ErrClient)
 }

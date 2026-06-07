@@ -11,6 +11,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/acidsailor/tinvest"
 	"go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp"
 )
 
@@ -66,7 +67,7 @@ func NewClient(endpoint, token string, opts ...ClientOption) (*Client, error) {
 		}
 		cfg := config{
 			httpClient: &http.Client{Timeout: defaultTimeout},
-			appName:    defaultAppName,
+			appName:    tinvest.AppName,
 		}
 		for _, opt := range opts {
 			opt(&cfg)
