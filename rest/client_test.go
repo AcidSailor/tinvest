@@ -80,3 +80,33 @@ func TestNewClient_Validation(t *testing.T) {
 		rest.WithHTTPClient(nil))
 	require.ErrorIs(t, err, rest.ErrClient)
 }
+
+func TestNewClient_WithConfig(t *testing.T) {
+	var gotApp string
+	srv := httptest.NewServer(http.HandlerFunc(
+		func(w http.ResponseWriter, r *http.Request) {
+			gotApp = r.Header.Get("x-app-name")
+			w.Header().Set("Content-Type", "application/json")
+			_, _ = w.Write([]byte(`{}`))
+		}))
+	defer srv.Close()
+
+	c, err := rest.NewClient(srv.URL, "tkn", rest.WithConfig(rest.Config{
+		HTTPClient: &http.Client{},
+		AppName:    "literal-app",
+	}))
+	require.NoError(t, err)
+
+	_, err = c.Users.GetAccounts(
+		context.Background(),
+		&rest.V1GetAccountsRequest{},
+	)
+	require.NoError(t, err)
+	assert.Equal(t, "literal-app", gotApp)
+}
+
+func TestNewClient_WithConfig_NilHTTPClientErrors(t *testing.T) {
+	_, err := rest.NewClient(tinvest.EndpointProductionREST, "tkn",
+		rest.WithConfig(rest.Config{AppName: "x"}))
+	require.ErrorIs(t, err, rest.ErrClient)
+}

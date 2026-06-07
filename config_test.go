@@ -9,23 +9,32 @@ import (
 func TestNewConnConfig_StoresFields(t *testing.T) {
 	cfg := NewConnConfig(EndpointProduction, "test-token")
 
-	assert.Equal(t, "test-token", cfg.token)
-	assert.Equal(t, EndpointProduction, cfg.endpoint)
-	assert.Equal(t, AppName, cfg.appName)
+	assert.Equal(t, "test-token", cfg.Token)
+	assert.Equal(t, EndpointProduction, cfg.Endpoint)
+	assert.Equal(t, AppName, cfg.AppName)
+}
+
+func TestNewConnConfig_StructLiteral(t *testing.T) {
+	cfg := &ConnConfig{
+		Endpoint: EndpointProduction,
+		Token:    "tok",
+		AppName:  "myapp",
+	}
+
+	assert.NoError(t, cfg.Validate())
+	assert.Equal(t, "myapp", cfg.AppName)
 }
 
 func TestWithAppName(t *testing.T) {
-	cfg := NewConnConfig(EndpointProduction, "tok")
-	result := cfg.WithAppName("myapp")
+	cfg := NewConnConfig(EndpointProduction, "tok", WithAppName("myapp"))
 
-	assert.Equal(t, "myapp", cfg.appName)
-	assert.Same(t, cfg, result)
+	assert.Equal(t, "myapp", cfg.AppName)
 }
 
 func TestWithAppName_EmptyClearsAppName(t *testing.T) {
-	cfg := NewConnConfig(EndpointProduction, "tok").WithAppName("")
+	cfg := NewConnConfig(EndpointProduction, "tok", WithAppName(""))
 
-	assert.Equal(t, "", cfg.appName)
+	assert.Equal(t, "", cfg.AppName)
 }
 
 func TestConnConfig_Validate_OK(t *testing.T) {

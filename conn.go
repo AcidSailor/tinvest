@@ -25,11 +25,11 @@ func NewConn(
 
 	tlsCreds := credentials.NewTLS(&tls.Config{MinVersion: tls.VersionTLS12})
 	otelHandler := otelgrpc.NewClientHandler()
-	unaryInt := unaryAuthInterceptor(connConfig.token, connConfig.appName)
-	streamInt := streamAuthInterceptor(connConfig.token, connConfig.appName)
+	unaryInt := unaryAuthInterceptor(connConfig.Token, connConfig.AppName)
+	streamInt := streamAuthInterceptor(connConfig.Token, connConfig.AppName)
 
 	conn, err := grpc.NewClient(
-		connConfig.endpoint,
+		connConfig.Endpoint,
 		grpc.WithTransportCredentials(tlsCreds),
 		grpc.WithChainUnaryInterceptor(unaryInt),
 		grpc.WithChainStreamInterceptor(streamInt),
@@ -39,13 +39,13 @@ func NewConn(
 		return nil, fmt.Errorf(
 			"%w: %s: %w",
 			ErrClient,
-			connConfig.endpoint,
+			connConfig.Endpoint,
 			err,
 		)
 	}
 
 	slog.InfoContext(ctx, "tinvest connection created",
-		slog.String("endpoint", connConfig.endpoint),
+		slog.String("endpoint", connConfig.Endpoint),
 	)
 
 	return conn, nil

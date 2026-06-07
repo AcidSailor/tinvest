@@ -36,22 +36,33 @@ type Client struct {
 }
 
 // ClientOption configures a Client at construction.
-type ClientOption func(*config)
+type ClientOption func(*Config)
 
-type config struct {
-	httpClient *http.Client
-	appName    string
+// Config holds construction-time options for a Client. Apply it with options via
+// NewClient, or build a Config struct literal directly and pass it with
+// WithConfig.
+type Config struct {
+	HTTPClient *http.Client
+	AppName    string
 }
 
 // WithHTTPClient sets the *http.Client (custom Timeout/Transport/proxy). A nil
 // client makes NewClient return an error.
 func WithHTTPClient(h *http.Client) ClientOption {
-	return func(c *config) { c.httpClient = h }
+	return func(c *Config) { c.HTTPClient = h }
 }
 
 // WithAppName sets the x-app-name header value identifying the application.
 func WithAppName(name string) ClientOption {
-	return func(c *config) { c.appName = name }
+	return func(c *Config) { c.AppName = name }
+}
+
+// WithConfig replaces the whole Config, letting callers build a struct literal
+// instead of composing individual options. Because it overwrites every field
+// (including defaults), set HTTPClient yourself — a nil HTTPClient makes
+// NewClient return an error. Options listed after WithConfig still take effect.
+func WithConfig(cfg Config) ClientOption {
+	return func(c *Config) { *c = cfg }
 }
 
 // NewClient builds a Client targeting endpoint (use EndpointProduction /
@@ -65,17 +76,17 @@ func NewClient(endpoint, token string, opts ...ClientOption) (*Client, error) {
 		if token == "" {
 			return nil, errors.New("empty token")
 		}
-		cfg := config{
-			httpClient: &http.Client{Timeout: defaultTimeout},
-			appName:    tinvest.AppName,
+		cfg := Config{
+			HTTPClient: &http.Client{Timeout: defaultTimeout},
+			AppName:    tinvest.AppName,
 		}
 		for _, opt := range opts {
 			opt(&cfg)
 		}
-		if cfg.httpClient == nil {
+		if cfg.HTTPClient == nil {
 			return nil, errors.New("nil *http.Client")
 		}
-		hc := *cfg.httpClient
+		hc := *cfg.HTTPClient
 		base := hc.Transport
 		if base == nil {
 			base = http.DefaultTransport
@@ -85,7 +96,7 @@ func NewClient(endpoint, token string, opts ...ClientOption) (*Client, error) {
 		cl := &Client{
 			baseURL:    strings.TrimRight(endpoint, "/"),
 			token:      token,
-			appName:    cfg.appName,
+			appName:    cfg.AppName,
 			httpClient: &hc,
 		}
 		cl.Instruments = instrumentsService{cl}
