@@ -1,6 +1,12 @@
 # tinvest
 
-Go client library for the [T-Invest (T-Bank Investments) gRPC API](https://opensource.tbank.ru/invest/invest-contracts).
+Go client library for the [T-Invest (T-Bank Investments) gRPC and REST APIs](https://opensource.tbank.ru/invest/invest-contracts).
+
+The transport clients live in sub-packages so the root `tinvest` package (endpoint constants, `AppName`, sentinel errors) stays dependency-light:
+
+- `tinvest/grpc` — gRPC client (`NewConn` / `NewClient`) and proto-typed money helpers
+- `tinvest/rest` — REST gateway client
+- `tinvest/money` — protobuf-free `udecimal.Decimal` ↔ units/nano conversions
 
 ## Installation
 
@@ -18,19 +24,20 @@ import (
     "log"
 
     "github.com/acidsailor/tinvest"
+    "github.com/acidsailor/tinvest/grpc"
 )
 
 func main() {
     ctx := context.Background()
 
-    connConfig := tinvest.NewConnConfig(tinvest.EndpointProduction, "your-api-token")
-    conn, err := tinvest.NewConn(ctx, connConfig)
+    connConfig := grpc.NewConnConfig(tinvest.EndpointProduction, "your-api-token")
+    conn, err := grpc.NewConn(ctx, connConfig)
     if err != nil {
         log.Fatal(err)
     }
     defer conn.Close()
 
-    client, err := tinvest.NewClient(conn, tinvest.NewClientConfig())
+    client, err := grpc.NewClient(conn, grpc.NewClientConfig())
     if err != nil {
         log.Fatal(err)
     }
@@ -44,17 +51,17 @@ func main() {
 
 ### ConnConfig
 
-`ConnConfig` holds gRPC connection settings and is created with a required endpoint and API token:
+`grpc.ConnConfig` holds gRPC connection settings and is created with a required endpoint and API token. Endpoint constants live in the root `tinvest` package:
 
 ```go
 // Production environment
-config := tinvest.NewConnConfig(tinvest.EndpointProduction, token)
+config := grpc.NewConnConfig(tinvest.EndpointProduction, token)
 
 // Sandbox environment (for testing without real money)
-config := tinvest.NewConnConfig(tinvest.EndpointSandbox, token)
+config := grpc.NewConnConfig(tinvest.EndpointSandbox, token)
 
-// Optionally set a custom app name (sent as x-app-name header)
-config = config.WithAppName("my-trading-bot")
+// Optionally set a custom app name (sent as x-app-name header) via a functional option
+config = grpc.NewConnConfig(tinvest.EndpointProduction, token, grpc.WithAppName("my-trading-bot"))
 ```
 
 | Constant             | Value                                             |
@@ -64,15 +71,15 @@ config = config.WithAppName("my-trading-bot")
 
 ### ClientConfig
 
-`ClientConfig` holds client-level settings:
+`grpc.ClientConfig` holds client-level settings:
 
 ```go
-config := tinvest.NewClientConfig()
+config := grpc.NewClientConfig()
 ```
 
 ## API Services
 
-`Client` exposes all T-Invest gRPC services as typed sub-clients:
+`grpc.Client` exposes all T-Invest gRPC services as typed sub-clients:
 
 | Field                 | Service                                             |
 |-----------------------|-----------------------------------------------------|
@@ -95,22 +102,23 @@ The underlying proto-generated interfaces live in the `pb` sub-package.
 T-Invest encodes monetary values as protobuf `Quotation` and `MoneyValue` messages. The library provides helpers to convert these to and from [`udecimal.Decimal`](https://github.com/quagmt/udecimal):
 
 ```go
-import "github.com/acidsailor/tinvest"
+import "github.com/acidsailor/tinvest/grpc"
 
 // Quotation ↔ Decimal
-d, err := tinvest.QuotationToDecimal(q)
-q, err := tinvest.DecimalToQuotation(d)
+d, err := grpc.QuotationToDecimal(q)
+q, err := grpc.DecimalToQuotation(d)
 
 // MoneyValue ↔ Decimal (currency field is preserved separately)
-d, err := tinvest.MoneyValueToDecimal(m)
-m, err := tinvest.DecimalToMoneyValue(d, "RUB")
+d, err := grpc.MoneyValueToDecimal(m)
+m, err := grpc.DecimalToMoneyValue(d, "RUB")
 ```
 
-Financial values support up to 9 fractional digits.
+Financial values support up to 9 fractional digits. The protobuf-free
+units/nano math underneath lives in the `tinvest/money` package.
 
 ## Error Handling
 
-Errors originating inside the `tinvest` package (validation, conversion) wrap `ErrClient` and can be detected with `errors.Is`:
+Errors raised by the library's own validation and conversion logic wrap `tinvest.ErrClient` and can be detected with `errors.Is`:
 
 ```go
 if errors.Is(err, tinvest.ErrClient) {
@@ -118,7 +126,7 @@ if errors.Is(err, tinvest.ErrClient) {
 }
 ```
 
-Errors returned by gRPC RPC calls are passed through unwrapped as standard gRPC status errors.
+Finer-grained sentinels (`tinvest.ErrNil`, `tinvest.ErrInvalidConfig`) are joined alongside `ErrClient`, so both match. Errors returned by gRPC RPC calls are passed through unwrapped as standard gRPC status errors.
 
 ## OpenTelemetry
 
@@ -126,10 +134,10 @@ The gRPC connection is automatically instrumented with OpenTelemetry via `otelgr
 
 ## Connection Lifecycle
 
-`NewConn` returns a lazily-dialed `*grpc.ClientConn` — no TCP connection is established until the first RPC call. The caller owns the connection and is responsible for closing it:
+`grpc.NewConn` returns a lazily-dialed `*grpc.ClientConn` — no TCP connection is established until the first RPC call. The caller owns the connection and is responsible for closing it:
 
 ```go
-conn, err := tinvest.NewConn(ctx, connConfig)
+conn, err := grpc.NewConn(ctx, connConfig)
 if err != nil { ... }
 defer conn.Close()
 ```

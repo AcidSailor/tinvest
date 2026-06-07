@@ -7,8 +7,8 @@ const (
 	EndpointProduction = "invest-public-api.tinkoff.ru:443"
 	// EndpointSandbox is the T-Invest sandbox API endpoint for testing without real money.
 	EndpointSandbox = "sandbox-invest-public-api.tinkoff.ru:443"
-	// EndpointProduction is the T-Invest REST gateway (live trading).
+	// EndpointProductionREST is the T-Invest REST gateway (live trading).
 	EndpointProductionREST = "https://" + EndpointProduction + "/rest"
-	// EndpointSandbox is the T-Invest REST gateway sandbox.
+	// EndpointSandboxREST is the T-Invest REST gateway sandbox.
 	EndpointSandboxREST = "https://" + EndpointSandbox + "/rest"
 )

@@ -38,9 +38,8 @@ type Client struct {
 // ClientOption configures a Client at construction.
 type ClientOption func(*Config)
 
-// Config holds construction-time options for a Client. Apply it with options via
-// NewClient, or build a Config struct literal directly and pass it with
-// WithConfig.
+// Config holds construction-time options for a Client. Build it with NewConfig
+// and options, or as a struct literal, then pass the result to NewClient.
 type Config struct {
 	HTTPClient *http.Client
 	AppName    string
@@ -76,9 +75,9 @@ func WithConfig(cfg Config) ClientOption {
 	return func(c *Config) { *c = cfg }
 }
 
-// NewClient builds a Client targeting endpoint (use EndpointProduction /
-// EndpointSandbox) with the given API token. Returns an error wrapping
-// ErrClient on empty endpoint/token or a nil *http.Client.
+// NewClient builds a Client targeting endpoint (use tinvest.EndpointProductionREST
+// / tinvest.EndpointSandboxREST) with the given API token. Returns an error
+// wrapping ErrClient on empty endpoint/token or a nil *http.Client.
 func NewClient(endpoint, token string, config *Config) (*Client, error) {
 	c, err := func() (*Client, error) {
 		if endpoint == "" {

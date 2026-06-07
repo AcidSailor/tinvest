@@ -9,8 +9,8 @@ import (
 // ConnConfig holds configuration for the gRPC connection created by NewConn.
 // Construct it either as a struct literal or via NewConnConfig with options:
 //
-//	cfg := &ConnConfig{Endpoint: EndpointProduction, Token: tok, AppName: "myapp"}
-//	cfg := NewConnConfig(EndpointProduction, tok, WithAppName("myapp"))
+//	cfg := &ConnConfig{Endpoint: tinvest.EndpointProduction, Token: tok, AppName: "myapp"}
+//	cfg := NewConnConfig(tinvest.EndpointProduction, tok, WithAppName("myapp"))
 type ConnConfig struct {
 	Endpoint string
 	Token    string
@@ -27,9 +27,9 @@ func WithAppName(name string) ConnOption {
 }
 
 // NewConnConfig creates a ConnConfig with the required endpoint and API token,
-// defaulting AppName to the package AppName. Use EndpointProduction or
-// EndpointSandbox as the endpoint value, and options such as WithAppName to
-// override defaults.
+// defaulting AppName to tinvest.AppName. Use tinvest.EndpointProduction or
+// tinvest.EndpointSandbox as the endpoint value, and options such as WithAppName
+// to override defaults.
 func NewConnConfig(endpoint, token string, opts ...ConnOption) *ConnConfig {
 	c := &ConnConfig{
 		Endpoint: endpoint,

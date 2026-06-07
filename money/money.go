@@ -1,7 +1,7 @@
 // Package money provides protobuf-free conversions between T-Invest units/nano
 // money values (int64 units + int32 nano-billionths) and udecimal.Decimal, plus
 // sign handling and display formatting. It is the single home of this math so
-// both the proto-typed helpers in package tinvest and JSON-typed callers (the
+// both the proto-typed helpers in package grpc and JSON-typed callers (the
 // MCP) share one implementation.
 package money
 
