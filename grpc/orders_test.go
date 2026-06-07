@@ -5,7 +5,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	pb "github.com/acidsailor/tinvest/pb"
+	pb "github.com/acidsailor/tinvest/grpc/pb"
 )
 
 func TestOrderDirectionFromStop(t *testing.T) {

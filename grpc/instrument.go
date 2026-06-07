@@ -9,7 +9,7 @@ import (
 	"github.com/google/uuid"
 
 	"github.com/acidsailor/tinvest/money"
-	pb "github.com/acidsailor/tinvest/pb"
+	pb "github.com/acidsailor/tinvest/grpc/pb"
 )
 
 // NewInstrumentRequest builds an InstrumentRequest with IdType inferred from

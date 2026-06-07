@@ -5,7 +5,7 @@ import (
 
 	"github.com/acidsailor/tinvest"
 
-	pb "github.com/acidsailor/tinvest/pb"
+	pb "github.com/acidsailor/tinvest/grpc/pb"
 	"google.golang.org/grpc"
 )
 

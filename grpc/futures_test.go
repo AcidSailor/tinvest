@@ -8,7 +8,7 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	pb "github.com/acidsailor/tinvest/pb"
+	pb "github.com/acidsailor/tinvest/grpc/pb"
 )
 
 func TestFuturesPointValue(t *testing.T) {

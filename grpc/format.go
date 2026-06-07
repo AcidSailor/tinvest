@@ -6,7 +6,7 @@ import (
 	"github.com/acidsailor/tinvest"
 
 	"github.com/acidsailor/tinvest/money"
-	pb "github.com/acidsailor/tinvest/pb"
+	pb "github.com/acidsailor/tinvest/grpc/pb"
 )
 
 // FormatMoney formats a MoneyValue as "250.50 RUB". Shows 2 decimal places

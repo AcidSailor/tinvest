@@ -6,15 +6,15 @@ Go client library for the T-Invest (T-Bank Investments) gRPC and REST APIs.
 
 - Root package `tinvest` — shared primitives only: endpoint constants, `AppName`, and the package sentinel errors (`ErrClient`, `ErrNil`, `ErrInvalidConfig`). Kept dependency-light so importing it stays cheap.
 - `grpc/` — gRPC transport: `NewConn`, `NewClient`, `ConnConfig`/`ClientConfig`, interceptors, and the proto-typed money helpers (`QuotationToDecimal`, etc.).
+- `grpc/pb/` — proto-generated gRPC bindings (do not edit by hand; regenerate via `task proto`). Consumed only by `grpc`.
 - `rest/` — REST gateway client and per-service clients; models are generated into `rest/models.gen.go`.
 - `money/` — protobuf-free units/nano ↔ `udecimal.Decimal` math, sign handling, and formatting; shared by `grpc` and JSON callers. Owns `money.Err`, `ErrConversion`, `ErrOverflow`.
-- `pb/` — proto-generated gRPC bindings (do not edit by hand; regenerate via `task proto`).
 - `spec/` — vendored + dereferenced + embedded T-Invest OpenAPI doc (source for REST model generation).
 - `buf.gen.yaml` / `oapi-codegen.yaml` — code-generation configs at the repo root.
 
 ## Tasks
 
-- `task proto` — regenerate `pb/` from upstream T-Invest proto contracts
+- `task proto` — regenerate `grpc/pb/` from upstream T-Invest proto contracts
 - `task spec` — download the upstream OpenAPI spec into `spec/spec-upstream.yaml`
 - `task rest` — regenerate REST artifacts (overlay + deref + `rest/models.gen.go`) from the committed spec
 - `task lint` — run formatters (gofumpt + golines) and linters with autofix

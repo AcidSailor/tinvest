@@ -95,7 +95,7 @@ config := grpc.NewClientConfig()
 | `Users`               | User account information and settings               |
 | `Signals`             | Trading signals and strategies                      |
 
-The underlying proto-generated interfaces live in the `pb` sub-package.
+The underlying proto-generated interfaces live in the `grpc/pb` sub-package.
 
 ## Financial Value Helpers
 

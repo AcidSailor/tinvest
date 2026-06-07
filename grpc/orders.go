@@ -1,7 +1,7 @@
 package grpc
 
 import (
-	pb "github.com/acidsailor/tinvest/pb"
+	pb "github.com/acidsailor/tinvest/grpc/pb"
 )
 
 // OrderDirectionFromStop maps a StopOrderDirection to the equivalent

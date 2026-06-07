@@ -13,7 +13,7 @@ tasks:
       - tmp/invest-contracts/src/docs/contracts/**/*.proto
       - buf.gen.yaml
     generates:
-      - pb/**/*.go
+      - grpc/pb/**/*.go
 
   lint:
     desc: Run formatters + linters with autofix (mutates files)

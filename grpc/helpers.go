@@ -8,7 +8,7 @@ import (
 	"github.com/quagmt/udecimal"
 
 	"github.com/acidsailor/tinvest/money"
-	pb "github.com/acidsailor/tinvest/pb"
+	pb "github.com/acidsailor/tinvest/grpc/pb"
 )
 
 // QuotationToDecimal converts a proto Quotation to udecimal.Decimal.
