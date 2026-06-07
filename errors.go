@@ -2,8 +2,6 @@ package tinvest
 
 import (
 	"errors"
-
-	"github.com/acidsailor/tinvest/money"
 )
 
 // ErrClient is the sentinel error for the tinvest package.
@@ -19,11 +17,4 @@ var (
 	ErrNil = errors.New("nil")
 	// ErrInvalidConfig indicates a configuration value is missing or invalid.
 	ErrInvalidConfig = errors.New("invalid config")
-)
-
-// ErrOverflow and ErrConversion now live in package money; re-exported so
-// existing errors.Is(err, tinvest.ErrConversion) call sites keep matching.
-var (
-	ErrOverflow   = money.ErrOverflow
-	ErrConversion = money.ErrConversion
 )
