@@ -1,6 +1,7 @@
 package money_test
 
 import (
+	"math"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -41,4 +42,15 @@ func TestFormatQuotation_NoNano(t *testing.T) {
 	s, err := money.FormatQuotation(89, 0)
 	require.NoError(t, err)
 	assert.Equal(t, "89", s)
+}
+
+func TestNormalizeSign_IntMinErrors(t *testing.T) {
+	_, _, _, err := money.NormalizeSign(0, math.MinInt32)
+	require.Error(t, err)
+	assert.ErrorIs(t, err, money.Err)
+	assert.ErrorIs(t, err, money.ErrOverflow)
+
+	_, _, _, err = money.NormalizeSign(math.MinInt64, 0)
+	require.Error(t, err)
+	assert.ErrorIs(t, err, money.ErrOverflow)
 }

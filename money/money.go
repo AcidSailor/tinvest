@@ -53,7 +53,8 @@ func ValidateSigns(units int64, nano int32) error {
 }
 
 // NormalizeSign validates signs and returns the sign prefix ("-" or "") with
-// the absolute units and nano.
+// the absolute units and nano. It errors if units or nano is its integer
+// minimum, which cannot be negated in two's complement.
 func NormalizeSign(
 	units int64, nano int32,
 ) (string, int64, int32, error) {
@@ -61,6 +62,12 @@ func NormalizeSign(
 		return "", 0, 0, err
 	}
 	if units < 0 || nano < 0 {
+		if units == math.MinInt64 || nano == math.MinInt32 {
+			return "", 0, 0, fmt.Errorf(
+				"%w: value at integer minimum cannot be negated: %w",
+				Err, ErrOverflow,
+			)
+		}
 		return "-", -units, -nano, nil
 	}
 	return "", units, nano, nil
