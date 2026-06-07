@@ -80,47 +80,53 @@ func UnitsNanoToDecimal(
 	if err := ValidateSigns(units, nano); err != nil {
 		return udecimal.Decimal{}, err
 	}
-	u, err := udecimal.NewFromInt64(units, 0)
+	d, err := func() (udecimal.Decimal, error) {
+		u, err := udecimal.NewFromInt64(units, 0)
+		if err != nil {
+			return udecimal.Decimal{}, fmt.Errorf(
+				"units: %w: %w", ErrConversion, err,
+			)
+		}
+		n, err := udecimal.NewFromInt64(int64(nano), nanoPrecision)
+		if err != nil {
+			return udecimal.Decimal{}, fmt.Errorf(
+				"nano: %w: %w", ErrConversion, err,
+			)
+		}
+		return u.Add(n), nil
+	}()
 	if err != nil {
-		return udecimal.Decimal{}, fmt.Errorf(
-			"%w: units: %w: %w", Err, ErrConversion, err,
-		)
+		return udecimal.Decimal{}, errors.Join(Err, err)
 	}
-	n, err := udecimal.NewFromInt64(int64(nano), nanoPrecision)
-	if err != nil {
-		return udecimal.Decimal{}, fmt.Errorf(
-			"%w: nano: %w: %w", Err, ErrConversion, err,
-		)
-	}
-	return u.Add(n), nil
+	return d, nil
 }
 
 // DecimalToUnitsNano splits a decimal into units + nano, rejecting values with
 // more than 9 fractional digits or that overflow the target integer types.
 func DecimalToUnitsNano(d udecimal.Decimal) (int64, int32, error) {
-	units := d.Trunc(0)
-	frac := d.Sub(units)
-	nanoDecimal := frac.Mul(nanoFactor).Trunc(0)
+	u, nano, err := func() (int64, int32, error) {
+		units := d.Trunc(0)
+		frac := d.Sub(units)
+		nanoDecimal := frac.Mul(nanoFactor).Trunc(0)
 
-	u, err := units.Int64()
+		u, err := units.Int64()
+		if err != nil {
+			return 0, 0, fmt.Errorf("units: %w: %w", ErrOverflow, err)
+		}
+		n, err := nanoDecimal.Int64()
+		if err != nil {
+			return 0, 0, fmt.Errorf("nano: %w: %w", ErrOverflow, err)
+		}
+		if n > math.MaxInt32 || n < math.MinInt32 {
+			return 0, 0, fmt.Errorf(
+				"nano value %d exceeds int32 range: %w", n, ErrOverflow,
+			)
+		}
+		return u, int32(n), nil
+	}()
 	if err != nil {
-		return 0, 0, fmt.Errorf(
-			"%w: units: %w: %w", Err, ErrOverflow, err,
-		)
+		return 0, 0, errors.Join(Err, err)
 	}
-	n, err := nanoDecimal.Int64()
-	if err != nil {
-		return 0, 0, fmt.Errorf(
-			"%w: nano: %w: %w", Err, ErrOverflow, err,
-		)
-	}
-	if n > math.MaxInt32 || n < math.MinInt32 {
-		return 0, 0, fmt.Errorf(
-			"%w: nano value %d exceeds int32 range: %w",
-			Err, n, ErrOverflow,
-		)
-	}
-	nano := int32(n)
 
 	reconstructed, err := UnitsNanoToDecimal(u, nano)
 	if err != nil {
