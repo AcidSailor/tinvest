@@ -2,7 +2,7 @@ package rest
 
 import "context"
 
-type instrumentsService struct{ c *Client }
+type instrumentsServiceClient struct{ c *Client }
 
 const (
 	pathInstrumentsBondBy                = "/tinkoff.public.invest.api.contract.v1.InstrumentsService/BondBy"
@@ -50,19 +50,19 @@ const (
 	pathInstrumentsTradingSchedules      = "/tinkoff.public.invest.api.contract.v1.InstrumentsService/TradingSchedules"
 )
 
-func (s instrumentsService) BondBy(
+func (s instrumentsServiceClient) BondBy(
 	ctx context.Context, req *V1InstrumentRequest,
 ) (*V1BondResponse, error) {
 	return do[V1BondResponse](ctx, s.c, pathInstrumentsBondBy, req)
 }
 
-func (s instrumentsService) Bonds(
+func (s instrumentsServiceClient) Bonds(
 	ctx context.Context, req *V1InstrumentsRequest,
 ) (*V1BondsResponse, error) {
 	return do[V1BondsResponse](ctx, s.c, pathInstrumentsBonds, req)
 }
 
-func (s instrumentsService) CreateFavoriteGroup(
+func (s instrumentsServiceClient) CreateFavoriteGroup(
 	ctx context.Context, req *V1CreateFavoriteGroupRequest,
 ) (*V1CreateFavoriteGroupResponse, error) {
 	return do[V1CreateFavoriteGroupResponse](
@@ -70,19 +70,19 @@ func (s instrumentsService) CreateFavoriteGroup(
 	)
 }
 
-func (s instrumentsService) Currencies(
+func (s instrumentsServiceClient) Currencies(
 	ctx context.Context, req *V1InstrumentsRequest,
 ) (*V1CurrenciesResponse, error) {
 	return do[V1CurrenciesResponse](ctx, s.c, pathInstrumentsCurrencies, req)
 }
 
-func (s instrumentsService) CurrencyBy(
+func (s instrumentsServiceClient) CurrencyBy(
 	ctx context.Context, req *V1InstrumentRequest,
 ) (*V1CurrencyResponse, error) {
 	return do[V1CurrencyResponse](ctx, s.c, pathInstrumentsCurrencyBy, req)
 }
 
-func (s instrumentsService) DeleteFavoriteGroup(
+func (s instrumentsServiceClient) DeleteFavoriteGroup(
 	ctx context.Context, req *V1DeleteFavoriteGroupRequest,
 ) (*V1DeleteFavoriteGroupResponse, error) {
 	return do[V1DeleteFavoriteGroupResponse](
@@ -90,19 +90,19 @@ func (s instrumentsService) DeleteFavoriteGroup(
 	)
 }
 
-func (s instrumentsService) DfaBy(
+func (s instrumentsServiceClient) DfaBy(
 	ctx context.Context, req *V1InstrumentRequest,
 ) (*V1DfaResponse, error) {
 	return do[V1DfaResponse](ctx, s.c, pathInstrumentsDfaBy, req)
 }
 
-func (s instrumentsService) Dfas(
+func (s instrumentsServiceClient) Dfas(
 	ctx context.Context, req *V1DfasRequest,
 ) (*V1DfasResponse, error) {
 	return do[V1DfasResponse](ctx, s.c, pathInstrumentsDfas, req)
 }
 
-func (s instrumentsService) EditFavorites(
+func (s instrumentsServiceClient) EditFavorites(
 	ctx context.Context, req *V1EditFavoritesRequest,
 ) (*V1EditFavoritesResponse, error) {
 	return do[V1EditFavoritesResponse](
@@ -113,19 +113,19 @@ func (s instrumentsService) EditFavorites(
 	)
 }
 
-func (s instrumentsService) EtfBy(
+func (s instrumentsServiceClient) EtfBy(
 	ctx context.Context, req *V1InstrumentRequest,
 ) (*V1EtfResponse, error) {
 	return do[V1EtfResponse](ctx, s.c, pathInstrumentsEtfBy, req)
 }
 
-func (s instrumentsService) Etfs(
+func (s instrumentsServiceClient) Etfs(
 	ctx context.Context, req *V1InstrumentsRequest,
 ) (*V1EtfsResponse, error) {
 	return do[V1EtfsResponse](ctx, s.c, pathInstrumentsEtfs, req)
 }
 
-func (s instrumentsService) FindInstrument(
+func (s instrumentsServiceClient) FindInstrument(
 	ctx context.Context, req *V1FindInstrumentRequest,
 ) (*V1FindInstrumentResponse, error) {
 	return do[V1FindInstrumentResponse](
@@ -133,19 +133,19 @@ func (s instrumentsService) FindInstrument(
 	)
 }
 
-func (s instrumentsService) FutureBy(
+func (s instrumentsServiceClient) FutureBy(
 	ctx context.Context, req *V1InstrumentRequest,
 ) (*V1FutureResponse, error) {
 	return do[V1FutureResponse](ctx, s.c, pathInstrumentsFutureBy, req)
 }
 
-func (s instrumentsService) Futures(
+func (s instrumentsServiceClient) Futures(
 	ctx context.Context, req *V1InstrumentsRequest,
 ) (*V1FuturesResponse, error) {
 	return do[V1FuturesResponse](ctx, s.c, pathInstrumentsFutures, req)
 }
 
-func (s instrumentsService) GetAccruedInterests(
+func (s instrumentsServiceClient) GetAccruedInterests(
 	ctx context.Context, req *V1GetAccruedInterestsRequest,
 ) (*V1GetAccruedInterestsResponse, error) {
 	return do[V1GetAccruedInterestsResponse](
@@ -153,13 +153,13 @@ func (s instrumentsService) GetAccruedInterests(
 	)
 }
 
-func (s instrumentsService) GetAssetBy(
+func (s instrumentsServiceClient) GetAssetBy(
 	ctx context.Context, req *V1AssetRequest,
 ) (*V1AssetResponse, error) {
 	return do[V1AssetResponse](ctx, s.c, pathInstrumentsGetAssetBy, req)
 }
 
-func (s instrumentsService) GetAssetFundamentals(
+func (s instrumentsServiceClient) GetAssetFundamentals(
 	ctx context.Context, req *V1GetAssetFundamentalsRequest,
 ) (*V1GetAssetFundamentalsResponse, error) {
 	return do[V1GetAssetFundamentalsResponse](
@@ -167,7 +167,7 @@ func (s instrumentsService) GetAssetFundamentals(
 	)
 }
 
-func (s instrumentsService) GetAssetReports(
+func (s instrumentsServiceClient) GetAssetReports(
 	ctx context.Context, req *V1GetAssetReportsRequest,
 ) (*V1GetAssetReportsResponse, error) {
 	return do[V1GetAssetReportsResponse](
@@ -175,13 +175,13 @@ func (s instrumentsService) GetAssetReports(
 	)
 }
 
-func (s instrumentsService) GetAssets(
+func (s instrumentsServiceClient) GetAssets(
 	ctx context.Context, req *V1AssetsRequest,
 ) (*V1AssetsResponse, error) {
 	return do[V1AssetsResponse](ctx, s.c, pathInstrumentsGetAssets, req)
 }
 
-func (s instrumentsService) GetBondCoupons(
+func (s instrumentsServiceClient) GetBondCoupons(
 	ctx context.Context, req *V1GetBondCouponsRequest,
 ) (*V1GetBondCouponsResponse, error) {
 	return do[V1GetBondCouponsResponse](
@@ -189,7 +189,7 @@ func (s instrumentsService) GetBondCoupons(
 	)
 }
 
-func (s instrumentsService) GetBondEvents(
+func (s instrumentsServiceClient) GetBondEvents(
 	ctx context.Context, req *V1GetBondEventsRequest,
 ) (*V1GetBondEventsResponse, error) {
 	return do[V1GetBondEventsResponse](
@@ -197,19 +197,19 @@ func (s instrumentsService) GetBondEvents(
 	)
 }
 
-func (s instrumentsService) GetBrandBy(
+func (s instrumentsServiceClient) GetBrandBy(
 	ctx context.Context, req *V1GetBrandRequest,
 ) (*V1Brand, error) {
 	return do[V1Brand](ctx, s.c, pathInstrumentsGetBrandBy, req)
 }
 
-func (s instrumentsService) GetBrands(
+func (s instrumentsServiceClient) GetBrands(
 	ctx context.Context, req *V1GetBrandsRequest,
 ) (*V1GetBrandsResponse, error) {
 	return do[V1GetBrandsResponse](ctx, s.c, pathInstrumentsGetBrands, req)
 }
 
-func (s instrumentsService) GetConsensusForecasts(
+func (s instrumentsServiceClient) GetConsensusForecasts(
 	ctx context.Context, req *V1GetConsensusForecastsRequest,
 ) (*V1GetConsensusForecastsResponse, error) {
 	return do[V1GetConsensusForecastsResponse](
@@ -217,7 +217,7 @@ func (s instrumentsService) GetConsensusForecasts(
 	)
 }
 
-func (s instrumentsService) GetCountries(
+func (s instrumentsServiceClient) GetCountries(
 	ctx context.Context, req *V1GetCountriesRequest,
 ) (*V1GetCountriesResponse, error) {
 	return do[V1GetCountriesResponse](
@@ -228,7 +228,7 @@ func (s instrumentsService) GetCountries(
 	)
 }
 
-func (s instrumentsService) GetDividends(
+func (s instrumentsServiceClient) GetDividends(
 	ctx context.Context, req *V1GetDividendsRequest,
 ) (*V1GetDividendsResponse, error) {
 	return do[V1GetDividendsResponse](
@@ -239,7 +239,7 @@ func (s instrumentsService) GetDividends(
 	)
 }
 
-func (s instrumentsService) GetFavoriteGroups(
+func (s instrumentsServiceClient) GetFavoriteGroups(
 	ctx context.Context, req *V1GetFavoriteGroupsRequest,
 ) (*V1GetFavoriteGroupsResponse, error) {
 	return do[V1GetFavoriteGroupsResponse](
@@ -247,7 +247,7 @@ func (s instrumentsService) GetFavoriteGroups(
 	)
 }
 
-func (s instrumentsService) GetFavorites(
+func (s instrumentsServiceClient) GetFavorites(
 	ctx context.Context, req *V1GetFavoritesRequest,
 ) (*V1GetFavoritesResponse, error) {
 	return do[V1GetFavoritesResponse](
@@ -258,7 +258,7 @@ func (s instrumentsService) GetFavorites(
 	)
 }
 
-func (s instrumentsService) GetForecastBy(
+func (s instrumentsServiceClient) GetForecastBy(
 	ctx context.Context, req *V1GetForecastRequest,
 ) (*V1GetForecastResponse, error) {
 	return do[V1GetForecastResponse](
@@ -269,7 +269,7 @@ func (s instrumentsService) GetForecastBy(
 	)
 }
 
-func (s instrumentsService) GetFuturesMargin(
+func (s instrumentsServiceClient) GetFuturesMargin(
 	ctx context.Context, req *V1GetFuturesMarginRequest,
 ) (*V1GetFuturesMarginResponse, error) {
 	return do[V1GetFuturesMarginResponse](
@@ -277,7 +277,7 @@ func (s instrumentsService) GetFuturesMargin(
 	)
 }
 
-func (s instrumentsService) GetInsiderDeals(
+func (s instrumentsServiceClient) GetInsiderDeals(
 	ctx context.Context, req *V1GetInsiderDealsRequest,
 ) (*V1GetInsiderDealsResponse, error) {
 	return do[V1GetInsiderDealsResponse](
@@ -285,7 +285,7 @@ func (s instrumentsService) GetInsiderDeals(
 	)
 }
 
-func (s instrumentsService) GetInstrumentBy(
+func (s instrumentsServiceClient) GetInstrumentBy(
 	ctx context.Context, req *V1InstrumentRequest,
 ) (*V1InstrumentResponse, error) {
 	return do[V1InstrumentResponse](
@@ -293,55 +293,55 @@ func (s instrumentsService) GetInstrumentBy(
 	)
 }
 
-func (s instrumentsService) GetRiskRates(
+func (s instrumentsServiceClient) GetRiskRates(
 	ctx context.Context, req *V1RiskRatesRequest,
 ) (*V1RiskRatesResponse, error) {
 	return do[V1RiskRatesResponse](ctx, s.c, pathInstrumentsGetRiskRates, req)
 }
 
-func (s instrumentsService) Indicatives(
+func (s instrumentsServiceClient) Indicatives(
 	ctx context.Context, req *V1IndicativesRequest,
 ) (*V1IndicativesResponse, error) {
 	return do[V1IndicativesResponse](ctx, s.c, pathInstrumentsIndicatives, req)
 }
 
-func (s instrumentsService) News(
+func (s instrumentsServiceClient) News(
 	ctx context.Context, req *V1NewsRequest,
 ) (*V1NewsResponse, error) {
 	return do[V1NewsResponse](ctx, s.c, pathInstrumentsNews, req)
 }
 
-func (s instrumentsService) OptionBy(
+func (s instrumentsServiceClient) OptionBy(
 	ctx context.Context, req *V1InstrumentRequest,
 ) (*V1OptionResponse, error) {
 	return do[V1OptionResponse](ctx, s.c, pathInstrumentsOptionBy, req)
 }
 
-func (s instrumentsService) Options(
+func (s instrumentsServiceClient) Options(
 	ctx context.Context, req *V1InstrumentsRequest,
 ) (*V1OptionsResponse, error) {
 	return do[V1OptionsResponse](ctx, s.c, pathInstrumentsOptions, req)
 }
 
-func (s instrumentsService) OptionsBy(
+func (s instrumentsServiceClient) OptionsBy(
 	ctx context.Context, req *V1FilterOptionsRequest,
 ) (*V1OptionsResponse, error) {
 	return do[V1OptionsResponse](ctx, s.c, pathInstrumentsOptionsBy, req)
 }
 
-func (s instrumentsService) ShareBy(
+func (s instrumentsServiceClient) ShareBy(
 	ctx context.Context, req *V1InstrumentRequest,
 ) (*V1ShareResponse, error) {
 	return do[V1ShareResponse](ctx, s.c, pathInstrumentsShareBy, req)
 }
 
-func (s instrumentsService) Shares(
+func (s instrumentsServiceClient) Shares(
 	ctx context.Context, req *V1InstrumentsRequest,
 ) (*V1SharesResponse, error) {
 	return do[V1SharesResponse](ctx, s.c, pathInstrumentsShares, req)
 }
 
-func (s instrumentsService) StructuredNoteBy(
+func (s instrumentsServiceClient) StructuredNoteBy(
 	ctx context.Context, req *V1InstrumentRequest,
 ) (*V1StructuredNoteResponse, error) {
 	return do[V1StructuredNoteResponse](
@@ -349,7 +349,7 @@ func (s instrumentsService) StructuredNoteBy(
 	)
 }
 
-func (s instrumentsService) StructuredNotes(
+func (s instrumentsServiceClient) StructuredNotes(
 	ctx context.Context, req *V1InstrumentsRequest,
 ) (*V1StructuredNotesResponse, error) {
 	return do[V1StructuredNotesResponse](
@@ -357,7 +357,7 @@ func (s instrumentsService) StructuredNotes(
 	)
 }
 
-func (s instrumentsService) TradingSchedules(
+func (s instrumentsServiceClient) TradingSchedules(
 	ctx context.Context, req *V1TradingSchedulesRequest,
 ) (*V1TradingSchedulesResponse, error) {
 	return do[V1TradingSchedulesResponse](

@@ -2,7 +2,7 @@ package rest
 
 import "context"
 
-type stopOrdersService struct{ c *Client }
+type stopOrdersServiceClient struct{ c *Client }
 
 const (
 	pathStopOrdersCancelStopOrder = "/tinkoff.public.invest.api.contract.v1.StopOrdersService/CancelStopOrder"
@@ -10,7 +10,7 @@ const (
 	pathStopOrdersPostStopOrder   = "/tinkoff.public.invest.api.contract.v1.StopOrdersService/PostStopOrder"
 )
 
-func (s stopOrdersService) CancelStopOrder(
+func (s stopOrdersServiceClient) CancelStopOrder(
 	ctx context.Context, req *V1CancelStopOrderRequest,
 ) (*V1CancelStopOrderResponse, error) {
 	return do[V1CancelStopOrderResponse](
@@ -18,7 +18,7 @@ func (s stopOrdersService) CancelStopOrder(
 	)
 }
 
-func (s stopOrdersService) GetStopOrders(
+func (s stopOrdersServiceClient) GetStopOrders(
 	ctx context.Context, req *V1GetStopOrdersRequest,
 ) (*V1GetStopOrdersResponse, error) {
 	return do[V1GetStopOrdersResponse](
@@ -26,7 +26,7 @@ func (s stopOrdersService) GetStopOrders(
 	)
 }
 
-func (s stopOrdersService) PostStopOrder(
+func (s stopOrdersServiceClient) PostStopOrder(
 	ctx context.Context, req *V1PostStopOrderRequest,
 ) (*V1PostStopOrderResponse, error) {
 	return do[V1PostStopOrderResponse](

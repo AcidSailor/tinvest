@@ -2,7 +2,7 @@ package rest
 
 import "context"
 
-type usersService struct{ c *Client }
+type usersServiceClient struct{ c *Client }
 
 const (
 	pathUsersCurrencyTransfer    = "/tinkoff.public.invest.api.contract.v1.UsersService/CurrencyTransfer"
@@ -15,7 +15,7 @@ const (
 	pathUsersPayIn               = "/tinkoff.public.invest.api.contract.v1.UsersService/PayIn"
 )
 
-func (s usersService) CurrencyTransfer(
+func (s usersServiceClient) CurrencyTransfer(
 	ctx context.Context, req *V1CurrencyTransferRequest,
 ) (*V1CurrencyTransferResponse, error) {
 	return do[V1CurrencyTransferResponse](
@@ -23,7 +23,7 @@ func (s usersService) CurrencyTransfer(
 	)
 }
 
-func (s usersService) GetAccountValues(
+func (s usersServiceClient) GetAccountValues(
 	ctx context.Context, req *V1GetAccountValuesRequest,
 ) (*V1GetAccountValuesResponse, error) {
 	return do[V1GetAccountValuesResponse](
@@ -31,13 +31,13 @@ func (s usersService) GetAccountValues(
 	)
 }
 
-func (s usersService) GetAccounts(
+func (s usersServiceClient) GetAccounts(
 	ctx context.Context, req *V1GetAccountsRequest,
 ) (*V1GetAccountsResponse, error) {
 	return do[V1GetAccountsResponse](ctx, s.c, pathUsersGetAccounts, req)
 }
 
-func (s usersService) GetBankAccounts(
+func (s usersServiceClient) GetBankAccounts(
 	ctx context.Context, req *V1GetBankAccountsRequest,
 ) (*V1GetBankAccountsResponse, error) {
 	return do[V1GetBankAccountsResponse](
@@ -45,13 +45,13 @@ func (s usersService) GetBankAccounts(
 	)
 }
 
-func (s usersService) GetInfo(
+func (s usersServiceClient) GetInfo(
 	ctx context.Context, req *V1GetInfoRequest,
 ) (*V1GetInfoResponse, error) {
 	return do[V1GetInfoResponse](ctx, s.c, pathUsersGetInfo, req)
 }
 
-func (s usersService) GetMarginAttributes(
+func (s usersServiceClient) GetMarginAttributes(
 	ctx context.Context, req *V1GetMarginAttributesRequest,
 ) (*V1GetMarginAttributesResponse, error) {
 	return do[V1GetMarginAttributesResponse](
@@ -59,13 +59,13 @@ func (s usersService) GetMarginAttributes(
 	)
 }
 
-func (s usersService) GetUserTariff(
+func (s usersServiceClient) GetUserTariff(
 	ctx context.Context, req *V1GetUserTariffRequest,
 ) (*V1GetUserTariffResponse, error) {
 	return do[V1GetUserTariffResponse](ctx, s.c, pathUsersGetUserTariff, req)
 }
 
-func (s usersService) PayIn(
+func (s usersServiceClient) PayIn(
 	ctx context.Context, req *V1PayInRequest,
 ) (*V1PayInResponse, error) {
 	return do[V1PayInResponse](ctx, s.c, pathUsersPayIn, req)

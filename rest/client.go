@@ -25,14 +25,14 @@ type Client struct {
 	appName    string
 	httpClient *http.Client
 
-	Instruments instrumentsService
-	MarketData  marketDataService
-	Operations  operationsService
-	Orders      ordersService
-	Sandbox     sandboxService
-	Signals     signalsService
-	StopOrders  stopOrdersService
-	Users       usersService
+	Instruments instrumentsServiceClient
+	MarketData  marketDataServiceClient
+	Operations  operationsServiceClient
+	Orders      ordersServiceClient
+	Sandbox     sandboxServiceClient
+	Signals     signalsServiceClient
+	StopOrders  stopOrdersServiceClient
+	Users       usersServiceClient
 }
 
 // ClientOption configures a Client at construction.
@@ -99,14 +99,14 @@ func NewClient(endpoint, token string, opts ...ClientOption) (*Client, error) {
 			appName:    cfg.AppName,
 			httpClient: &hc,
 		}
-		cl.Instruments = instrumentsService{cl}
-		cl.MarketData = marketDataService{cl}
-		cl.Operations = operationsService{cl}
-		cl.Orders = ordersService{cl}
-		cl.Sandbox = sandboxService{cl}
-		cl.Signals = signalsService{cl}
-		cl.StopOrders = stopOrdersService{cl}
-		cl.Users = usersService{cl}
+		cl.Instruments = instrumentsServiceClient{cl}
+		cl.MarketData = marketDataServiceClient{cl}
+		cl.Operations = operationsServiceClient{cl}
+		cl.Orders = ordersServiceClient{cl}
+		cl.Sandbox = sandboxServiceClient{cl}
+		cl.Signals = signalsServiceClient{cl}
+		cl.StopOrders = stopOrdersServiceClient{cl}
+		cl.Users = usersServiceClient{cl}
 		return cl, nil
 	}()
 	if err != nil {

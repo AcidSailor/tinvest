@@ -2,7 +2,7 @@ package rest
 
 import "context"
 
-type sandboxService struct{ c *Client }
+type sandboxServiceClient struct{ c *Client }
 
 const (
 	pathSandboxCancelSandboxOrder           = "/tinkoff.public.invest.api.contract.v1.SandboxService/CancelSandboxOrder"
@@ -27,7 +27,7 @@ const (
 	pathSandboxSandboxPayIn                 = "/tinkoff.public.invest.api.contract.v1.SandboxService/SandboxPayIn"
 )
 
-func (s sandboxService) CancelSandboxOrder(
+func (s sandboxServiceClient) CancelSandboxOrder(
 	ctx context.Context, req *V1CancelOrderRequest,
 ) (*V1CancelOrderResponse, error) {
 	return do[V1CancelOrderResponse](
@@ -35,7 +35,7 @@ func (s sandboxService) CancelSandboxOrder(
 	)
 }
 
-func (s sandboxService) CancelSandboxStopOrder(
+func (s sandboxServiceClient) CancelSandboxStopOrder(
 	ctx context.Context, req *V1CancelStopOrderRequest,
 ) (*V1CancelStopOrderResponse, error) {
 	return do[V1CancelStopOrderResponse](
@@ -43,7 +43,7 @@ func (s sandboxService) CancelSandboxStopOrder(
 	)
 }
 
-func (s sandboxService) CloseSandboxAccount(
+func (s sandboxServiceClient) CloseSandboxAccount(
 	ctx context.Context, req *V1CloseSandboxAccountRequest,
 ) (*V1CloseSandboxAccountResponse, error) {
 	return do[V1CloseSandboxAccountResponse](
@@ -51,7 +51,7 @@ func (s sandboxService) CloseSandboxAccount(
 	)
 }
 
-func (s sandboxService) GetSandboxAccounts(
+func (s sandboxServiceClient) GetSandboxAccounts(
 	ctx context.Context, req *V1GetAccountsRequest,
 ) (*V1GetAccountsResponse, error) {
 	return do[V1GetAccountsResponse](
@@ -59,7 +59,7 @@ func (s sandboxService) GetSandboxAccounts(
 	)
 }
 
-func (s sandboxService) GetSandboxMaxLots(
+func (s sandboxServiceClient) GetSandboxMaxLots(
 	ctx context.Context, req *V1GetMaxLotsRequest,
 ) (*V1GetMaxLotsResponse, error) {
 	return do[V1GetMaxLotsResponse](
@@ -67,7 +67,7 @@ func (s sandboxService) GetSandboxMaxLots(
 	)
 }
 
-func (s sandboxService) GetSandboxOperations(
+func (s sandboxServiceClient) GetSandboxOperations(
 	ctx context.Context, req *V1OperationsRequest,
 ) (*V1OperationsResponse, error) {
 	return do[V1OperationsResponse](
@@ -75,7 +75,7 @@ func (s sandboxService) GetSandboxOperations(
 	)
 }
 
-func (s sandboxService) GetSandboxOperationsByCursor(
+func (s sandboxServiceClient) GetSandboxOperationsByCursor(
 	ctx context.Context, req *V1GetOperationsByCursorRequest,
 ) (*V1GetOperationsByCursorResponse, error) {
 	return do[V1GetOperationsByCursorResponse](
@@ -83,7 +83,7 @@ func (s sandboxService) GetSandboxOperationsByCursor(
 	)
 }
 
-func (s sandboxService) GetSandboxOrderPrice(
+func (s sandboxServiceClient) GetSandboxOrderPrice(
 	ctx context.Context, req *V1GetOrderPriceRequest,
 ) (*V1GetOrderPriceResponse, error) {
 	return do[V1GetOrderPriceResponse](
@@ -91,7 +91,7 @@ func (s sandboxService) GetSandboxOrderPrice(
 	)
 }
 
-func (s sandboxService) GetSandboxOrderState(
+func (s sandboxServiceClient) GetSandboxOrderState(
 	ctx context.Context, req *V1GetOrderStateRequest,
 ) (*Contractv1OrderState, error) {
 	return do[Contractv1OrderState](
@@ -99,13 +99,13 @@ func (s sandboxService) GetSandboxOrderState(
 	)
 }
 
-func (s sandboxService) GetSandboxOrders(
+func (s sandboxServiceClient) GetSandboxOrders(
 	ctx context.Context, req *V1GetOrdersRequest,
 ) (*V1GetOrdersResponse, error) {
 	return do[V1GetOrdersResponse](ctx, s.c, pathSandboxGetSandboxOrders, req)
 }
 
-func (s sandboxService) GetSandboxPortfolio(
+func (s sandboxServiceClient) GetSandboxPortfolio(
 	ctx context.Context, req *V1PortfolioRequest,
 ) (*V1PortfolioResponse, error) {
 	return do[V1PortfolioResponse](
@@ -113,7 +113,7 @@ func (s sandboxService) GetSandboxPortfolio(
 	)
 }
 
-func (s sandboxService) GetSandboxPositions(
+func (s sandboxServiceClient) GetSandboxPositions(
 	ctx context.Context, req *V1PositionsRequest,
 ) (*V1PositionsResponse, error) {
 	return do[V1PositionsResponse](
@@ -121,7 +121,7 @@ func (s sandboxService) GetSandboxPositions(
 	)
 }
 
-func (s sandboxService) GetSandboxStopOrders(
+func (s sandboxServiceClient) GetSandboxStopOrders(
 	ctx context.Context, req *V1GetStopOrdersRequest,
 ) (*V1GetStopOrdersResponse, error) {
 	return do[V1GetStopOrdersResponse](
@@ -129,7 +129,7 @@ func (s sandboxService) GetSandboxStopOrders(
 	)
 }
 
-func (s sandboxService) GetSandboxWithdrawLimits(
+func (s sandboxServiceClient) GetSandboxWithdrawLimits(
 	ctx context.Context, req *V1WithdrawLimitsRequest,
 ) (*V1WithdrawLimitsResponse, error) {
 	return do[V1WithdrawLimitsResponse](
@@ -137,7 +137,7 @@ func (s sandboxService) GetSandboxWithdrawLimits(
 	)
 }
 
-func (s sandboxService) OpenSandboxAccount(
+func (s sandboxServiceClient) OpenSandboxAccount(
 	ctx context.Context, req *V1OpenSandboxAccountRequest,
 ) (*V1OpenSandboxAccountResponse, error) {
 	return do[V1OpenSandboxAccountResponse](
@@ -145,13 +145,13 @@ func (s sandboxService) OpenSandboxAccount(
 	)
 }
 
-func (s sandboxService) PostSandboxOrder(
+func (s sandboxServiceClient) PostSandboxOrder(
 	ctx context.Context, req *V1PostOrderRequest,
 ) (*V1PostOrderResponse, error) {
 	return do[V1PostOrderResponse](ctx, s.c, pathSandboxPostSandboxOrder, req)
 }
 
-func (s sandboxService) PostSandboxOrderAsync(
+func (s sandboxServiceClient) PostSandboxOrderAsync(
 	ctx context.Context, req *V1PostOrderAsyncRequest,
 ) (*V1PostOrderAsyncResponse, error) {
 	return do[V1PostOrderAsyncResponse](
@@ -159,7 +159,7 @@ func (s sandboxService) PostSandboxOrderAsync(
 	)
 }
 
-func (s sandboxService) PostSandboxStopOrder(
+func (s sandboxServiceClient) PostSandboxStopOrder(
 	ctx context.Context, req *V1PostStopOrderRequest,
 ) (*V1PostStopOrderResponse, error) {
 	return do[V1PostStopOrderResponse](
@@ -167,7 +167,7 @@ func (s sandboxService) PostSandboxStopOrder(
 	)
 }
 
-func (s sandboxService) ReplaceSandboxOrder(
+func (s sandboxServiceClient) ReplaceSandboxOrder(
 	ctx context.Context, req *V1ReplaceOrderRequest,
 ) (*V1PostOrderResponse, error) {
 	return do[V1PostOrderResponse](
@@ -175,7 +175,7 @@ func (s sandboxService) ReplaceSandboxOrder(
 	)
 }
 
-func (s sandboxService) SandboxPayIn(
+func (s sandboxServiceClient) SandboxPayIn(
 	ctx context.Context, req *V1SandboxPayInRequest,
 ) (*V1SandboxPayInResponse, error) {
 	return do[V1SandboxPayInResponse](ctx, s.c, pathSandboxSandboxPayIn, req)
