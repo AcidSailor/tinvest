@@ -70,7 +70,10 @@ func MoneyValueToQuotation(moneyValue *pb.MoneyValue) (*pb.Quotation, error) {
 	if moneyValue == nil {
 		return nil, fmt.Errorf("%w: moneyValue: %w", ErrClient, ErrNil)
 	}
-	if err := money.ValidateSigns(moneyValue.Units, moneyValue.Nano); err != nil {
+	if err := money.ValidateSigns(
+		moneyValue.Units,
+		moneyValue.Nano,
+	); err != nil {
 		return nil, fmt.Errorf("%w: %w", ErrClient, err)
 	}
 	return &pb.Quotation{Units: moneyValue.Units, Nano: moneyValue.Nano}, nil
