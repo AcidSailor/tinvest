@@ -75,4 +75,7 @@ func TestNewClient_Validation(t *testing.T) {
 	require.ErrorIs(t, err, rest.ErrClient)
 	_, err = rest.NewClient(rest.EndpointProduction, "")
 	require.ErrorIs(t, err, rest.ErrClient)
+	_, err = rest.NewClient(rest.EndpointProduction, "tkn",
+		rest.WithHTTPClient(nil))
+	require.ErrorIs(t, err, rest.ErrClient)
 }

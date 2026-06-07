@@ -29,7 +29,7 @@ type Client struct {
 	Operations  operationsService
 	Orders      ordersService
 	Sandbox     sandboxService
-	Signals     signalService
+	Signals     signalsService
 	StopOrders  stopOrdersService
 	Users       usersService
 }
@@ -92,7 +92,7 @@ func NewClient(endpoint, token string, opts ...ClientOption) (*Client, error) {
 		cl.Operations = operationsService{cl}
 		cl.Orders = ordersService{cl}
 		cl.Sandbox = sandboxService{cl}
-		cl.Signals = signalService{cl}
+		cl.Signals = signalsService{cl}
 		cl.StopOrders = stopOrdersService{cl}
 		cl.Users = usersService{cl}
 		return cl, nil
