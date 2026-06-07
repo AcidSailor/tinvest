@@ -1,8 +1,10 @@
-package tinvest
+package grpc
 
 import (
 	"fmt"
 	"strings"
+
+	"github.com/acidsailor/tinvest"
 
 	"github.com/google/uuid"
 
@@ -46,13 +48,13 @@ func PerLotMoney(
 ) (*pb.MoneyValue, error) {
 	if instrument == nil {
 		return nil, fmt.Errorf("%w: instrument: %w",
-			ErrClient, ErrNil)
+			tinvest.ErrClient, tinvest.ErrNil)
 	}
 	lot := instrument.GetLot()
 	if lot <= 0 {
 		return nil, fmt.Errorf(
 			"%w: instrument %s has non-positive lot %d: %w",
-			ErrClient,
+			tinvest.ErrClient,
 			instrument.GetUid(),
 			lot,
 			money.ErrConversion,

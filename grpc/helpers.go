@@ -1,7 +1,9 @@
-package tinvest
+package grpc
 
 import (
 	"fmt"
+
+	"github.com/acidsailor/tinvest"
 
 	"github.com/quagmt/udecimal"
 
@@ -15,13 +17,13 @@ func QuotationToDecimal(quotation *pb.Quotation) (udecimal.Decimal, error) {
 	if quotation == nil {
 		return udecimal.Decimal{}, fmt.Errorf(
 			"%w: quotation: %w",
-			ErrClient,
-			ErrNil,
+			tinvest.ErrClient,
+			tinvest.ErrNil,
 		)
 	}
 	d, err := money.UnitsNanoToDecimal(quotation.Units, quotation.Nano)
 	if err != nil {
-		return udecimal.Decimal{}, fmt.Errorf("%w: %w", ErrClient, err)
+		return udecimal.Decimal{}, fmt.Errorf("%w: %w", tinvest.ErrClient, err)
 	}
 	return d, nil
 }
@@ -30,7 +32,7 @@ func QuotationToDecimal(quotation *pb.Quotation) (udecimal.Decimal, error) {
 func DecimalToQuotation(d udecimal.Decimal) (*pb.Quotation, error) {
 	units, nano, err := money.DecimalToUnitsNano(d)
 	if err != nil {
-		return nil, fmt.Errorf("%w: %w", ErrClient, err)
+		return nil, fmt.Errorf("%w: %w", tinvest.ErrClient, err)
 	}
 	return &pb.Quotation{Units: units, Nano: nano}, nil
 }
@@ -41,13 +43,13 @@ func MoneyValueToDecimal(moneyValue *pb.MoneyValue) (udecimal.Decimal, error) {
 	if moneyValue == nil {
 		return udecimal.Decimal{}, fmt.Errorf(
 			"%w: moneyValue: %w",
-			ErrClient,
-			ErrNil,
+			tinvest.ErrClient,
+			tinvest.ErrNil,
 		)
 	}
 	d, err := money.UnitsNanoToDecimal(moneyValue.Units, moneyValue.Nano)
 	if err != nil {
-		return udecimal.Decimal{}, fmt.Errorf("%w: %w", ErrClient, err)
+		return udecimal.Decimal{}, fmt.Errorf("%w: %w", tinvest.ErrClient, err)
 	}
 	return d, nil
 }
@@ -59,7 +61,7 @@ func DecimalToMoneyValue(
 ) (*pb.MoneyValue, error) {
 	units, nano, err := money.DecimalToUnitsNano(d)
 	if err != nil {
-		return nil, fmt.Errorf("%w: %w", ErrClient, err)
+		return nil, fmt.Errorf("%w: %w", tinvest.ErrClient, err)
 	}
 	return &pb.MoneyValue{Currency: currency, Units: units, Nano: nano}, nil
 }
@@ -68,13 +70,17 @@ func DecimalToMoneyValue(
 // the currency. Returns an error if moneyValue is nil or has mixed signs.
 func MoneyValueToQuotation(moneyValue *pb.MoneyValue) (*pb.Quotation, error) {
 	if moneyValue == nil {
-		return nil, fmt.Errorf("%w: moneyValue: %w", ErrClient, ErrNil)
+		return nil, fmt.Errorf(
+			"%w: moneyValue: %w",
+			tinvest.ErrClient,
+			tinvest.ErrNil,
+		)
 	}
 	if err := money.ValidateSigns(
 		moneyValue.Units,
 		moneyValue.Nano,
 	); err != nil {
-		return nil, fmt.Errorf("%w: %w", ErrClient, err)
+		return nil, fmt.Errorf("%w: %w", tinvest.ErrClient, err)
 	}
 	return &pb.Quotation{Units: moneyValue.Units, Nano: moneyValue.Nano}, nil
 }

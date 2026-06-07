@@ -1,7 +1,9 @@
-package tinvest
+package grpc
 
 import (
 	"testing"
+
+	"github.com/acidsailor/tinvest"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -65,7 +67,7 @@ func TestFormatMoney(t *testing.T) {
 			got, err := FormatMoney(tt.input)
 			if tt.wantErr {
 				require.Error(t, err)
-				assert.ErrorIs(t, err, ErrClient)
+				assert.ErrorIs(t, err, tinvest.ErrClient)
 				return
 			}
 			require.NoError(t, err)
@@ -109,7 +111,7 @@ func TestFormatQuotation(t *testing.T) {
 			got, err := FormatQuotation(tt.input)
 			if tt.wantErr {
 				require.Error(t, err)
-				assert.ErrorIs(t, err, ErrClient)
+				assert.ErrorIs(t, err, tinvest.ErrClient)
 				return
 			}
 			require.NoError(t, err)

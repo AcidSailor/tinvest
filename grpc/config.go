@@ -1,7 +1,9 @@
-package tinvest
+package grpc
 
 import (
 	"fmt"
+
+	"github.com/acidsailor/tinvest"
 )
 
 // ConnConfig holds configuration for the gRPC connection created by NewConn.
@@ -32,7 +34,7 @@ func NewConnConfig(endpoint, token string, opts ...ConnOption) *ConnConfig {
 	c := &ConnConfig{
 		Endpoint: endpoint,
 		Token:    token,
-		AppName:  AppName,
+		AppName:  tinvest.AppName,
 	}
 	for _, opt := range opts {
 		opt(c)
@@ -44,19 +46,19 @@ func NewConnConfig(endpoint, token string, opts ...ConnOption) *ConnConfig {
 func (c *ConnConfig) Validate() error {
 	f := func() error {
 		if c == nil {
-			return fmt.Errorf("ConnConfig: %w", ErrNil)
+			return fmt.Errorf("ConnConfig: %w", tinvest.ErrNil)
 		}
 		if c.Endpoint == "" {
-			return fmt.Errorf("empty endpoint: %w", ErrInvalidConfig)
+			return fmt.Errorf("empty endpoint: %w", tinvest.ErrInvalidConfig)
 		}
 		if c.Token == "" {
-			return fmt.Errorf("empty token: %w", ErrInvalidConfig)
+			return fmt.Errorf("empty token: %w", tinvest.ErrInvalidConfig)
 		}
 		return nil
 	}
 	err := f()
 	if err != nil {
-		return fmt.Errorf("%w: %w", ErrClient, err)
+		return fmt.Errorf("%w: %w", tinvest.ErrClient, err)
 	}
 	return nil
 }
@@ -74,13 +76,13 @@ func NewClientConfig() *ClientConfig {
 func (c *ClientConfig) Validate() error {
 	f := func() error {
 		if c == nil {
-			return fmt.Errorf("ClientConfig: %w", ErrNil)
+			return fmt.Errorf("ClientConfig: %w", tinvest.ErrNil)
 		}
 		return nil
 	}
 	err := f()
 	if err != nil {
-		return fmt.Errorf("%w: %w", ErrClient, err)
+		return fmt.Errorf("%w: %w", tinvest.ErrClient, err)
 	}
 	return nil
 }

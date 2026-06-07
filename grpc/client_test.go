@@ -1,7 +1,9 @@
-package tinvest
+package grpc
 
 import (
 	"testing"
+
+	"github.com/acidsailor/tinvest"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -40,8 +42,8 @@ func TestNewClient_NilConn(t *testing.T) {
 	client, err := NewClient(nil, NewClientConfig())
 	assert.Nil(t, client)
 	require.Error(t, err)
-	assert.ErrorIs(t, err, ErrClient)
-	assert.ErrorIs(t, err, ErrNil)
+	assert.ErrorIs(t, err, tinvest.ErrClient)
+	assert.ErrorIs(t, err, tinvest.ErrNil)
 }
 
 func TestNewClient_NilConfig(t *testing.T) {
@@ -57,6 +59,6 @@ func TestNewClient_NilConfig(t *testing.T) {
 	client, err := NewClient(conn, nil)
 	assert.Nil(t, client)
 	require.Error(t, err)
-	assert.ErrorIs(t, err, ErrClient)
-	assert.ErrorIs(t, err, ErrNil)
+	assert.ErrorIs(t, err, tinvest.ErrClient)
+	assert.ErrorIs(t, err, tinvest.ErrNil)
 }

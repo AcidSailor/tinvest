@@ -1,4 +1,4 @@
-package tinvest
+package grpc
 
 import (
 	pb "github.com/acidsailor/tinvest/pb"

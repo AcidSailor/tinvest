@@ -46,6 +46,17 @@ type Config struct {
 	AppName    string
 }
 
+func NewConfig(opts ...ClientOption) Config {
+	cfg := Config{
+		HTTPClient: &http.Client{Timeout: defaultTimeout},
+		AppName:    tinvest.AppName,
+	}
+	for _, opt := range opts {
+		opt(&cfg)
+	}
+	return cfg
+}
+
 // WithHTTPClient sets the *http.Client (custom Timeout/Transport/proxy). A nil
 // client makes NewClient return an error.
 func WithHTTPClient(h *http.Client) ClientOption {
@@ -68,7 +79,7 @@ func WithConfig(cfg Config) ClientOption {
 // NewClient builds a Client targeting endpoint (use EndpointProduction /
 // EndpointSandbox) with the given API token. Returns an error wrapping
 // ErrClient on empty endpoint/token or a nil *http.Client.
-func NewClient(endpoint, token string, opts ...ClientOption) (*Client, error) {
+func NewClient(endpoint, token string, config *Config) (*Client, error) {
 	c, err := func() (*Client, error) {
 		if endpoint == "" {
 			return nil, errors.New("empty endpoint")
@@ -76,17 +87,10 @@ func NewClient(endpoint, token string, opts ...ClientOption) (*Client, error) {
 		if token == "" {
 			return nil, errors.New("empty token")
 		}
-		cfg := Config{
-			HTTPClient: &http.Client{Timeout: defaultTimeout},
-			AppName:    tinvest.AppName,
-		}
-		for _, opt := range opts {
-			opt(&cfg)
-		}
-		if cfg.HTTPClient == nil {
+		if config.HTTPClient == nil {
 			return nil, errors.New("nil *http.Client")
 		}
-		hc := *cfg.HTTPClient
+		hc := *config.HTTPClient
 		base := hc.Transport
 		if base == nil {
 			base = http.DefaultTransport
@@ -96,7 +100,7 @@ func NewClient(endpoint, token string, opts ...ClientOption) (*Client, error) {
 		cl := &Client{
 			baseURL:    strings.TrimRight(endpoint, "/"),
 			token:      token,
-			appName:    cfg.AppName,
+			appName:    config.AppName,
 			httpClient: &hc,
 		}
 		cl.Instruments = instrumentsServiceClient{cl}
@@ -110,7 +114,7 @@ func NewClient(endpoint, token string, opts ...ClientOption) (*Client, error) {
 		return cl, nil
 	}()
 	if err != nil {
-		return nil, errors.Join(ErrClient, err)
+		return nil, errors.Join(tinvest.ErrClient, err)
 	}
 	return c, nil
 }
@@ -161,7 +165,7 @@ func do[Resp any](
 		return &decoded, nil
 	}()
 	if err != nil {
-		return nil, errors.Join(ErrClient, err)
+		return nil, errors.Join(tinvest.ErrClient, err)
 	}
 	return out, nil
 }

@@ -1,7 +1,9 @@
-package tinvest
+package grpc
 
 import (
 	"testing"
+
+	"github.com/acidsailor/tinvest"
 
 	"github.com/quagmt/udecimal"
 	"github.com/stretchr/testify/assert"
@@ -57,7 +59,7 @@ func TestQuotationToDecimal(t *testing.T) {
 			result, err := QuotationToDecimal(tt.q)
 			if tt.wantErr {
 				require.Error(t, err)
-				assert.ErrorIs(t, err, ErrClient)
+				assert.ErrorIs(t, err, tinvest.ErrClient)
 				return
 			}
 			require.NoError(t, err)
@@ -90,7 +92,7 @@ func TestDecimalToQuotation(t *testing.T) {
 			q, err := DecimalToQuotation(d)
 			if tt.wantErr {
 				require.Error(t, err)
-				assert.ErrorIs(t, err, ErrClient)
+				assert.ErrorIs(t, err, tinvest.ErrClient)
 				assert.ErrorIs(t, err, money.ErrOverflow)
 				return
 			}
@@ -152,7 +154,7 @@ func TestMoneyValueToDecimal(t *testing.T) {
 			result, err := MoneyValueToDecimal(tt.m)
 			if tt.wantErr {
 				require.Error(t, err)
-				assert.ErrorIs(t, err, ErrClient)
+				assert.ErrorIs(t, err, tinvest.ErrClient)
 				return
 			}
 			require.NoError(t, err)
@@ -183,7 +185,7 @@ func TestDecimalToMoneyValue(t *testing.T) {
 			m, err := DecimalToMoneyValue(mustParse(tt.input), tt.currency)
 			if tt.wantErr {
 				require.Error(t, err)
-				assert.ErrorIs(t, err, ErrClient)
+				assert.ErrorIs(t, err, tinvest.ErrClient)
 				assert.ErrorIs(t, err, money.ErrOverflow)
 				return
 			}
@@ -231,7 +233,7 @@ func TestMoneyValueToQuotation(t *testing.T) {
 			q, err := MoneyValueToQuotation(tt.m)
 			if tt.wantErr {
 				require.Error(t, err)
-				assert.ErrorIs(t, err, ErrClient)
+				assert.ErrorIs(t, err, tinvest.ErrClient)
 				if tt.m != nil {
 					assert.ErrorIs(t, err, money.ErrConversion)
 				}

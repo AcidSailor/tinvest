@@ -1,7 +1,9 @@
-package tinvest
+package grpc
 
 import (
 	"testing"
+
+	"github.com/acidsailor/tinvest"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -59,7 +61,7 @@ func TestFuturesPointValue(t *testing.T) {
 			q, err := FuturesPointValue(tt.margin)
 			if tt.wantErr {
 				require.Error(t, err)
-				assert.ErrorIs(t, err, ErrClient)
+				assert.ErrorIs(t, err, tinvest.ErrClient)
 				return
 			}
 			require.NoError(t, err)

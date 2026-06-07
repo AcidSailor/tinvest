@@ -1,7 +1,9 @@
-package tinvest
+package grpc
 
 import (
 	"fmt"
+
+	"github.com/acidsailor/tinvest"
 
 	pb "github.com/acidsailor/tinvest/pb"
 	"google.golang.org/grpc"
@@ -41,7 +43,11 @@ type Client struct {
 // Returns an error if conn is nil or if config fails validation.
 func NewClient(conn *grpc.ClientConn, config *ClientConfig) (*Client, error) {
 	if conn == nil {
-		return nil, fmt.Errorf("%w: conn: %w", ErrClient, ErrNil)
+		return nil, fmt.Errorf(
+			"%w: conn: %w",
+			tinvest.ErrClient,
+			tinvest.ErrNil,
+		)
 	}
 	if err := config.Validate(); err != nil {
 		return nil, err

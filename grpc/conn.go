@@ -1,10 +1,12 @@
-package tinvest
+package grpc
 
 import (
 	"context"
 	"crypto/tls"
 	"fmt"
 	"log/slog"
+
+	"github.com/acidsailor/tinvest"
 
 	"go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc"
 	"google.golang.org/grpc"
@@ -38,7 +40,7 @@ func NewConn(
 	if err != nil {
 		return nil, fmt.Errorf(
 			"%w: %s: %w",
-			ErrClient,
+			tinvest.ErrClient,
 			connConfig.Endpoint,
 			err,
 		)

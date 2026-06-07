@@ -1,7 +1,9 @@
-package tinvest
+package grpc
 
 import (
 	"fmt"
+
+	"github.com/acidsailor/tinvest"
 
 	"github.com/quagmt/udecimal"
 
@@ -19,14 +21,14 @@ func FuturesPointValue(
 ) (*pb.Quotation, error) {
 	f := func() (udecimal.Decimal, error) {
 		if margin == nil {
-			return udecimal.Decimal{}, fmt.Errorf("margin: %w", ErrNil)
+			return udecimal.Decimal{}, fmt.Errorf("margin: %w", tinvest.ErrNil)
 		}
 		step := margin.GetMinPriceIncrement()
 		stepValue := margin.GetMinPriceIncrementAmount()
 		if step == nil || stepValue == nil {
 			return udecimal.Decimal{}, fmt.Errorf(
 				"futures margin missing price increment: %w",
-				ErrNil,
+				tinvest.ErrNil,
 			)
 		}
 		stepDec, err := QuotationToDecimal(step)
@@ -55,7 +57,7 @@ func FuturesPointValue(
 	}
 	pv, err := f()
 	if err != nil {
-		return nil, fmt.Errorf("%w: %w", ErrClient, err)
+		return nil, fmt.Errorf("%w: %w", tinvest.ErrClient, err)
 	}
 	return DecimalToQuotation(pv)
 }

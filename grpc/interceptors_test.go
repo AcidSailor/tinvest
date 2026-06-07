@@ -1,8 +1,10 @@
-package tinvest
+package grpc
 
 import (
 	"context"
 	"testing"
+
+	"github.com/acidsailor/tinvest"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -65,7 +67,7 @@ func captureStreamCtx(
 }
 
 func TestUnaryInterceptor_InjectsToken(t *testing.T) {
-	ctx := captureUnaryCtx(t, unaryAuthInterceptor("my-token", AppName))
+	ctx := captureUnaryCtx(t, unaryAuthInterceptor("my-token", tinvest.AppName))
 	md := extractOutgoingMetadata(ctx)
 
 	assert.Equal(t, []string{"Bearer my-token"}, md.Get("authorization"))
@@ -93,7 +95,10 @@ func TestStreamInterceptor_OmitsAppNameWhenEmpty(t *testing.T) {
 }
 
 func TestStreamInterceptor_InjectsToken(t *testing.T) {
-	ctx := captureStreamCtx(t, streamAuthInterceptor("stream-token", AppName))
+	ctx := captureStreamCtx(
+		t,
+		streamAuthInterceptor("stream-token", tinvest.AppName),
+	)
 	md := extractOutgoingMetadata(ctx)
 
 	assert.Equal(t, []string{"Bearer stream-token"}, md.Get("authorization"))
@@ -113,7 +118,7 @@ func TestUnaryInterceptor_PropagatesInvokerError(t *testing.T) {
 	}
 	err := unaryAuthInterceptor(
 		"tok",
-		AppName,
+		tinvest.AppName,
 	)(
 		context.Background(),
 		"/test/Method",
@@ -133,7 +138,7 @@ func TestStreamInterceptor_PropagatesStreamerError(t *testing.T) {
 	}
 	_, err := streamAuthInterceptor(
 		"tok",
-		AppName,
+		tinvest.AppName,
 	)(
 		context.Background(),
 		nil,

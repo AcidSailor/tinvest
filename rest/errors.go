@@ -1,12 +1,8 @@
 package rest
 
 import (
-	"errors"
 	"fmt"
 )
-
-// ErrClient is the sentinel every error from this package unwraps to.
-var ErrClient = errors.New("tinvest rest")
 
 // APIError reports a non-2xx response from the T-Invest REST gateway. Reach it
 // with errors.As; Body holds the raw error JSON (e.g. {"code":..,"message":..}).

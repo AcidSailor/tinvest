@@ -1,7 +1,9 @@
-package tinvest
+package grpc
 
 import (
 	"fmt"
+
+	"github.com/acidsailor/tinvest"
 
 	"github.com/acidsailor/tinvest/money"
 	pb "github.com/acidsailor/tinvest/pb"
@@ -12,13 +14,17 @@ import (
 // is nil or units and nano have mixed signs.
 func FormatMoney(moneyValue *pb.MoneyValue) (string, error) {
 	if moneyValue == nil {
-		return "", fmt.Errorf("%w: moneyValue: %w", ErrClient, ErrNil)
+		return "", fmt.Errorf(
+			"%w: moneyValue: %w",
+			tinvest.ErrClient,
+			tinvest.ErrNil,
+		)
 	}
 	s, err := money.FormatMoney(
 		moneyValue.GetUnits(), moneyValue.GetNano(), moneyValue.GetCurrency(),
 	)
 	if err != nil {
-		return "", fmt.Errorf("%w: %w", ErrClient, err)
+		return "", fmt.Errorf("%w: %w", tinvest.ErrClient, err)
 	}
 	return s, nil
 }
@@ -28,11 +34,15 @@ func FormatMoney(moneyValue *pb.MoneyValue) (string, error) {
 // Returns an error if quotation is nil or units and nano have mixed signs.
 func FormatQuotation(quotation *pb.Quotation) (string, error) {
 	if quotation == nil {
-		return "", fmt.Errorf("%w: quotation: %w", ErrClient, ErrNil)
+		return "", fmt.Errorf(
+			"%w: quotation: %w",
+			tinvest.ErrClient,
+			tinvest.ErrNil,
+		)
 	}
 	s, err := money.FormatQuotation(quotation.GetUnits(), quotation.GetNano())
 	if err != nil {
-		return "", fmt.Errorf("%w: %w", ErrClient, err)
+		return "", fmt.Errorf("%w: %w", tinvest.ErrClient, err)
 	}
 	return s, nil
 }

@@ -30,7 +30,8 @@ func TestClient_GetAccounts_HappyPath(t *testing.T) {
 		}))
 	defer srv.Close()
 
-	c, err := rest.NewClient(srv.URL, "tkn-123")
+	cfg := rest.NewConfig()
+	c, err := rest.NewClient(srv.URL, "tkn-123", &cfg)
 	require.NoError(t, err)
 
 	resp, err := c.Users.GetAccounts(
@@ -57,7 +58,8 @@ func TestClient_APIError(t *testing.T) {
 		}))
 	defer srv.Close()
 
-	c, err := rest.NewClient(srv.URL, "bad")
+	cfg := rest.NewConfig()
+	c, err := rest.NewClient(srv.URL, "bad", &cfg)
 	require.NoError(t, err)
 
 	_, err = c.Users.GetAccounts(
@@ -65,20 +67,21 @@ func TestClient_APIError(t *testing.T) {
 		&rest.V1GetAccountsRequest{},
 	)
 	require.Error(t, err)
-	assert.ErrorIs(t, err, rest.ErrClient)
+	assert.ErrorIs(t, err, tinvest.ErrClient)
 	var apiErr *rest.APIError
 	require.ErrorAs(t, err, &apiErr)
 	assert.Equal(t, http.StatusUnauthorized, apiErr.StatusCode)
 }
 
 func TestNewClient_Validation(t *testing.T) {
-	_, err := rest.NewClient("", "tkn")
-	require.ErrorIs(t, err, rest.ErrClient)
-	_, err = rest.NewClient(tinvest.EndpointProductionREST, "")
-	require.ErrorIs(t, err, rest.ErrClient)
+	cfg := rest.NewConfig()
+	_, err := rest.NewClient("", "tkn", &cfg)
+	require.ErrorIs(t, err, tinvest.ErrClient)
+	_, err = rest.NewClient(tinvest.EndpointProductionREST, "", &cfg)
+	require.ErrorIs(t, err, tinvest.ErrClient)
 	_, err = rest.NewClient(tinvest.EndpointProductionREST, "tkn",
-		rest.WithHTTPClient(nil))
-	require.ErrorIs(t, err, rest.ErrClient)
+		&rest.Config{AppName: "x"})
+	require.ErrorIs(t, err, tinvest.ErrClient)
 }
 
 func TestNewClient_WithConfig(t *testing.T) {
@@ -91,10 +94,10 @@ func TestNewClient_WithConfig(t *testing.T) {
 		}))
 	defer srv.Close()
 
-	c, err := rest.NewClient(srv.URL, "tkn", rest.WithConfig(rest.Config{
+	c, err := rest.NewClient(srv.URL, "tkn", &rest.Config{
 		HTTPClient: &http.Client{},
 		AppName:    "literal-app",
-	}))
+	})
 	require.NoError(t, err)
 
 	_, err = c.Users.GetAccounts(
@@ -105,8 +108,8 @@ func TestNewClient_WithConfig(t *testing.T) {
 	assert.Equal(t, "literal-app", gotApp)
 }
 
-func TestNewClient_WithConfig_NilHTTPClientErrors(t *testing.T) {
+func TestNewClient_NilHTTPClientErrors(t *testing.T) {
 	_, err := rest.NewClient(tinvest.EndpointProductionREST, "tkn",
-		rest.WithConfig(rest.Config{AppName: "x"}))
-	require.ErrorIs(t, err, rest.ErrClient)
+		&rest.Config{AppName: "x"})
+	require.ErrorIs(t, err, tinvest.ErrClient)
 }

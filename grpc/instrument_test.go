@@ -1,7 +1,9 @@
-package tinvest
+package grpc
 
 import (
 	"testing"
+
+	"github.com/acidsailor/tinvest"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -128,7 +130,7 @@ func TestPerLotMoney(t *testing.T) {
 			mv, err := PerLotMoney(tt.price, tt.inst)
 			if tt.wantErr {
 				require.Error(t, err)
-				assert.ErrorIs(t, err, ErrClient)
+				assert.ErrorIs(t, err, tinvest.ErrClient)
 				return
 			}
 			require.NoError(t, err)

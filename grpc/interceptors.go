@@ -1,4 +1,4 @@
-package tinvest
+package grpc
 
 import (
 	"context"
