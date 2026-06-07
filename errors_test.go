@@ -3,6 +3,7 @@ package tinvest
 import (
 	"testing"
 
+	"github.com/acidsailor/tinvest/money"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -14,6 +15,6 @@ func TestErrClient(t *testing.T) {
 func TestSubSentinelErrors(t *testing.T) {
 	assert.Equal(t, "nil", ErrNil.Error())
 	assert.Equal(t, "invalid config", ErrInvalidConfig.Error())
-	assert.Equal(t, "overflow", ErrOverflow.Error())
-	assert.Equal(t, "conversion", ErrConversion.Error())
+	assert.Equal(t, "overflow", money.ErrOverflow.Error())
+	assert.Equal(t, "conversion", money.ErrConversion.Error())
 }

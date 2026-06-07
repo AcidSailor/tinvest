@@ -5,6 +5,7 @@ import (
 
 	"github.com/quagmt/udecimal"
 
+	"github.com/acidsailor/tinvest/money"
 	pb "github.com/acidsailor/tinvest/pb"
 )
 
@@ -35,7 +36,7 @@ func FuturesPointValue(
 		if stepDec.IsZero() {
 			return udecimal.Decimal{}, fmt.Errorf(
 				"futures step is zero: %w",
-				ErrConversion,
+				money.ErrConversion,
 			)
 		}
 		stepValDec, err := QuotationToDecimal(stepValue)
@@ -46,7 +47,7 @@ func FuturesPointValue(
 		if err != nil {
 			return udecimal.Decimal{}, fmt.Errorf(
 				"point value div: %w: %w",
-				ErrConversion,
+				money.ErrConversion,
 				err,
 			)
 		}

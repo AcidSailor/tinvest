@@ -6,6 +6,7 @@ import (
 
 	"github.com/google/uuid"
 
+	"github.com/acidsailor/tinvest/money"
 	pb "github.com/acidsailor/tinvest/pb"
 )
 
@@ -54,7 +55,7 @@ func PerLotMoney(
 			ErrClient,
 			instrument.GetUid(),
 			lot,
-			ErrConversion,
+			money.ErrConversion,
 		)
 	}
 	d, err := QuotationToDecimal(price)

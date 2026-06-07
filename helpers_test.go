@@ -7,6 +7,7 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
+	"github.com/acidsailor/tinvest/money"
 	pb "github.com/acidsailor/tinvest/pb"
 )
 
@@ -90,7 +91,7 @@ func TestDecimalToQuotation(t *testing.T) {
 			if tt.wantErr {
 				require.Error(t, err)
 				assert.ErrorIs(t, err, ErrClient)
-				assert.ErrorIs(t, err, ErrOverflow)
+				assert.ErrorIs(t, err, money.ErrOverflow)
 				return
 			}
 			require.NoError(t, err)
@@ -183,7 +184,7 @@ func TestDecimalToMoneyValue(t *testing.T) {
 			if tt.wantErr {
 				require.Error(t, err)
 				assert.ErrorIs(t, err, ErrClient)
-				assert.ErrorIs(t, err, ErrOverflow)
+				assert.ErrorIs(t, err, money.ErrOverflow)
 				return
 			}
 			require.NoError(t, err)
@@ -232,7 +233,7 @@ func TestMoneyValueToQuotation(t *testing.T) {
 				require.Error(t, err)
 				assert.ErrorIs(t, err, ErrClient)
 				if tt.m != nil {
-					assert.ErrorIs(t, err, ErrConversion)
+					assert.ErrorIs(t, err, money.ErrConversion)
 				}
 				return
 			}
