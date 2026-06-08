@@ -3,12 +3,11 @@ package grpc
 import (
 	"testing"
 
-	"github.com/acidsailor/tinvest"
-
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
 	pb "github.com/acidsailor/tinvest/grpc/pb"
+	"github.com/acidsailor/tinvest/money"
 )
 
 func TestFormatMoney(t *testing.T) {
@@ -67,7 +66,11 @@ func TestFormatMoney(t *testing.T) {
 			got, err := FormatMoney(tt.input)
 			if tt.wantErr {
 				require.Error(t, err)
-				assert.ErrorIs(t, err, tinvest.ErrClient)
+				if tt.input == nil {
+					assert.ErrorContains(t, err, "is nil")
+				} else {
+					assert.ErrorIs(t, err, money.ErrConversion)
+				}
 				return
 			}
 			require.NoError(t, err)
@@ -111,7 +114,11 @@ func TestFormatQuotation(t *testing.T) {
 			got, err := FormatQuotation(tt.input)
 			if tt.wantErr {
 				require.Error(t, err)
-				assert.ErrorIs(t, err, tinvest.ErrClient)
+				if tt.input == nil {
+					assert.ErrorContains(t, err, "is nil")
+				} else {
+					assert.ErrorIs(t, err, money.ErrConversion)
+				}
 				return
 			}
 			require.NoError(t, err)

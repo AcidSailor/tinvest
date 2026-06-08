@@ -3,12 +3,11 @@ package grpc
 import (
 	"testing"
 
-	"github.com/acidsailor/tinvest"
-
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
 	pb "github.com/acidsailor/tinvest/grpc/pb"
+	"github.com/acidsailor/tinvest/money"
 )
 
 func TestFuturesPointValue(t *testing.T) {
@@ -61,7 +60,14 @@ func TestFuturesPointValue(t *testing.T) {
 			q, err := FuturesPointValue(tt.margin)
 			if tt.wantErr {
 				require.Error(t, err)
-				assert.ErrorIs(t, err, tinvest.ErrClient)
+				m := tt.margin
+				if m == nil ||
+					m.GetMinPriceIncrement() == nil ||
+					m.GetMinPriceIncrementAmount() == nil {
+					assert.ErrorContains(t, err, "tinvest:")
+				} else {
+					assert.ErrorIs(t, err, money.ErrConversion)
+				}
 				return
 			}
 			require.NoError(t, err)

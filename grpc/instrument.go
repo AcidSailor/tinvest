@@ -1,15 +1,14 @@
 package grpc
 
 import (
+	"errors"
 	"fmt"
 	"strings"
 
-	"github.com/acidsailor/tinvest"
-
 	"github.com/google/uuid"
 
-	"github.com/acidsailor/tinvest/money"
 	pb "github.com/acidsailor/tinvest/grpc/pb"
+	"github.com/acidsailor/tinvest/money"
 )
 
 // NewInstrumentRequest builds an InstrumentRequest with IdType inferred from
@@ -47,14 +46,12 @@ func PerLotMoney(
 	instrument *pb.Instrument,
 ) (*pb.MoneyValue, error) {
 	if instrument == nil {
-		return nil, fmt.Errorf("%w: instrument: %w",
-			tinvest.ErrClient, tinvest.ErrNil)
+		return nil, errors.New("tinvest: instrument is nil")
 	}
 	lot := instrument.GetLot()
 	if lot <= 0 {
 		return nil, fmt.Errorf(
-			"%w: instrument %s has non-positive lot %d: %w",
-			tinvest.ErrClient,
+			"instrument %s has non-positive lot %d: %w",
 			instrument.GetUid(),
 			lot,
 			money.ErrConversion,

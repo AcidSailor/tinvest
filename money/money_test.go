@@ -19,7 +19,6 @@ func TestUnitsNanoToDecimal(t *testing.T) {
 func TestUnitsNanoToDecimal_MixedSign(t *testing.T) {
 	_, err := money.UnitsNanoToDecimal(1, -5)
 	require.Error(t, err)
-	assert.ErrorIs(t, err, money.Err)
 	assert.ErrorIs(t, err, money.ErrConversion)
 }
 
@@ -47,7 +46,6 @@ func TestFormatQuotation_NoNano(t *testing.T) {
 func TestNormalizeSign_IntMinErrors(t *testing.T) {
 	_, _, _, err := money.NormalizeSign(0, math.MinInt32)
 	require.Error(t, err)
-	assert.ErrorIs(t, err, money.Err)
 	assert.ErrorIs(t, err, money.ErrOverflow)
 
 	_, _, _, err = money.NormalizeSign(math.MinInt64, 0)

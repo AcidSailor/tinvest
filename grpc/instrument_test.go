@@ -3,12 +3,11 @@ package grpc
 import (
 	"testing"
 
-	"github.com/acidsailor/tinvest"
-
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
 	pb "github.com/acidsailor/tinvest/grpc/pb"
+	"github.com/acidsailor/tinvest/money"
 )
 
 func TestNewInstrumentRequest(t *testing.T) {
@@ -130,7 +129,11 @@ func TestPerLotMoney(t *testing.T) {
 			mv, err := PerLotMoney(tt.price, tt.inst)
 			if tt.wantErr {
 				require.Error(t, err)
-				assert.ErrorIs(t, err, tinvest.ErrClient)
+				if tt.inst == nil || tt.price == nil {
+					assert.ErrorContains(t, err, "is nil")
+				} else {
+					assert.ErrorIs(t, err, money.ErrConversion)
+				}
 				return
 			}
 			require.NoError(t, err)

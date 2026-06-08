@@ -7,14 +7,8 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestErrClient(t *testing.T) {
-	assert.NotNil(t, ErrClient)
-	assert.Equal(t, "tinvest client", ErrClient.Error())
-}
-
-func TestSubSentinelErrors(t *testing.T) {
-	assert.Equal(t, "nil", ErrNil.Error())
-	assert.Equal(t, "invalid config", ErrInvalidConfig.Error())
+func TestSentinelErrors(t *testing.T) {
+	assert.Equal(t, "tinvest: invalid config", ErrInvalidConfig.Error())
 	assert.Equal(t, "overflow", money.ErrOverflow.Error())
 	assert.Equal(t, "conversion", money.ErrConversion.Error())
 }

@@ -14,9 +14,9 @@ import (
 	"github.com/quagmt/udecimal"
 )
 
-// Err is the sentinel every error from this package wraps.
-var Err = errors.New("tinvest money")
-
+// Sentinel errors returned by this package. Each names a specific failure
+// condition and is matched directly with errors.Is — there is no broad
+// package-level sentinel that they all wrap.
 var (
 	// ErrConversion indicates a failure (or invalid input) converting between
 	// units/nano and decimal.
@@ -36,7 +36,7 @@ var nanoFactor = func() udecimal.Decimal {
 	d, err := udecimal.NewFromInt64(1_000_000_000, 0)
 	if err != nil {
 		panic(
-			fmt.Errorf("%w: invalid nano factor: %w", Err, err),
+			fmt.Errorf("invalid nano factor: %w", err),
 		)
 	}
 	return d
@@ -47,8 +47,8 @@ var nanoFactor = func() udecimal.Decimal {
 func ValidateSigns(units int64, nano int32) error {
 	if (units > 0 && nano < 0) || (units < 0 && nano > 0) {
 		return fmt.Errorf(
-			"%w: mixed sign (units=%d, nano=%d): %w",
-			Err, units, nano, ErrConversion,
+			"mixed sign (units=%d, nano=%d): %w",
+			units, nano, ErrConversion,
 		)
 	}
 	return nil
@@ -66,8 +66,8 @@ func NormalizeSign(
 	if units < 0 || nano < 0 {
 		if units == math.MinInt64 || nano == math.MinInt32 {
 			return "", 0, 0, fmt.Errorf(
-				"%w: value at integer minimum cannot be negated: %w",
-				Err, ErrOverflow,
+				"value at integer minimum cannot be negated: %w",
+				ErrOverflow,
 			)
 		}
 		return "-", -units, -nano, nil
@@ -82,53 +82,46 @@ func UnitsNanoToDecimal(
 	if err := ValidateSigns(units, nano); err != nil {
 		return udecimal.Decimal{}, err
 	}
-	d, err := func() (udecimal.Decimal, error) {
-		u, err := udecimal.NewFromInt64(units, 0)
-		if err != nil {
-			return udecimal.Decimal{}, fmt.Errorf(
-				"units: %w: %w", ErrConversion, err,
-			)
-		}
-		n, err := udecimal.NewFromInt64(int64(nano), nanoPrecision)
-		if err != nil {
-			return udecimal.Decimal{}, fmt.Errorf(
-				"nano: %w: %w", ErrConversion, err,
-			)
-		}
-		return u.Add(n), nil
-	}()
+	u, err := udecimal.NewFromInt64(units, 0)
 	if err != nil {
-		return udecimal.Decimal{}, errors.Join(Err, err)
+		return udecimal.Decimal{}, fmt.Errorf(
+			"units: %w: %w",
+			ErrConversion,
+			err,
+		)
 	}
-	return d, nil
+	n, err := udecimal.NewFromInt64(int64(nano), nanoPrecision)
+	if err != nil {
+		return udecimal.Decimal{}, fmt.Errorf(
+			"nano: %w: %w",
+			ErrConversion,
+			err,
+		)
+	}
+	return u.Add(n), nil
 }
 
 // DecimalToUnitsNano splits a decimal into units + nano, rejecting values with
 // more than 9 fractional digits or that overflow the target integer types.
 func DecimalToUnitsNano(d udecimal.Decimal) (int64, int32, error) {
-	u, nano, err := func() (int64, int32, error) {
-		units := d.Trunc(0)
-		frac := d.Sub(units)
-		nanoDecimal := frac.Mul(nanoFactor).Trunc(0)
+	units := d.Trunc(0)
+	frac := d.Sub(units)
+	nanoDecimal := frac.Mul(nanoFactor).Trunc(0)
 
-		u, err := units.Int64()
-		if err != nil {
-			return 0, 0, fmt.Errorf("units: %w: %w", ErrOverflow, err)
-		}
-		n, err := nanoDecimal.Int64()
-		if err != nil {
-			return 0, 0, fmt.Errorf("nano: %w: %w", ErrOverflow, err)
-		}
-		if n > math.MaxInt32 || n < math.MinInt32 {
-			return 0, 0, fmt.Errorf(
-				"nano value %d exceeds int32 range: %w", n, ErrOverflow,
-			)
-		}
-		return u, int32(n), nil
-	}()
+	u, err := units.Int64()
 	if err != nil {
-		return 0, 0, errors.Join(Err, err)
+		return 0, 0, fmt.Errorf("units: %w: %w", ErrOverflow, err)
 	}
+	n, err := nanoDecimal.Int64()
+	if err != nil {
+		return 0, 0, fmt.Errorf("nano: %w: %w", ErrOverflow, err)
+	}
+	if n > math.MaxInt32 || n < math.MinInt32 {
+		return 0, 0, fmt.Errorf(
+			"nano value %d exceeds int32 range: %w", n, ErrOverflow,
+		)
+	}
+	nano := int32(n)
 
 	reconstructed, err := UnitsNanoToDecimal(u, nano)
 	if err != nil {
@@ -136,8 +129,8 @@ func DecimalToUnitsNano(d udecimal.Decimal) (int64, int32, error) {
 	}
 	if !reconstructed.Equal(d) {
 		return 0, 0, fmt.Errorf(
-			"%w: decimal precision exceeds 9 fractional digits: %w",
-			Err, ErrOverflow,
+			"decimal precision exceeds 9 fractional digits: %w",
+			ErrOverflow,
 		)
 	}
 	return u, nano, nil

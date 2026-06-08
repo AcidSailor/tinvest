@@ -3,14 +3,12 @@ package grpc
 import (
 	"testing"
 
-	"github.com/acidsailor/tinvest"
-
 	"github.com/quagmt/udecimal"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/acidsailor/tinvest/money"
 	pb "github.com/acidsailor/tinvest/grpc/pb"
+	"github.com/acidsailor/tinvest/money"
 )
 
 func mustParse(s string) udecimal.Decimal {
@@ -59,7 +57,11 @@ func TestQuotationToDecimal(t *testing.T) {
 			result, err := QuotationToDecimal(tt.q)
 			if tt.wantErr {
 				require.Error(t, err)
-				assert.ErrorIs(t, err, tinvest.ErrClient)
+				if tt.q == nil {
+					assert.ErrorContains(t, err, "is nil")
+				} else {
+					assert.ErrorIs(t, err, money.ErrConversion)
+				}
 				return
 			}
 			require.NoError(t, err)
@@ -92,7 +94,6 @@ func TestDecimalToQuotation(t *testing.T) {
 			q, err := DecimalToQuotation(d)
 			if tt.wantErr {
 				require.Error(t, err)
-				assert.ErrorIs(t, err, tinvest.ErrClient)
 				assert.ErrorIs(t, err, money.ErrOverflow)
 				return
 			}
@@ -154,7 +155,11 @@ func TestMoneyValueToDecimal(t *testing.T) {
 			result, err := MoneyValueToDecimal(tt.m)
 			if tt.wantErr {
 				require.Error(t, err)
-				assert.ErrorIs(t, err, tinvest.ErrClient)
+				if tt.m == nil {
+					assert.ErrorContains(t, err, "is nil")
+				} else {
+					assert.ErrorIs(t, err, money.ErrConversion)
+				}
 				return
 			}
 			require.NoError(t, err)
@@ -185,7 +190,6 @@ func TestDecimalToMoneyValue(t *testing.T) {
 			m, err := DecimalToMoneyValue(mustParse(tt.input), tt.currency)
 			if tt.wantErr {
 				require.Error(t, err)
-				assert.ErrorIs(t, err, tinvest.ErrClient)
 				assert.ErrorIs(t, err, money.ErrOverflow)
 				return
 			}
@@ -233,8 +237,9 @@ func TestMoneyValueToQuotation(t *testing.T) {
 			q, err := MoneyValueToQuotation(tt.m)
 			if tt.wantErr {
 				require.Error(t, err)
-				assert.ErrorIs(t, err, tinvest.ErrClient)
-				if tt.m != nil {
+				if tt.m == nil {
+					assert.ErrorContains(t, err, "is nil")
+				} else {
 					assert.ErrorIs(t, err, money.ErrConversion)
 				}
 				return

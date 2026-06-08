@@ -3,10 +3,7 @@ package grpc
 import (
 	"context"
 	"crypto/tls"
-	"fmt"
 	"log/slog"
-
-	"github.com/acidsailor/tinvest"
 
 	"go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc"
 	"google.golang.org/grpc"
@@ -38,12 +35,7 @@ func NewConn(
 		grpc.WithStatsHandler(otelHandler),
 	)
 	if err != nil {
-		return nil, fmt.Errorf(
-			"%w: %s: %w",
-			tinvest.ErrClient,
-			connConfig.Endpoint,
-			err,
-		)
+		return nil, err
 	}
 
 	slog.InfoContext(ctx, "tinvest connection created",

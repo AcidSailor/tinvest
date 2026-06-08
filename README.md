@@ -118,15 +118,27 @@ units/nano math underneath lives in the `tinvest/money` package.
 
 ## Error Handling
 
-Errors raised by the library's own validation and conversion logic wrap `tinvest.ErrClient` and can be detected with `errors.Is`:
+Errors raised by the library's own validation and conversion logic wrap a
+specific sentinel naming the failure, matchable with `errors.Is`:
 
 ```go
-if errors.Is(err, tinvest.ErrClient) {
-    // configuration or conversion error
+if errors.Is(err, tinvest.ErrInvalidConfig) {
+    // a configuration value was missing or invalid
 }
 ```
 
-Finer-grained sentinels (`tinvest.ErrNil`, `tinvest.ErrInvalidConfig`) are joined alongside `ErrClient`, so both match. Errors returned by gRPC RPC calls are passed through unwrapped as standard gRPC status errors.
+The sentinels are:
+
+- `tinvest.ErrInvalidConfig` — a configuration value is missing or invalid
+- `money.ErrConversion` — invalid input converting between units/nano and decimal
+- `money.ErrOverflow` — a value does not fit the target representation
+- `rest.ErrRequest` — a REST request failed (transport, encoding, or decoding)
+
+REST gateway non-2xx responses surface as a `*rest.APIError` (with `StatusCode`
+and `Body`), reachable with `errors.As`. Nil-argument errors (e.g. a nil
+`*pb.Quotation`) are returned as plain `errors.New` values — they carry a
+`tinvest:` message prefix but are not sentinels to match on. Errors returned by
+gRPC RPC calls are passed through unwrapped as standard gRPC status errors.
 
 ## OpenTelemetry
 

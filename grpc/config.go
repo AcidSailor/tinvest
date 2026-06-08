@@ -1,7 +1,7 @@
 package grpc
 
 import (
-	"fmt"
+	"errors"
 
 	"github.com/acidsailor/tinvest"
 )
@@ -44,21 +44,17 @@ func NewConnConfig(endpoint, token string, opts ...ConnOption) *ConnConfig {
 
 // Validate checks that the ConnConfig is valid before use.
 func (c *ConnConfig) Validate() error {
-	f := func() error {
-		if c == nil {
-			return fmt.Errorf("ConnConfig: %w", tinvest.ErrNil)
-		}
+	err := func() error {
 		if c.Endpoint == "" {
-			return fmt.Errorf("empty endpoint: %w", tinvest.ErrInvalidConfig)
+			return errors.New("empty endpoint")
 		}
 		if c.Token == "" {
-			return fmt.Errorf("empty token: %w", tinvest.ErrInvalidConfig)
+			return errors.New("empty token")
 		}
 		return nil
-	}
-	err := f()
+	}()
 	if err != nil {
-		return fmt.Errorf("%w: %w", tinvest.ErrClient, err)
+		return errors.Join(tinvest.ErrInvalidConfig, err)
 	}
 	return nil
 }
@@ -74,15 +70,5 @@ func NewClientConfig() *ClientConfig {
 
 // Validate checks that the ClientConfig is valid before use.
 func (c *ClientConfig) Validate() error {
-	f := func() error {
-		if c == nil {
-			return fmt.Errorf("ClientConfig: %w", tinvest.ErrNil)
-		}
-		return nil
-	}
-	err := f()
-	if err != nil {
-		return fmt.Errorf("%w: %w", tinvest.ErrClient, err)
-	}
 	return nil
 }

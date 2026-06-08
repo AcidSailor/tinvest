@@ -1,14 +1,11 @@
 package grpc
 
 import (
+	"errors"
 	"fmt"
 
-	"github.com/acidsailor/tinvest"
-
-	"github.com/quagmt/udecimal"
-
-	"github.com/acidsailor/tinvest/money"
 	pb "github.com/acidsailor/tinvest/grpc/pb"
+	"github.com/acidsailor/tinvest/money"
 )
 
 // FuturesPointValue returns the value of a single price point for a futures
@@ -19,45 +16,34 @@ import (
 func FuturesPointValue(
 	margin *pb.GetFuturesMarginResponse,
 ) (*pb.Quotation, error) {
-	f := func() (udecimal.Decimal, error) {
-		if margin == nil {
-			return udecimal.Decimal{}, fmt.Errorf("margin: %w", tinvest.ErrNil)
-		}
-		step := margin.GetMinPriceIncrement()
-		stepValue := margin.GetMinPriceIncrementAmount()
-		if step == nil || stepValue == nil {
-			return udecimal.Decimal{}, fmt.Errorf(
-				"futures margin missing price increment: %w",
-				tinvest.ErrNil,
-			)
-		}
-		stepDec, err := QuotationToDecimal(step)
-		if err != nil {
-			return udecimal.Decimal{}, err
-		}
-		if stepDec.IsZero() {
-			return udecimal.Decimal{}, fmt.Errorf(
-				"futures step is zero: %w",
-				money.ErrConversion,
-			)
-		}
-		stepValDec, err := QuotationToDecimal(stepValue)
-		if err != nil {
-			return udecimal.Decimal{}, err
-		}
-		pv, err := stepValDec.Div(stepDec)
-		if err != nil {
-			return udecimal.Decimal{}, fmt.Errorf(
-				"point value div: %w: %w",
-				money.ErrConversion,
-				err,
-			)
-		}
-		return pv, nil
+	if margin == nil {
+		return nil, errors.New("tinvest: margin is nil")
 	}
-	pv, err := f()
+	step := margin.GetMinPriceIncrement()
+	stepValue := margin.GetMinPriceIncrementAmount()
+	if step == nil || stepValue == nil {
+		return nil, errors.New(
+			"tinvest: futures margin missing price increment",
+		)
+	}
+	stepDec, err := QuotationToDecimal(step)
 	if err != nil {
-		return nil, fmt.Errorf("%w: %w", tinvest.ErrClient, err)
+		return nil, err
+	}
+	if stepDec.IsZero() {
+		return nil, fmt.Errorf("futures step is zero: %w", money.ErrConversion)
+	}
+	stepValDec, err := QuotationToDecimal(stepValue)
+	if err != nil {
+		return nil, err
+	}
+	pv, err := stepValDec.Div(stepDec)
+	if err != nil {
+		return nil, fmt.Errorf(
+			"point value div: %w: %w",
+			money.ErrConversion,
+			err,
+		)
 	}
 	return DecimalToQuotation(pv)
 }

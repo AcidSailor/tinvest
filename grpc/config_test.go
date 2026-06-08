@@ -48,19 +48,10 @@ func TestConnConfig_Validate_OK(t *testing.T) {
 	assert.NoError(t, cfg.Validate())
 }
 
-func TestConnConfig_Validate_NilConfig(t *testing.T) {
-	var cfg *ConnConfig
-
-	err := cfg.Validate()
-	assert.ErrorIs(t, err, tinvest.ErrClient)
-	assert.ErrorIs(t, err, tinvest.ErrNil)
-}
-
 func TestConnConfig_Validate_EmptyToken(t *testing.T) {
 	cfg := NewConnConfig(tinvest.EndpointProduction, "")
 
 	err := cfg.Validate()
-	assert.ErrorIs(t, err, tinvest.ErrClient)
 	assert.ErrorIs(t, err, tinvest.ErrInvalidConfig)
 }
 
@@ -68,7 +59,6 @@ func TestConnConfig_Validate_EmptyEndpoint(t *testing.T) {
 	cfg := NewConnConfig("", "tok")
 
 	err := cfg.Validate()
-	assert.ErrorIs(t, err, tinvest.ErrClient)
 	assert.ErrorIs(t, err, tinvest.ErrInvalidConfig)
 }
 
@@ -76,12 +66,4 @@ func TestClientConfig_Validate_OK(t *testing.T) {
 	cfg := NewClientConfig()
 
 	assert.NoError(t, cfg.Validate())
-}
-
-func TestClientConfig_Validate_NilConfig(t *testing.T) {
-	var cfg *ClientConfig
-
-	err := cfg.Validate()
-	assert.ErrorIs(t, err, tinvest.ErrClient)
-	assert.ErrorIs(t, err, tinvest.ErrNil)
 }

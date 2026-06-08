@@ -5,7 +5,6 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
-	"fmt"
 	"io"
 	"net/http"
 	"strings"
@@ -77,9 +76,10 @@ func WithConfig(cfg Config) ClientOption {
 
 // NewClient builds a Client targeting endpoint (use tinvest.EndpointProductionREST
 // / tinvest.EndpointSandboxREST) with the given API token. Returns an error
-// wrapping ErrClient on empty endpoint/token or a nil *http.Client.
+// wrapping tinvest.ErrInvalidConfig on an empty endpoint/token or a nil
+// *http.Client.
 func NewClient(endpoint, token string, config *Config) (*Client, error) {
-	c, err := func() (*Client, error) {
+	client, err := func() (*Client, error) {
 		if endpoint == "" {
 			return nil, errors.New("empty endpoint")
 		}
@@ -113,26 +113,27 @@ func NewClient(endpoint, token string, config *Config) (*Client, error) {
 		return cl, nil
 	}()
 	if err != nil {
-		return nil, errors.Join(tinvest.ErrClient, err)
+		return nil, errors.Join(tinvest.ErrInvalidConfig, err)
 	}
-	return c, nil
+	return client, nil
 }
 
 // do POSTs body as JSON to baseURL+path and decodes the response into *Resp. A
-// non-2xx becomes an *APIError; all failures join ErrClient.
-func do[Resp any](
+// non-2xx becomes an *APIError (reachable with errors.As); other failures wrap
+// the underlying transport, encoding, or decoding error.
+func do[T any](
 	ctx context.Context, c *Client, path string, body any,
-) (*Resp, error) {
-	out, err := func() (result *Resp, err error) {
+) (T, error) {
+	out, err := func() (r T, err error) {
 		raw, err := json.Marshal(body)
 		if err != nil {
-			return nil, fmt.Errorf("encode request body: %w", err)
+			return r, err
 		}
 		req, err := http.NewRequestWithContext(
 			ctx, http.MethodPost, c.baseURL+path, bytes.NewReader(raw),
 		)
 		if err != nil {
-			return nil, err
+			return r, err
 		}
 		req.Header.Set("Accept", "application/json")
 		req.Header.Set("Content-Type", "application/json")
@@ -141,30 +142,31 @@ func do[Resp any](
 
 		resp, err := c.httpClient.Do(req)
 		if err != nil {
-			return nil, err
+			return r, err
 		}
 		defer func() { err = errors.Join(err, resp.Body.Close()) }()
 
 		data, err := io.ReadAll(resp.Body)
 		if err != nil {
-			return nil, fmt.Errorf("read response body: %w", err)
+			return r, err
 		}
 		if resp.StatusCode < 200 || resp.StatusCode >= 300 {
-			return nil, &APIError{
+			return r, &APIError{
 				StatusCode: resp.StatusCode,
 				Body:       string(data),
 			}
 		}
-		var decoded Resp
-		if len(bytes.TrimSpace(data)) > 0 {
-			if err := json.Unmarshal(data, &decoded); err != nil {
-				return nil, fmt.Errorf("decode response: %w", err)
-			}
+		var decoded T
+		if err := json.Unmarshal(data, &decoded); err != nil {
+			return r, err
 		}
-		return &decoded, nil
+		return decoded, nil
 	}()
-	if err != nil {
-		return nil, errors.Join(tinvest.ErrClient, err)
+	if err == nil {
+		return out, nil
 	}
-	return out, nil
+	if _, ok := errors.AsType[*APIError](err); ok {
+		return out, err
+	}
+	return out, errors.Join(ErrRequest, err)
 }

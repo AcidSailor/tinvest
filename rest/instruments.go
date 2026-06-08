@@ -53,19 +53,19 @@ const (
 func (s instrumentsServiceClient) BondBy(
 	ctx context.Context, req *V1InstrumentRequest,
 ) (*V1BondResponse, error) {
-	return do[V1BondResponse](ctx, s.c, pathInstrumentsBondBy, req)
+	return do[*V1BondResponse](ctx, s.c, pathInstrumentsBondBy, req)
 }
 
 func (s instrumentsServiceClient) Bonds(
 	ctx context.Context, req *V1InstrumentsRequest,
 ) (*V1BondsResponse, error) {
-	return do[V1BondsResponse](ctx, s.c, pathInstrumentsBonds, req)
+	return do[*V1BondsResponse](ctx, s.c, pathInstrumentsBonds, req)
 }
 
 func (s instrumentsServiceClient) CreateFavoriteGroup(
 	ctx context.Context, req *V1CreateFavoriteGroupRequest,
 ) (*V1CreateFavoriteGroupResponse, error) {
-	return do[V1CreateFavoriteGroupResponse](
+	return do[*V1CreateFavoriteGroupResponse](
 		ctx, s.c, pathInstrumentsCreateFavoriteGroup, req,
 	)
 }
@@ -73,19 +73,19 @@ func (s instrumentsServiceClient) CreateFavoriteGroup(
 func (s instrumentsServiceClient) Currencies(
 	ctx context.Context, req *V1InstrumentsRequest,
 ) (*V1CurrenciesResponse, error) {
-	return do[V1CurrenciesResponse](ctx, s.c, pathInstrumentsCurrencies, req)
+	return do[*V1CurrenciesResponse](ctx, s.c, pathInstrumentsCurrencies, req)
 }
 
 func (s instrumentsServiceClient) CurrencyBy(
 	ctx context.Context, req *V1InstrumentRequest,
 ) (*V1CurrencyResponse, error) {
-	return do[V1CurrencyResponse](ctx, s.c, pathInstrumentsCurrencyBy, req)
+	return do[*V1CurrencyResponse](ctx, s.c, pathInstrumentsCurrencyBy, req)
 }
 
 func (s instrumentsServiceClient) DeleteFavoriteGroup(
 	ctx context.Context, req *V1DeleteFavoriteGroupRequest,
 ) (*V1DeleteFavoriteGroupResponse, error) {
-	return do[V1DeleteFavoriteGroupResponse](
+	return do[*V1DeleteFavoriteGroupResponse](
 		ctx, s.c, pathInstrumentsDeleteFavoriteGroup, req,
 	)
 }
@@ -93,19 +93,19 @@ func (s instrumentsServiceClient) DeleteFavoriteGroup(
 func (s instrumentsServiceClient) DfaBy(
 	ctx context.Context, req *V1InstrumentRequest,
 ) (*V1DfaResponse, error) {
-	return do[V1DfaResponse](ctx, s.c, pathInstrumentsDfaBy, req)
+	return do[*V1DfaResponse](ctx, s.c, pathInstrumentsDfaBy, req)
 }
 
 func (s instrumentsServiceClient) Dfas(
 	ctx context.Context, req *V1DfasRequest,
 ) (*V1DfasResponse, error) {
-	return do[V1DfasResponse](ctx, s.c, pathInstrumentsDfas, req)
+	return do[*V1DfasResponse](ctx, s.c, pathInstrumentsDfas, req)
 }
 
 func (s instrumentsServiceClient) EditFavorites(
 	ctx context.Context, req *V1EditFavoritesRequest,
 ) (*V1EditFavoritesResponse, error) {
-	return do[V1EditFavoritesResponse](
+	return do[*V1EditFavoritesResponse](
 		ctx,
 		s.c,
 		pathInstrumentsEditFavorites,
@@ -116,19 +116,19 @@ func (s instrumentsServiceClient) EditFavorites(
 func (s instrumentsServiceClient) EtfBy(
 	ctx context.Context, req *V1InstrumentRequest,
 ) (*V1EtfResponse, error) {
-	return do[V1EtfResponse](ctx, s.c, pathInstrumentsEtfBy, req)
+	return do[*V1EtfResponse](ctx, s.c, pathInstrumentsEtfBy, req)
 }
 
 func (s instrumentsServiceClient) Etfs(
 	ctx context.Context, req *V1InstrumentsRequest,
 ) (*V1EtfsResponse, error) {
-	return do[V1EtfsResponse](ctx, s.c, pathInstrumentsEtfs, req)
+	return do[*V1EtfsResponse](ctx, s.c, pathInstrumentsEtfs, req)
 }
 
 func (s instrumentsServiceClient) FindInstrument(
 	ctx context.Context, req *V1FindInstrumentRequest,
 ) (*V1FindInstrumentResponse, error) {
-	return do[V1FindInstrumentResponse](
+	return do[*V1FindInstrumentResponse](
 		ctx, s.c, pathInstrumentsFindInstrument, req,
 	)
 }
@@ -136,19 +136,19 @@ func (s instrumentsServiceClient) FindInstrument(
 func (s instrumentsServiceClient) FutureBy(
 	ctx context.Context, req *V1InstrumentRequest,
 ) (*V1FutureResponse, error) {
-	return do[V1FutureResponse](ctx, s.c, pathInstrumentsFutureBy, req)
+	return do[*V1FutureResponse](ctx, s.c, pathInstrumentsFutureBy, req)
 }
 
 func (s instrumentsServiceClient) Futures(
 	ctx context.Context, req *V1InstrumentsRequest,
 ) (*V1FuturesResponse, error) {
-	return do[V1FuturesResponse](ctx, s.c, pathInstrumentsFutures, req)
+	return do[*V1FuturesResponse](ctx, s.c, pathInstrumentsFutures, req)
 }
 
 func (s instrumentsServiceClient) GetAccruedInterests(
 	ctx context.Context, req *V1GetAccruedInterestsRequest,
 ) (*V1GetAccruedInterestsResponse, error) {
-	return do[V1GetAccruedInterestsResponse](
+	return do[*V1GetAccruedInterestsResponse](
 		ctx, s.c, pathInstrumentsGetAccruedInterests, req,
 	)
 }
@@ -156,13 +156,13 @@ func (s instrumentsServiceClient) GetAccruedInterests(
 func (s instrumentsServiceClient) GetAssetBy(
 	ctx context.Context, req *V1AssetRequest,
 ) (*V1AssetResponse, error) {
-	return do[V1AssetResponse](ctx, s.c, pathInstrumentsGetAssetBy, req)
+	return do[*V1AssetResponse](ctx, s.c, pathInstrumentsGetAssetBy, req)
 }
 
 func (s instrumentsServiceClient) GetAssetFundamentals(
 	ctx context.Context, req *V1GetAssetFundamentalsRequest,
 ) (*V1GetAssetFundamentalsResponse, error) {
-	return do[V1GetAssetFundamentalsResponse](
+	return do[*V1GetAssetFundamentalsResponse](
 		ctx, s.c, pathInstrumentsGetAssetFundamentals, req,
 	)
 }
@@ -170,7 +170,7 @@ func (s instrumentsServiceClient) GetAssetFundamentals(
 func (s instrumentsServiceClient) GetAssetReports(
 	ctx context.Context, req *V1GetAssetReportsRequest,
 ) (*V1GetAssetReportsResponse, error) {
-	return do[V1GetAssetReportsResponse](
+	return do[*V1GetAssetReportsResponse](
 		ctx, s.c, pathInstrumentsGetAssetReports, req,
 	)
 }
@@ -178,13 +178,13 @@ func (s instrumentsServiceClient) GetAssetReports(
 func (s instrumentsServiceClient) GetAssets(
 	ctx context.Context, req *V1AssetsRequest,
 ) (*V1AssetsResponse, error) {
-	return do[V1AssetsResponse](ctx, s.c, pathInstrumentsGetAssets, req)
+	return do[*V1AssetsResponse](ctx, s.c, pathInstrumentsGetAssets, req)
 }
 
 func (s instrumentsServiceClient) GetBondCoupons(
 	ctx context.Context, req *V1GetBondCouponsRequest,
 ) (*V1GetBondCouponsResponse, error) {
-	return do[V1GetBondCouponsResponse](
+	return do[*V1GetBondCouponsResponse](
 		ctx, s.c, pathInstrumentsGetBondCoupons, req,
 	)
 }
@@ -192,7 +192,7 @@ func (s instrumentsServiceClient) GetBondCoupons(
 func (s instrumentsServiceClient) GetBondEvents(
 	ctx context.Context, req *V1GetBondEventsRequest,
 ) (*V1GetBondEventsResponse, error) {
-	return do[V1GetBondEventsResponse](
+	return do[*V1GetBondEventsResponse](
 		ctx, s.c, pathInstrumentsGetBondEvents, req,
 	)
 }
@@ -200,19 +200,19 @@ func (s instrumentsServiceClient) GetBondEvents(
 func (s instrumentsServiceClient) GetBrandBy(
 	ctx context.Context, req *V1GetBrandRequest,
 ) (*V1Brand, error) {
-	return do[V1Brand](ctx, s.c, pathInstrumentsGetBrandBy, req)
+	return do[*V1Brand](ctx, s.c, pathInstrumentsGetBrandBy, req)
 }
 
 func (s instrumentsServiceClient) GetBrands(
 	ctx context.Context, req *V1GetBrandsRequest,
 ) (*V1GetBrandsResponse, error) {
-	return do[V1GetBrandsResponse](ctx, s.c, pathInstrumentsGetBrands, req)
+	return do[*V1GetBrandsResponse](ctx, s.c, pathInstrumentsGetBrands, req)
 }
 
 func (s instrumentsServiceClient) GetConsensusForecasts(
 	ctx context.Context, req *V1GetConsensusForecastsRequest,
 ) (*V1GetConsensusForecastsResponse, error) {
-	return do[V1GetConsensusForecastsResponse](
+	return do[*V1GetConsensusForecastsResponse](
 		ctx, s.c, pathInstrumentsGetConsensusForecasts, req,
 	)
 }
@@ -220,7 +220,7 @@ func (s instrumentsServiceClient) GetConsensusForecasts(
 func (s instrumentsServiceClient) GetCountries(
 	ctx context.Context, req *V1GetCountriesRequest,
 ) (*V1GetCountriesResponse, error) {
-	return do[V1GetCountriesResponse](
+	return do[*V1GetCountriesResponse](
 		ctx,
 		s.c,
 		pathInstrumentsGetCountries,
@@ -231,7 +231,7 @@ func (s instrumentsServiceClient) GetCountries(
 func (s instrumentsServiceClient) GetDividends(
 	ctx context.Context, req *V1GetDividendsRequest,
 ) (*V1GetDividendsResponse, error) {
-	return do[V1GetDividendsResponse](
+	return do[*V1GetDividendsResponse](
 		ctx,
 		s.c,
 		pathInstrumentsGetDividends,
@@ -242,7 +242,7 @@ func (s instrumentsServiceClient) GetDividends(
 func (s instrumentsServiceClient) GetFavoriteGroups(
 	ctx context.Context, req *V1GetFavoriteGroupsRequest,
 ) (*V1GetFavoriteGroupsResponse, error) {
-	return do[V1GetFavoriteGroupsResponse](
+	return do[*V1GetFavoriteGroupsResponse](
 		ctx, s.c, pathInstrumentsGetFavoriteGroups, req,
 	)
 }
@@ -250,7 +250,7 @@ func (s instrumentsServiceClient) GetFavoriteGroups(
 func (s instrumentsServiceClient) GetFavorites(
 	ctx context.Context, req *V1GetFavoritesRequest,
 ) (*V1GetFavoritesResponse, error) {
-	return do[V1GetFavoritesResponse](
+	return do[*V1GetFavoritesResponse](
 		ctx,
 		s.c,
 		pathInstrumentsGetFavorites,
@@ -261,7 +261,7 @@ func (s instrumentsServiceClient) GetFavorites(
 func (s instrumentsServiceClient) GetForecastBy(
 	ctx context.Context, req *V1GetForecastRequest,
 ) (*V1GetForecastResponse, error) {
-	return do[V1GetForecastResponse](
+	return do[*V1GetForecastResponse](
 		ctx,
 		s.c,
 		pathInstrumentsGetForecastBy,
@@ -272,7 +272,7 @@ func (s instrumentsServiceClient) GetForecastBy(
 func (s instrumentsServiceClient) GetFuturesMargin(
 	ctx context.Context, req *V1GetFuturesMarginRequest,
 ) (*V1GetFuturesMarginResponse, error) {
-	return do[V1GetFuturesMarginResponse](
+	return do[*V1GetFuturesMarginResponse](
 		ctx, s.c, pathInstrumentsGetFuturesMargin, req,
 	)
 }
@@ -280,7 +280,7 @@ func (s instrumentsServiceClient) GetFuturesMargin(
 func (s instrumentsServiceClient) GetInsiderDeals(
 	ctx context.Context, req *V1GetInsiderDealsRequest,
 ) (*V1GetInsiderDealsResponse, error) {
-	return do[V1GetInsiderDealsResponse](
+	return do[*V1GetInsiderDealsResponse](
 		ctx, s.c, pathInstrumentsGetInsiderDeals, req,
 	)
 }
@@ -288,7 +288,7 @@ func (s instrumentsServiceClient) GetInsiderDeals(
 func (s instrumentsServiceClient) GetInstrumentBy(
 	ctx context.Context, req *V1InstrumentRequest,
 ) (*V1InstrumentResponse, error) {
-	return do[V1InstrumentResponse](
+	return do[*V1InstrumentResponse](
 		ctx, s.c, pathInstrumentsGetInstrumentBy, req,
 	)
 }
@@ -296,55 +296,55 @@ func (s instrumentsServiceClient) GetInstrumentBy(
 func (s instrumentsServiceClient) GetRiskRates(
 	ctx context.Context, req *V1RiskRatesRequest,
 ) (*V1RiskRatesResponse, error) {
-	return do[V1RiskRatesResponse](ctx, s.c, pathInstrumentsGetRiskRates, req)
+	return do[*V1RiskRatesResponse](ctx, s.c, pathInstrumentsGetRiskRates, req)
 }
 
 func (s instrumentsServiceClient) Indicatives(
 	ctx context.Context, req *V1IndicativesRequest,
 ) (*V1IndicativesResponse, error) {
-	return do[V1IndicativesResponse](ctx, s.c, pathInstrumentsIndicatives, req)
+	return do[*V1IndicativesResponse](ctx, s.c, pathInstrumentsIndicatives, req)
 }
 
 func (s instrumentsServiceClient) News(
 	ctx context.Context, req *V1NewsRequest,
 ) (*V1NewsResponse, error) {
-	return do[V1NewsResponse](ctx, s.c, pathInstrumentsNews, req)
+	return do[*V1NewsResponse](ctx, s.c, pathInstrumentsNews, req)
 }
 
 func (s instrumentsServiceClient) OptionBy(
 	ctx context.Context, req *V1InstrumentRequest,
 ) (*V1OptionResponse, error) {
-	return do[V1OptionResponse](ctx, s.c, pathInstrumentsOptionBy, req)
+	return do[*V1OptionResponse](ctx, s.c, pathInstrumentsOptionBy, req)
 }
 
 func (s instrumentsServiceClient) Options(
 	ctx context.Context, req *V1InstrumentsRequest,
 ) (*V1OptionsResponse, error) {
-	return do[V1OptionsResponse](ctx, s.c, pathInstrumentsOptions, req)
+	return do[*V1OptionsResponse](ctx, s.c, pathInstrumentsOptions, req)
 }
 
 func (s instrumentsServiceClient) OptionsBy(
 	ctx context.Context, req *V1FilterOptionsRequest,
 ) (*V1OptionsResponse, error) {
-	return do[V1OptionsResponse](ctx, s.c, pathInstrumentsOptionsBy, req)
+	return do[*V1OptionsResponse](ctx, s.c, pathInstrumentsOptionsBy, req)
 }
 
 func (s instrumentsServiceClient) ShareBy(
 	ctx context.Context, req *V1InstrumentRequest,
 ) (*V1ShareResponse, error) {
-	return do[V1ShareResponse](ctx, s.c, pathInstrumentsShareBy, req)
+	return do[*V1ShareResponse](ctx, s.c, pathInstrumentsShareBy, req)
 }
 
 func (s instrumentsServiceClient) Shares(
 	ctx context.Context, req *V1InstrumentsRequest,
 ) (*V1SharesResponse, error) {
-	return do[V1SharesResponse](ctx, s.c, pathInstrumentsShares, req)
+	return do[*V1SharesResponse](ctx, s.c, pathInstrumentsShares, req)
 }
 
 func (s instrumentsServiceClient) StructuredNoteBy(
 	ctx context.Context, req *V1InstrumentRequest,
 ) (*V1StructuredNoteResponse, error) {
-	return do[V1StructuredNoteResponse](
+	return do[*V1StructuredNoteResponse](
 		ctx, s.c, pathInstrumentsStructuredNoteBy, req,
 	)
 }
@@ -352,7 +352,7 @@ func (s instrumentsServiceClient) StructuredNoteBy(
 func (s instrumentsServiceClient) StructuredNotes(
 	ctx context.Context, req *V1InstrumentsRequest,
 ) (*V1StructuredNotesResponse, error) {
-	return do[V1StructuredNotesResponse](
+	return do[*V1StructuredNotesResponse](
 		ctx, s.c, pathInstrumentsStructuredNotes, req,
 	)
 }
@@ -360,7 +360,7 @@ func (s instrumentsServiceClient) StructuredNotes(
 func (s instrumentsServiceClient) TradingSchedules(
 	ctx context.Context, req *V1TradingSchedulesRequest,
 ) (*V1TradingSchedulesResponse, error) {
-	return do[V1TradingSchedulesResponse](
+	return do[*V1TradingSchedulesResponse](
 		ctx, s.c, pathInstrumentsTradingSchedules, req,
 	)
 }

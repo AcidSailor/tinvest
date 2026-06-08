@@ -10,19 +10,13 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestNewConn_NilConfig(t *testing.T) {
-	_, err := NewConn(context.Background(), nil)
-	require.Error(t, err)
-	assert.ErrorIs(t, err, tinvest.ErrClient)
-}
-
 func TestNewConn_MissingToken(t *testing.T) {
 	_, err := NewConn(
 		context.Background(),
 		NewConnConfig(tinvest.EndpointProduction, ""),
 	)
 	require.Error(t, err)
-	assert.ErrorIs(t, err, tinvest.ErrClient)
+	assert.ErrorIs(t, err, tinvest.ErrInvalidConfig)
 }
 
 func TestNewConn_WithToken(t *testing.T) {
