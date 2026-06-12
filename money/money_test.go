@@ -52,3 +52,8 @@ func TestNormalizeSign_IntMinErrors(t *testing.T) {
 	require.Error(t, err)
 	assert.ErrorIs(t, err, money.ErrOverflow)
 }
+
+func TestSentinelErrors(t *testing.T) {
+	assert.Equal(t, "overflow", money.ErrOverflow.Error())
+	assert.Equal(t, "conversion", money.ErrConversion.Error())
+}
