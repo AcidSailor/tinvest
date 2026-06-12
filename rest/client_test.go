@@ -30,8 +30,7 @@ func TestClient_GetAccounts_HappyPath(t *testing.T) {
 		}))
 	defer srv.Close()
 
-	cfg := rest.NewConfig()
-	c, err := rest.NewClient(srv.URL, "tkn-123", &cfg)
+	c, err := rest.NewClient(srv.URL, "tkn-123")
 	require.NoError(t, err)
 
 	resp, err := c.Users.GetAccounts(
@@ -58,8 +57,7 @@ func TestClient_APIError(t *testing.T) {
 		}))
 	defer srv.Close()
 
-	cfg := rest.NewConfig()
-	c, err := rest.NewClient(srv.URL, "bad", &cfg)
+	c, err := rest.NewClient(srv.URL, "bad")
 	require.NoError(t, err)
 
 	_, err = c.Users.GetAccounts(
@@ -74,17 +72,16 @@ func TestClient_APIError(t *testing.T) {
 
 func TestNewClient_Validation(t *testing.T) {
 	var cfgErr *rest.ConfigError
-	cfg := rest.NewConfig()
-	_, err := rest.NewClient("", "tkn", &cfg)
+	_, err := rest.NewClient("", "tkn")
 	require.ErrorAs(t, err, &cfgErr)
-	_, err = rest.NewClient(tinvest.EndpointProductionREST, "", &cfg)
+	_, err = rest.NewClient(tinvest.EndpointProductionREST, "")
 	require.ErrorAs(t, err, &cfgErr)
 	_, err = rest.NewClient(tinvest.EndpointProductionREST, "tkn",
-		&rest.Config{AppName: "x"})
+		rest.WithHTTPClient(nil))
 	require.ErrorAs(t, err, &cfgErr)
 }
 
-func TestNewClient_WithConfig(t *testing.T) {
+func TestNewClient_WithOptions(t *testing.T) {
 	var gotApp string
 	srv := httptest.NewServer(http.HandlerFunc(
 		func(w http.ResponseWriter, r *http.Request) {
@@ -94,10 +91,10 @@ func TestNewClient_WithConfig(t *testing.T) {
 		}))
 	defer srv.Close()
 
-	c, err := rest.NewClient(srv.URL, "tkn", &rest.Config{
-		HTTPClient: &http.Client{},
-		AppName:    "literal-app",
-	})
+	c, err := rest.NewClient(srv.URL, "tkn",
+		rest.WithHTTPClient(&http.Client{}),
+		rest.WithAppName("literal-app"),
+	)
 	require.NoError(t, err)
 
 	_, err = c.Users.GetAccounts(
@@ -111,6 +108,6 @@ func TestNewClient_WithConfig(t *testing.T) {
 func TestNewClient_NilHTTPClientErrors(t *testing.T) {
 	var cfgErr *rest.ConfigError
 	_, err := rest.NewClient(tinvest.EndpointProductionREST, "tkn",
-		&rest.Config{AppName: "x"})
+		rest.WithHTTPClient(nil))
 	require.ErrorAs(t, err, &cfgErr)
 }

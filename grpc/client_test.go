@@ -19,7 +19,7 @@ func TestNewClient_AllServicesInitialized(t *testing.T) {
 		require.NoError(t, conn.Close())
 	}()
 
-	client, err := NewClient(conn, NewClientConfig())
+	client, err := NewClient(conn)
 	require.NoError(t, err)
 	require.NotNil(t, client)
 
@@ -37,7 +37,7 @@ func TestNewClient_AllServicesInitialized(t *testing.T) {
 }
 
 func TestNewClient_NilConn(t *testing.T) {
-	client, err := NewClient(nil, NewClientConfig())
+	client, err := NewClient(nil)
 	assert.Nil(t, client)
 	require.Error(t, err)
 	assert.ErrorContains(t, err, "is nil")

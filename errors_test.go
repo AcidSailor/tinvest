@@ -8,7 +8,6 @@ import (
 )
 
 func TestSentinelErrors(t *testing.T) {
-	assert.Equal(t, "tinvest: invalid config", ErrInvalidConfig.Error())
 	assert.Equal(t, "overflow", money.ErrOverflow.Error())
 	assert.Equal(t, "conversion", money.ErrConversion.Error())
 }

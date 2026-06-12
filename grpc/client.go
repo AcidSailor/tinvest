@@ -38,13 +38,10 @@ type Client struct {
 
 // NewClient wraps an existing gRPC connection with T-Invest service sub-clients.
 // Does not own the connection — caller is responsible for conn.Close().
-// Returns an error if conn is nil or if config fails validation.
-func NewClient(conn *grpc.ClientConn, config *ClientConfig) (*Client, error) {
+// Returns an error if conn is nil.
+func NewClient(conn *grpc.ClientConn) (*Client, error) {
 	if conn == nil {
 		return nil, errors.New("tinvest: conn is nil")
-	}
-	if err := config.Validate(); err != nil {
-		return nil, err
 	}
 	return &Client{
 		Instruments:      pb.NewInstrumentsServiceClient(conn),

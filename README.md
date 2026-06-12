@@ -30,14 +30,13 @@ import (
 func main() {
     ctx := context.Background()
 
-    connConfig := grpc.NewConnConfig(tinvest.EndpointProduction, "your-api-token")
-    conn, err := grpc.NewConn(ctx, connConfig)
+    conn, err := grpc.NewConn(ctx, tinvest.EndpointProduction, "your-api-token")
     if err != nil {
         log.Fatal(err)
     }
     defer conn.Close()
 
-    client, err := grpc.NewClient(conn, grpc.NewClientConfig())
+    client, err := grpc.NewClient(conn)
     if err != nil {
         log.Fatal(err)
     }
@@ -49,19 +48,19 @@ func main() {
 
 ## Configuration
 
-### ConnConfig
+### Connection
 
-`grpc.ConnConfig` holds gRPC connection settings and is created with a required endpoint and API token. Endpoint constants live in the root `tinvest` package:
+`grpc.NewConn` takes a required endpoint and API token, plus optional functional options. Endpoint constants live in the root `tinvest` package:
 
 ```go
 // Production environment
-config := grpc.NewConnConfig(tinvest.EndpointProduction, token)
+conn, err := grpc.NewConn(ctx, tinvest.EndpointProduction, token)
 
 // Sandbox environment (for testing without real money)
-config := grpc.NewConnConfig(tinvest.EndpointSandbox, token)
+conn, err := grpc.NewConn(ctx, tinvest.EndpointSandbox, token)
 
-// Optionally set a custom app name (sent as x-app-name header) via a functional option
-config = grpc.NewConnConfig(tinvest.EndpointProduction, token, grpc.WithAppName("my-trading-bot"))
+// Optionally set a custom app name (sent as x-app-name header)
+conn, err := grpc.NewConn(ctx, tinvest.EndpointProduction, token, grpc.WithAppName("my-trading-bot"))
 ```
 
 | Constant             | Value                                             |
@@ -69,12 +68,10 @@ config = grpc.NewConnConfig(tinvest.EndpointProduction, token, grpc.WithAppName(
 | `EndpointProduction` | `invest-public-api.tinkoff.ru:443`                |
 | `EndpointSandbox`    | `sandbox-invest-public-api.tinkoff.ru:443`        |
 
-### ClientConfig
-
-`grpc.ClientConfig` holds client-level settings:
+`grpc.NewClient` then wraps the connection with the typed service sub-clients:
 
 ```go
-config := grpc.NewClientConfig()
+client, err := grpc.NewClient(conn)
 ```
 
 ## API Services
@@ -118,27 +115,30 @@ units/nano math underneath lives in the `tinvest/money` package.
 
 ## Error Handling
 
-Errors raised by the library's own validation and conversion logic wrap a
-specific sentinel naming the failure, matchable with `errors.Is`:
+Invalid construction input surfaces as a typed `*ConfigError`, owned by each
+transport and matched with `errors.As`:
 
 ```go
-if errors.Is(err, tinvest.ErrInvalidConfig) {
-    // a configuration value was missing or invalid
+var ce *grpc.ConfigError // or *rest.ConfigError
+if errors.As(err, &ce) {
+    // ce.Reason names the missing/invalid value, e.g. "empty token"
 }
 ```
 
-The sentinels are:
+The typed errors are:
 
-- `tinvest.ErrInvalidConfig` — a configuration value is missing or invalid
+- `grpc.ConfigError` / `rest.ConfigError` — invalid `NewConn` / `NewClient` input
+- `rest.RequestError` — a REST call failed before a result (`Op` names the stage)
+- `rest.ResponseError` — a non-2xx REST response (`StatusCode` and raw body)
 - `money.ErrConversion` — invalid input converting between units/nano and decimal
 - `money.ErrOverflow` — a value does not fit the target representation
-- `rest.ErrRequest` — a REST request failed (transport, encoding, or decoding)
 
-REST gateway non-2xx responses surface as a `*rest.APIError` (with `StatusCode`
-and `Body`), reachable with `errors.As`. Nil-argument errors (e.g. a nil
-`*pb.Quotation`) are returned as plain `errors.New` values — they carry a
-`tinvest:` message prefix but are not sentinels to match on. Errors returned by
-gRPC RPC calls are passed through unwrapped as standard gRPC status errors.
+`money` keeps `ErrConversion` / `ErrOverflow` as sentinels (match with
+`errors.Is`); everywhere else the typed error is the category. Nil-argument
+errors (e.g. a nil `*pb.Quotation`, or a nil `conn` to `grpc.NewClient`) are
+returned as plain `errors.New` values — they carry a `tinvest:` message prefix
+but are not meant to be matched on. Errors returned by gRPC RPC calls are passed
+through unwrapped as standard gRPC status errors.
 
 ## OpenTelemetry
 

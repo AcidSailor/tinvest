@@ -17,7 +17,7 @@ const (
 // Client is the T-Invest REST gateway client. Immutable after construction and
 // safe for concurrent use. Service methods hang off the per-service fields.
 type Client struct {
-	rk *restkit.Client
+	rkClient *restkit.Client
 
 	Instruments instrumentsServiceClient
 	MarketData  marketDataServiceClient
@@ -30,44 +30,23 @@ type Client struct {
 }
 
 // ClientOption configures a Client at construction.
-type ClientOption func(*Config)
+type ClientOption func(*config)
 
-// Config holds construction-time options for a Client. Build it with NewConfig
-// and options, or as a struct literal, then pass the result to NewClient.
-type Config struct {
-	HTTPClient *http.Client
-	AppName    string
+// config holds the resolved construction-time options for a Client.
+type config struct {
+	httpClient *http.Client
+	appName    string
 }
 
-func NewConfig(opts ...ClientOption) Config {
-	cfg := Config{
-		HTTPClient: &http.Client{Timeout: defaultTimeout},
-		AppName:    tinvest.AppName,
-	}
-	for _, opt := range opts {
-		opt(&cfg)
-	}
-	return cfg
-}
-
-// WithHTTPClient sets the *http.Client (custom Timeout/Transport/proxy). A nil
-// client makes NewClient return a *ConfigError.
+// WithHTTPClient sets the *http.Client (custom Timeout/Transport/proxy). Passing
+// a nil client makes NewClient return a *ConfigError.
 func WithHTTPClient(h *http.Client) ClientOption {
-	return func(c *Config) { c.HTTPClient = h }
+	return func(c *config) { c.httpClient = h }
 }
 
 // WithAppName sets the x-app-name header value identifying the application.
 func WithAppName(name string) ClientOption {
-	return func(c *Config) { c.AppName = name }
-}
-
-// WithConfig replaces the whole Config, letting callers build a struct literal
-// instead of composing individual options. Because it overwrites every field
-// (including defaults), set HTTPClient yourself — a nil HTTPClient makes
-// NewClient return a *ConfigError. Options listed after WithConfig still take
-// effect.
-func WithConfig(cfg Config) ClientOption {
-	return func(c *Config) { *c = cfg }
+	return func(c *config) { c.appName = name }
 }
 
 // authHook sets the per-client auth and app-name headers on every request.
@@ -80,26 +59,37 @@ func authHook(token, appName string) restkit.RequestHook {
 }
 
 // NewClient builds a Client targeting endpoint (use tinvest.EndpointProductionREST
-// / tinvest.EndpointSandboxREST) with the given API token. Returns a *ConfigError
-// on an empty endpoint/token or a nil *http.Client.
-func NewClient(endpoint, token string, config *Config) (*Client, error) {
+// / tinvest.EndpointSandboxREST) with the given API token. The HTTP client
+// defaults to a 30s-timeout *http.Client and the x-app-name header to
+// tinvest.AppName; override either with WithHTTPClient / WithAppName. Returns a
+// *ConfigError on an empty token or a nil *http.Client.
+func NewClient(endpoint, token string, opts ...ClientOption) (*Client, error) {
 	if token == "" {
 		return nil, &ConfigError{Name: clientName, Reason: "empty token"}
 	}
-	if config.HTTPClient == nil {
+
+	cfg := config{
+		httpClient: &http.Client{Timeout: defaultTimeout},
+		appName:    tinvest.AppName,
+	}
+	for _, opt := range opts {
+		opt(&cfg)
+	}
+	if cfg.httpClient == nil {
 		return nil, &ConfigError{Name: clientName, Reason: "nil *http.Client"}
 	}
-	rk, err := restkit.New(
+
+	rkClient, err := restkit.New(
 		endpoint,
 		restkit.WithName(clientName),
-		restkit.WithHTTPClient(config.HTTPClient),
-		restkit.WithHook(authHook(token, config.AppName)),
+		restkit.WithHTTPClient(cfg.httpClient),
+		restkit.WithHook(authHook(token, cfg.appName)),
 	)
 	if err != nil {
 		return nil, err
 	}
 
-	cl := &Client{rk: rk}
+	cl := &Client{rkClient: rkClient}
 	cl.Instruments = instrumentsServiceClient{cl}
 	cl.MarketData = marketDataServiceClient{cl}
 	cl.Operations = operationsServiceClient{cl}
@@ -114,6 +104,11 @@ func NewClient(endpoint, token string, config *Config) (*Client, error) {
 // do POSTs body as JSON to path and decodes the 2xx response into T. A non-2xx
 // becomes a *ResponseError; any other stage failure a *RequestError (both via
 // errors.As).
-func do[T any](ctx context.Context, c *Client, path string, body any) (T, error) {
-	return restkit.Do[T](ctx, c.rk, http.MethodPost, path, body)
+func do[T any](
+	ctx context.Context,
+	c *Client,
+	path string,
+	body any,
+) (T, error) {
+	return restkit.Do[T](ctx, c.rkClient, http.MethodPost, path, body)
 }
