@@ -1,26 +1,22 @@
+// Package rest error types are the shared restkit types, re-exported as aliases
+// so callers match them with errors.As without importing restkit:
+//
+//	var re *rest.ResponseError
+//	if errors.As(err, &re) { _ = re.StatusCode } // e.g. 401
+//
+//	var re *rest.RequestError
+//	if errors.As(err, &re) { _ = re.Op }          // "send", "unmarshal", ...
+//
+// There are no sentinel errors: the typed error IS the category.
 package rest
 
-import (
-	"errors"
-	"fmt"
-)
+import "github.com/acidsailor/restkit"
 
-var ErrRequest = errors.New("tinvest: request")
+// ResponseError is a non-2xx T-Invest REST response (status + raw body).
+type ResponseError = restkit.ResponseError
 
-// APIError reports a non-2xx response from the T-Invest REST gateway. Reach it
-// with errors.As; Body holds the raw error JSON (e.g. {"code":..,"message":..}).
-type APIError struct {
-	StatusCode int
-	Body       string
-}
+// RequestError is a per-call failure; Op names the stage and Err wraps the cause.
+type RequestError = restkit.RequestError
 
-func (e *APIError) Error() string {
-	return fmt.Sprintf(
-		"tinvest: status %d, body: %s",
-		e.StatusCode,
-		e.Body,
-	)
-}
-
-// GetStatusCode reports the HTTP status (for errors.As probes).
-func (e *APIError) GetStatusCode() int { return e.StatusCode }
+// ConfigError is invalid NewClient construction input.
+type ConfigError = restkit.ConfigError

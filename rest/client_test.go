@@ -67,20 +67,21 @@ func TestClient_APIError(t *testing.T) {
 		&rest.V1GetAccountsRequest{},
 	)
 	require.Error(t, err)
-	var apiErr *rest.APIError
+	var apiErr *rest.ResponseError
 	require.ErrorAs(t, err, &apiErr)
 	assert.Equal(t, http.StatusUnauthorized, apiErr.StatusCode)
 }
 
 func TestNewClient_Validation(t *testing.T) {
+	var cfgErr *rest.ConfigError
 	cfg := rest.NewConfig()
 	_, err := rest.NewClient("", "tkn", &cfg)
-	require.ErrorIs(t, err, tinvest.ErrInvalidConfig)
+	require.ErrorAs(t, err, &cfgErr)
 	_, err = rest.NewClient(tinvest.EndpointProductionREST, "", &cfg)
-	require.ErrorIs(t, err, tinvest.ErrInvalidConfig)
+	require.ErrorAs(t, err, &cfgErr)
 	_, err = rest.NewClient(tinvest.EndpointProductionREST, "tkn",
 		&rest.Config{AppName: "x"})
-	require.ErrorIs(t, err, tinvest.ErrInvalidConfig)
+	require.ErrorAs(t, err, &cfgErr)
 }
 
 func TestNewClient_WithConfig(t *testing.T) {
@@ -108,7 +109,8 @@ func TestNewClient_WithConfig(t *testing.T) {
 }
 
 func TestNewClient_NilHTTPClientErrors(t *testing.T) {
+	var cfgErr *rest.ConfigError
 	_, err := rest.NewClient(tinvest.EndpointProductionREST, "tkn",
 		&rest.Config{AppName: "x"})
-	require.ErrorIs(t, err, tinvest.ErrInvalidConfig)
+	require.ErrorAs(t, err, &cfgErr)
 }
