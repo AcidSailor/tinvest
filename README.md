@@ -149,7 +149,7 @@ The gRPC connection is automatically instrumented with OpenTelemetry via `otelgr
 `grpc.NewConn` returns a lazily-dialed `*grpc.ClientConn` — no TCP connection is established until the first RPC call. The caller owns the connection and is responsible for closing it:
 
 ```go
-conn, err := grpc.NewConn(ctx, connConfig)
+conn, err := grpc.NewConn(ctx, tinvest.EndpointProduction, token)
 if err != nil { ... }
 defer conn.Close()
 ```

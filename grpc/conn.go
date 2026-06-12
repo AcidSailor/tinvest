@@ -3,6 +3,7 @@ package grpc
 import (
 	"context"
 	"crypto/tls"
+	"fmt"
 	"log/slog"
 
 	"go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc"
@@ -52,7 +53,7 @@ func NewConn(
 		grpc.WithStatsHandler(otelHandler),
 	)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("%s: dial %s: %w", connName, endpoint, err)
 	}
 
 	slog.InfoContext(ctx, "tinvest connection created",

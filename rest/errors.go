@@ -20,3 +20,14 @@ type RequestError = restkit.RequestError
 
 // ConfigError is invalid NewClient construction input.
 type ConfigError = restkit.ConfigError
+
+// RequestError.Op values, re-exported so callers can match the failed stage
+// without importing restkit.
+const (
+	OpMarshal   = restkit.OpMarshal   // encoding the request body to JSON
+	OpBuild     = restkit.OpBuild     // constructing the *http.Request
+	OpHook      = restkit.OpHook      // a request hook returned an error
+	OpSend      = restkit.OpSend      // the HTTP round-trip
+	OpRead      = restkit.OpRead      // reading the response body
+	OpUnmarshal = restkit.OpUnmarshal // decoding the 2xx body
+)

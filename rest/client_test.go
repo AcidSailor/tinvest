@@ -70,6 +70,48 @@ func TestClient_APIError(t *testing.T) {
 	assert.Equal(t, http.StatusUnauthorized, apiErr.StatusCode)
 }
 
+func TestClient_RequestError_Unmarshal(t *testing.T) {
+	srv := httptest.NewServer(http.HandlerFunc(
+		func(w http.ResponseWriter, r *http.Request) {
+			w.Header().Set("Content-Type", "application/json")
+			_, _ = w.Write([]byte(`{ not valid json `))
+		}))
+	defer srv.Close()
+
+	c, err := rest.NewClient(srv.URL, "tkn")
+	require.NoError(t, err)
+
+	_, err = c.Users.GetAccounts(
+		context.Background(),
+		&rest.V1GetAccountsRequest{},
+	)
+	require.Error(t, err)
+	var reqErr *rest.RequestError
+	require.ErrorAs(t, err, &reqErr)
+	assert.Equal(t, rest.OpUnmarshal, reqErr.Op)
+}
+
+func TestClient_RequestError_Send(t *testing.T) {
+	// A server that is shut down before the call yields a connection refused,
+	// surfacing as a RequestError at the send stage.
+	srv := httptest.NewServer(http.HandlerFunc(
+		func(w http.ResponseWriter, r *http.Request) {}))
+	url := srv.URL
+	srv.Close()
+
+	c, err := rest.NewClient(url, "tkn")
+	require.NoError(t, err)
+
+	_, err = c.Users.GetAccounts(
+		context.Background(),
+		&rest.V1GetAccountsRequest{},
+	)
+	require.Error(t, err)
+	var reqErr *rest.RequestError
+	require.ErrorAs(t, err, &reqErr)
+	assert.Equal(t, rest.OpSend, reqErr.Op)
+}
+
 func TestNewClient_Validation(t *testing.T) {
 	var cfgErr *rest.ConfigError
 	_, err := rest.NewClient("", "tkn")
