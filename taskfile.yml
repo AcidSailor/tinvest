@@ -5,7 +5,7 @@ tasks:
     desc: Generate Go code from T-Invest proto contracts
     cmds:
       - |
-        [ -d tmp/invest-contracts ] || git clone --depth 1 --branch 1.48 \
+        [ -d tmp/invest-contracts ] || git clone --depth 1 --branch 1.49 \
           https://opensource.tbank.ru/invest/invest-contracts.git \
           tmp/invest-contracts
       - buf generate tmp/invest-contracts/src/docs/contracts
