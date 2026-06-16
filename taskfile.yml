@@ -7,20 +7,6 @@ vars:
   CONTRACTS_VERSION: "1.49"
 
 tasks:
-  proto:
-    desc: Generate Go code from T-Invest proto contracts
-    cmds:
-      - |
-        [ -d tmp/invest-contracts ] || git clone --depth 1 --branch {{.CONTRACTS_VERSION}} \
-          https://opensource.tbank.ru/invest/invest-contracts.git \
-          tmp/invest-contracts
-      - buf generate tmp/invest-contracts/src/docs/contracts
-    sources:
-      - tmp/invest-contracts/src/docs/contracts/**/*.proto
-      - buf.gen.yaml
-    generates:
-      - grpc/pb/**/*.go
-
   lint:
     desc: Run formatters + linters with autofix (mutates files)
     cmds:
@@ -36,13 +22,42 @@ tasks:
   test:
     desc: Run tests
     cmds:
-      - go test ./...
+      - go test -race ./...
 
   check:
     desc: Local composite — lint (mutating) + tests
     cmds:
       - task: lint
       - task: test
+
+  build:
+    desc: Local snapshot release (validates GoReleaser config; no publish)
+    cmds:
+      - goreleaser release --snapshot --clean --skip=publish
+
+  release:
+    desc: Tagged release via GoReleaser — GitHub Release + changelog (CI)
+    cmds:
+      - goreleaser release --clean
+
+  update:
+    desc: Pull latest go-scaffolds v1 template tooling (3-way merge; source untouched)
+    cmds:
+      - uvx copier update --vcs-ref v1
+
+  proto:
+    desc: Generate Go code from T-Invest proto contracts
+    cmds:
+      - |
+        [ -d tmp/invest-contracts ] || git clone --depth 1 --branch {{.CONTRACTS_VERSION}} \
+          https://opensource.tbank.ru/invest/invest-contracts.git \
+          tmp/invest-contracts
+      - buf generate tmp/invest-contracts/src/docs/contracts
+    sources:
+      - tmp/invest-contracts/src/docs/contracts/**/*.proto
+      - buf.gen.yaml
+    generates:
+      - grpc/pb/**/*.go
 
   spec:
     desc: Download the upstream T-Invest OpenAPI spec (committed verbatim)

@@ -19,8 +19,11 @@ Go client library for the T-Invest (T-Bank Investments) gRPC and REST APIs.
 - `task rest` — regenerate REST artifacts (overlay + deref + `rest/models.gen.go`) from the committed spec
 - `task lint` — run formatters (gofumpt + golines) and linters with autofix
 - `task ci` — read-only fmt + lint verification (fail-fast; used by GitHub Actions)
-- `task test` — run tests
+- `task test` — run tests (race detector)
 - `task check` — local composite: `task lint` + `task test`
+- `task build` — local GoReleaser snapshot (validates release config; no publish)
+- `task release` — tagged GoReleaser release (run by CI on `v*` tags)
+- `task update` — pull latest go-scaffolds v1 template tooling (`copier update`)
 
 ## Code generation
 
