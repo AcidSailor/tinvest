@@ -1,20 +1,12 @@
 version: "3"
 
-tasks:
-  proto:
-    desc: Generate Go code from T-Invest proto contracts
-    cmds:
-      - |
-        [ -d tmp/invest-contracts ] || git clone --depth 1 --branch 1.48 \
-          https://opensource.tbank.ru/invest/invest-contracts.git \
-          tmp/invest-contracts
-      - buf generate tmp/invest-contracts/src/docs/contracts
-    sources:
-      - tmp/invest-contracts/src/docs/contracts/**/*.proto
-      - buf.gen.yaml
-    generates:
-      - pb/**/*.go
+vars:
+  # Single source of truth for the upstream invest-contracts release.
+  # Pins both the proto contracts (git tag) and the REST spec (raw tag URL)
+  # so the two transports never drift onto different upstream versions.
+  CONTRACTS_VERSION: "1.49"
 
+tasks:
   lint:
     desc: Run formatters + linters with autofix (mutates files)
     cmds:
@@ -30,10 +22,74 @@ tasks:
   test:
     desc: Run tests
     cmds:
-      - go test ./...
+      - go test -race ./...
 
   check:
     desc: Local composite — lint (mutating) + tests
     cmds:
       - task: lint
       - task: test
+
+  build:
+    desc: Local snapshot release (validates GoReleaser config; no publish)
+    cmds:
+      - goreleaser release --snapshot --clean --skip=publish
+
+  release:
+    desc: Tagged release via GoReleaser — GitHub Release + changelog (CI)
+    cmds:
+      - goreleaser release --clean
+
+  update:
+    desc: Pull latest go-scaffolds v1 template tooling (3-way merge; source untouched)
+    cmds:
+      - uvx copier update --vcs-ref v1
+
+  proto:
+    desc: Generate Go code from T-Invest proto contracts
+    cmds:
+      - |
+        [ -d tmp/invest-contracts ] || git clone --depth 1 --branch {{.CONTRACTS_VERSION}} \
+          https://opensource.tbank.ru/invest/invest-contracts.git \
+          tmp/invest-contracts
+      - buf generate tmp/invest-contracts/src/docs/contracts
+    sources:
+      - tmp/invest-contracts/src/docs/contracts/**/*.proto
+      - buf.gen.yaml
+    generates:
+      - grpc/pb/**/*.go
+
+  spec:
+    desc: Download the upstream T-Invest OpenAPI spec (committed verbatim)
+    vars:
+      SPEC_URL: https://opensource.tbank.ru/invest/invest-contracts/-/raw/{{.CONTRACTS_VERSION}}/src/docs/swagger-ui/openapi.yaml
+    cmds:
+      - curl -fsSL "{{.SPEC_URL}}" -o spec/spec-upstream.yaml
+
+  overlay:
+    desc: Apply spec/overlay.yml -> spec/spec.yaml (oapi-codegen input)
+    cmds:
+      - >
+        docker run --rm -v "$PWD/spec:/work" ghcr.io/speakeasy-api/speakeasy:latest
+        overlay apply -s /work/spec-upstream.yaml -o /work/overlay.yml
+        --out /work/spec.yaml --strict
+
+  deref:
+    desc: Dereference upstream -> spec/spec-deref.json (MCP schema source)
+    cmds:
+      - >
+        docker run --rm -v "$PWD/spec:/work" ghcr.io/redocly/cli:latest
+        bundle /work/spec-upstream.yaml -o /work/spec-deref.json --dereferenced
+
+  gen:
+    desc: Generate plain-struct models into rest/models.gen.go
+    deps: [overlay]
+    cmds:
+      - go run github.com/oapi-codegen/oapi-codegen/v2/cmd/oapi-codegen@v2.5.0 -config oapi-codegen.yaml spec/spec.yaml
+      - gofmt -w rest/models.gen.go
+
+  rest:
+    desc: Regenerate REST artifacts from the committed upstream spec (overlay + deref + models)
+    cmds:
+      - task: deref
+      - task: gen # runs `overlay` first via its deps
