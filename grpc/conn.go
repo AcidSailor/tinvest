@@ -40,7 +40,14 @@ func NewConn(
 		opt(&cfg)
 	}
 
-	tlsCreds := credentials.NewTLS(&tls.Config{MinVersion: tls.VersionTLS12})
+	pool, err := tinvest.RootCAs()
+	if err != nil {
+		return nil, fmt.Errorf("%s: %w", connName, err)
+	}
+	tlsCreds := credentials.NewTLS(&tls.Config{
+		MinVersion: tls.VersionTLS12,
+		RootCAs:    pool,
+	})
 	otelHandler := otelgrpc.NewClientHandler()
 	unaryInt := unaryAuthInterceptor(token, cfg.appName)
 	streamInt := streamAuthInterceptor(token, cfg.appName)
