@@ -45,6 +45,36 @@ tasks:
     cmds:
       - uvx copier update --vcs-ref v1
 
+  upstream:
+    desc: Report whether a newer invest-contracts release is published upstream
+    silent: true
+    cmds:
+      - |
+        latest=$(git ls-remote --tags --refs \
+          https://opensource.tbank.ru/invest/invest-contracts.git \
+          | awk -F/ '{print $NF}' | sort -V | tail -1)
+        pinned="{{.CONTRACTS_VERSION}}"
+        if [ -z "$latest" ]; then
+          echo "invest-contracts: could not reach upstream to check for updates."
+        elif [ "$latest" = "$pinned" ]; then
+          echo "invest-contracts: pinned $pinned is the latest upstream release."
+        else
+          echo "invest-contracts: newer release available — $latest (pinned $pinned)."
+          echo "  To adopt: bump CONTRACTS_VERSION in taskfile.yml, then run 'task proto spec rest' and review the diff."
+        fi
+
+  housekeep:
+    desc: One-shot maintenance — tooling + deps + regenerated artifacts, then verify
+    cmds:
+      - task: upstream
+      - task: update
+      - task: proto
+      - task: spec
+      - task: rest
+      - go get -u ./...
+      - go mod tidy
+      - task: check
+
   proto:
     desc: Generate Go code from T-Invest proto contracts
     cmds:
