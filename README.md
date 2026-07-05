@@ -28,6 +28,16 @@ Endpoint constants (root package): `EndpointProduction`, `EndpointSandbox`
 (gRPC, `host:443`) and `EndpointProductionREST`, `EndpointSandboxREST` (HTTPS
 gateway URLs).
 
+### TLS / certificates
+
+The T-Invest API (`*.tbank.ru`) serves TLS certificates that chain to the
+**Russian Trusted Root CA** (НУЦ Минцифры РФ), which standard OS trust stores
+do not include — without it, connections fail with `certificate verify failed`.
+This library bundles that root and adds it to the system pool automatically, so
+no system-wide certificate installation is required. `tinvest.RootCAs()` exposes
+the pool. If you pass your own `*http.Client` via `rest.WithHTTPClient`, its
+transport must trust that CA (use `tinvest.RootCAs()`).
+
 ## gRPC usage
 
 `NewConn` builds a configured `*grpc.ClientConn` (lazy dial, TLS 1.2+, OpenTelemetry
