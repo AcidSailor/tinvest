@@ -29,9 +29,15 @@ var (
 const (
 	nanoPrecision    = 9
 	nanoPerHundredth = 10_000_000 // 1e9 / 100
+	// nanoLimit is 10^9: nano carries only the fractional billionths, so its
+	// magnitude must stay strictly below one whole unit. |nano| >= nanoLimit is
+	// not a valid split — the whole part belongs in units.
+	nanoLimit = 1_000_000_000
 )
 
-// nanoFactor is 10^9. Panic is intentional: a compile-time constant.
+// nanoFactor is 10^9 as a udecimal. It is built once at package init from a
+// fixed, in-range literal, so udecimal.NewFromInt64 cannot fail here; the panic
+// guards that impossible error at init rather than any runtime input.
 var nanoFactor = func() udecimal.Decimal {
 	d, err := udecimal.NewFromInt64(1_000_000_000, 0)
 	if err != nil {
@@ -42,13 +48,22 @@ var nanoFactor = func() udecimal.Decimal {
 	return d
 }()
 
-// ValidateSigns rejects mixed-sign (units, nano) pairs, which the API never
-// emits and which arithmetic would silently coerce.
+// ValidateSigns rejects invalid (units, nano) pairs: a mixed-sign pair (which
+// the API never emits and which arithmetic would silently coerce), or a nano
+// whose magnitude reaches one whole unit (|nano| >= 1e9). nano carries only the
+// fractional billionths, so an out-of-range nano is not a valid split — the
+// whole part belongs in units — and combining it would silently produce a wrong
+// value (e.g. units=1, nano=1.5e9 would yield 2.5).
 func ValidateSigns(units int64, nano int32) error {
 	if (units > 0 && nano < 0) || (units < 0 && nano > 0) {
 		return fmt.Errorf(
 			"mixed sign (units=%d, nano=%d): %w",
 			units, nano, ErrConversion,
+		)
+	}
+	if nano <= -nanoLimit || nano >= nanoLimit {
+		return fmt.Errorf(
+			"nano %d outside valid range (-1e9, 1e9): %w", nano, ErrOverflow,
 		)
 	}
 	return nil
@@ -136,7 +151,9 @@ func DecimalToUnitsNano(d udecimal.Decimal) (int64, int32, error) {
 	return u, nano, nil
 }
 
-// FormatMoney renders units/nano + currency as "250.50 RUB" (2 dp, truncated).
+// FormatMoney renders units/nano + currency as "250.50 RUB" (2 dp, truncated
+// toward zero). A non-zero value below 0.01 therefore renders as "0.00"; when
+// sub-cent exactness matters, format [UnitsNanoToDecimal] instead.
 func FormatMoney(
 	units int64, nano int32, currency string,
 ) (string, error) {
@@ -150,8 +167,10 @@ func FormatMoney(
 	), nil
 }
 
-// FormatQuotation renders units/nano as a decimal string; 2 dp only when nano
-// is non-zero.
+// FormatQuotation renders units/nano as a decimal string; 2 dp (truncated
+// toward zero) only when nano is non-zero. A non-zero nano below 0.01 truncates
+// to ".00"; when sub-cent exactness matters, format [UnitsNanoToDecimal]
+// instead.
 func FormatQuotation(units int64, nano int32) (string, error) {
 	sign, u, n, err := NormalizeSign(units, nano)
 	if err != nil {
