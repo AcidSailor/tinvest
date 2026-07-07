@@ -43,8 +43,7 @@ tasks:
   update:
     desc: Pull latest go-scaffolds v1 template tooling (3-way merge; source untouched; no prompts)
     cmds:
-<<<<<<< before updating
-      - uvx copier update --vcs-ref v1
+      - uvx copier update --defaults --vcs-ref v1
 
   upstream:
     desc: Report whether a newer invest-contracts release is published upstream
@@ -124,6 +123,3 @@ tasks:
     cmds:
       - task: deref
       - task: gen # runs `overlay` first via its deps
-=======
-      - uvx copier update --defaults --vcs-ref v1
->>>>>>> after updating
