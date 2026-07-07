@@ -1560,8 +1560,8 @@ type Contractv1TradeDirection string
 
 // ProtobufAny defines model for protobufAny.
 type ProtobufAny struct {
-	Type                 *string                           `json:"@type,omitempty"`
-	AdditionalProperties map[string]map[string]interface{} `json:"-"`
+	Type                 *string                   `json:"@type,omitempty"`
+	AdditionalProperties map[string]map[string]any `json:"-"`
 }
 
 // RpcStatus defines model for rpcStatus.
@@ -2803,7 +2803,7 @@ type V1CloseSandboxAccountRequest struct {
 // V1CloseSandboxAccountResponse Результат закрытия счета в песочнице.
 //
 // пустой ответ
-type V1CloseSandboxAccountResponse = map[string]interface{}
+type V1CloseSandboxAccountResponse = map[string]any
 
 // V1CountryResponse Данные о стране.
 type V1CountryResponse struct {
@@ -3058,7 +3058,7 @@ type V1CurrencyTransferRequest struct {
 }
 
 // V1CurrencyTransferResponse defines model for v1CurrencyTransferResponse.
-type V1CurrencyTransferResponse = map[string]interface{}
+type V1CurrencyTransferResponse = map[string]any
 
 // V1DeleteFavoriteGroupRequest defines model for v1DeleteFavoriteGroupRequest.
 type V1DeleteFavoriteGroupRequest struct {
@@ -3067,7 +3067,7 @@ type V1DeleteFavoriteGroupRequest struct {
 }
 
 // V1DeleteFavoriteGroupResponse defines model for v1DeleteFavoriteGroupResponse.
-type V1DeleteFavoriteGroupResponse = map[string]interface{}
+type V1DeleteFavoriteGroupResponse = map[string]any
 
 // V1DfaResponse defines model for v1DfaResponse.
 type V1DfaResponse struct {
@@ -3156,7 +3156,7 @@ type V1DfaResponseBasicAsset struct {
 }
 
 // V1DfasRequest defines model for v1DfasRequest.
-type V1DfasRequest = map[string]interface{}
+type V1DfasRequest = map[string]any
 
 // V1DfasResponse defines model for v1DfasResponse.
 type V1DfasResponse struct {
@@ -3845,7 +3845,7 @@ type V1GetAssetReportsResponse struct {
 }
 
 // V1GetBankAccountsRequest Запрос списка банковских счетов пользователя.
-type V1GetBankAccountsRequest = map[string]interface{}
+type V1GetBankAccountsRequest = map[string]any
 
 // V1GetBankAccountsResponse Список банковских счетов пользователя.
 type V1GetBankAccountsResponse struct {
@@ -4022,7 +4022,7 @@ type V1GetConsensusForecastsResponse struct {
 }
 
 // V1GetCountriesRequest Запрос справочника стран.
-type V1GetCountriesRequest = map[string]interface{}
+type V1GetCountriesRequest = map[string]any
 
 // V1GetCountriesResponse Справочник стран.
 type V1GetCountriesResponse struct {
@@ -4154,7 +4154,7 @@ type V1GetFuturesMarginResponse struct {
 }
 
 // V1GetInfoRequest Запрос информации о пользователе.
-type V1GetInfoRequest = map[string]interface{}
+type V1GetInfoRequest = map[string]any
 
 // V1GetInfoResponse Информация о пользователе.
 type V1GetInfoResponse struct {
@@ -4319,7 +4319,7 @@ type V1GetMaxLotsResponse struct {
 }
 
 // V1GetMySubscriptions Запрос активных подписок. Возвращает по одному сообщению на каждый тип активных подписок — `SubscribeLastPriceResponse`, `SubscribeInfoResponse`, `SubscribeTradesResponse`, `SubscribeOrderBookResponse`, `SubscribeCandlesResponse`.
-type V1GetMySubscriptions = map[string]interface{}
+type V1GetMySubscriptions = map[string]any
 
 // V1GetOperationsByCursorRequest Запрос списка операций по счету с пагинацией.
 type V1GetOperationsByCursorRequest struct {
@@ -4718,7 +4718,7 @@ type V1GetTradingStatusesResponse struct {
 }
 
 // V1GetUserTariffRequest Запрос текущих лимитов пользователя.
-type V1GetUserTariffRequest = map[string]interface{}
+type V1GetUserTariffRequest = map[string]any
 
 // V1GetUserTariffResponse Текущие лимиты пользователя.
 type V1GetUserTariffResponse struct {
@@ -4822,7 +4822,7 @@ type V1IndicativeResponse struct {
 }
 
 // V1IndicativesRequest defines model for v1IndicativesRequest.
-type V1IndicativesRequest = map[string]interface{}
+type V1IndicativesRequest = map[string]any
 
 // V1IndicativesResponse defines model for v1IndicativesResponse.
 type V1IndicativesResponse struct {
@@ -5320,9 +5320,9 @@ type V1LastPriceType string
 // V1MarketDataRequest Запрос подписки или отписки на определенные биржевые данные.
 type V1MarketDataRequest struct {
 	// GetMySubscriptions Запрос активных подписок. Возвращает по одному сообщению на каждый тип активных подписок — `SubscribeLastPriceResponse`, `SubscribeInfoResponse`, `SubscribeTradesResponse`, `SubscribeOrderBookResponse`, `SubscribeCandlesResponse`.
-	GetMySubscriptions *map[string]interface{} `json:"getMySubscriptions,omitempty"`
-	Ping               *V1PingRequest          `json:"ping,omitempty"`
-	PingSettings       *V1PingDelaySettings    `json:"pingSettings,omitempty"`
+	GetMySubscriptions *map[string]any      `json:"getMySubscriptions,omitempty"`
+	Ping               *V1PingRequest       `json:"ping,omitempty"`
+	PingSettings       *V1PingDelaySettings `json:"pingSettings,omitempty"`
 
 	// SubscribeCandlesRequest subscribeCandles | Изменения статуса подписки на свечи.
 	SubscribeCandlesRequest *V1SubscribeCandlesRequest `json:"subscribeCandlesRequest,omitempty"`
@@ -6778,7 +6778,7 @@ type V1PayInRequest struct {
 }
 
 // V1PayInResponse defines model for v1PayInResponse.
-type V1PayInResponse = map[string]interface{}
+type V1PayInResponse = map[string]any
 
 // V1Ping Проверка активности стрима.
 type V1Ping struct {
@@ -9164,17 +9164,17 @@ type UsersServicePayInJSONRequestBody = V1PayInRequest
 
 // Getter for additional properties for ProtobufAny. Returns the specified
 // element and whether it was found
-func (a ProtobufAny) Get(fieldName string) (value map[string]interface{}, found bool) {
+func (a ProtobufAny) Get(fieldName string) (value map[string]any, found bool) {
 	if a.AdditionalProperties != nil {
 		value, found = a.AdditionalProperties[fieldName]
 	}
-	return
+	return value, found
 }
 
 // Setter for additional properties for ProtobufAny
-func (a *ProtobufAny) Set(fieldName string, value map[string]interface{}) {
+func (a *ProtobufAny) Set(fieldName string, value map[string]any) {
 	if a.AdditionalProperties == nil {
-		a.AdditionalProperties = make(map[string]map[string]interface{})
+		a.AdditionalProperties = make(map[string]map[string]any)
 	}
 	a.AdditionalProperties[fieldName] = value
 }
@@ -9196,12 +9196,16 @@ func (a *ProtobufAny) UnmarshalJSON(b []byte) error {
 	}
 
 	if len(object) != 0 {
-		a.AdditionalProperties = make(map[string]map[string]interface{})
+		a.AdditionalProperties = make(map[string]map[string]any)
 		for fieldName, fieldBuf := range object {
-			var fieldVal map[string]interface{}
+			var fieldVal map[string]any
 			err := json.Unmarshal(fieldBuf, &fieldVal)
 			if err != nil {
-				return fmt.Errorf("error unmarshaling field %s: %w", fieldName, err)
+				return fmt.Errorf(
+					"error unmarshaling field %s: %w",
+					fieldName,
+					err,
+				)
 			}
 			a.AdditionalProperties[fieldName] = fieldVal
 		}

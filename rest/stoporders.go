@@ -10,7 +10,7 @@ const (
 	pathStopOrdersPostStopOrder   = "/tinkoff.public.invest.api.contract.v1.StopOrdersService/PostStopOrder"
 )
 
-func (s stopOrdersServiceClient) CancelStopOrder(
+func (s *stopOrdersServiceClient) CancelStopOrder(
 	ctx context.Context, req *V1CancelStopOrderRequest,
 ) (*V1CancelStopOrderResponse, error) {
 	return do[*V1CancelStopOrderResponse](
@@ -18,7 +18,7 @@ func (s stopOrdersServiceClient) CancelStopOrder(
 	)
 }
 
-func (s stopOrdersServiceClient) GetStopOrders(
+func (s *stopOrdersServiceClient) GetStopOrders(
 	ctx context.Context, req *V1GetStopOrdersRequest,
 ) (*V1GetStopOrdersResponse, error) {
 	return do[*V1GetStopOrdersResponse](
@@ -26,7 +26,7 @@ func (s stopOrdersServiceClient) GetStopOrders(
 	)
 }
 
-func (s stopOrdersServiceClient) PostStopOrder(
+func (s *stopOrdersServiceClient) PostStopOrder(
 	ctx context.Context, req *V1PostStopOrderRequest,
 ) (*V1PostStopOrderResponse, error) {
 	return do[*V1PostStopOrderResponse](

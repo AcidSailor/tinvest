@@ -20,14 +20,14 @@ const (
 type Client struct {
 	rkClient *restkit.Client
 
-	Instruments instrumentsServiceClient
-	MarketData  marketDataServiceClient
-	Operations  operationsServiceClient
-	Orders      ordersServiceClient
-	Sandbox     sandboxServiceClient
-	Signals     signalsServiceClient
-	StopOrders  stopOrdersServiceClient
-	Users       usersServiceClient
+	Instruments *instrumentsServiceClient
+	MarketData  *marketDataServiceClient
+	Operations  *operationsServiceClient
+	Orders      *ordersServiceClient
+	Sandbox     *sandboxServiceClient
+	Signals     *signalsServiceClient
+	StopOrders  *stopOrdersServiceClient
+	Users       *usersServiceClient
 }
 
 // ClientOption configures a Client at construction.
@@ -105,14 +105,14 @@ func NewClient(endpoint, token string, opts ...ClientOption) (*Client, error) {
 	}
 
 	cl := &Client{rkClient: rkClient}
-	cl.Instruments = instrumentsServiceClient{cl}
-	cl.MarketData = marketDataServiceClient{cl}
-	cl.Operations = operationsServiceClient{cl}
-	cl.Orders = ordersServiceClient{cl}
-	cl.Sandbox = sandboxServiceClient{cl}
-	cl.Signals = signalsServiceClient{cl}
-	cl.StopOrders = stopOrdersServiceClient{cl}
-	cl.Users = usersServiceClient{cl}
+	cl.Instruments = &instrumentsServiceClient{cl}
+	cl.MarketData = &marketDataServiceClient{cl}
+	cl.Operations = &operationsServiceClient{cl}
+	cl.Orders = &ordersServiceClient{cl}
+	cl.Sandbox = &sandboxServiceClient{cl}
+	cl.Signals = &signalsServiceClient{cl}
+	cl.StopOrders = &stopOrdersServiceClient{cl}
+	cl.Users = &usersServiceClient{cl}
 	return cl, nil
 }
 
