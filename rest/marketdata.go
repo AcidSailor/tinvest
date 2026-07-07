@@ -16,13 +16,13 @@ const (
 	pathMarketDataGetTradingStatuses = "/tinkoff.public.invest.api.contract.v1.MarketDataService/GetTradingStatuses"
 )
 
-func (s marketDataServiceClient) GetCandles(
+func (s *marketDataServiceClient) GetCandles(
 	ctx context.Context, req *V1GetCandlesRequest,
 ) (*V1GetCandlesResponse, error) {
 	return do[*V1GetCandlesResponse](ctx, s.c, pathMarketDataGetCandles, req)
 }
 
-func (s marketDataServiceClient) GetClosePrices(
+func (s *marketDataServiceClient) GetClosePrices(
 	ctx context.Context, req *V1GetClosePricesRequest,
 ) (*V1GetClosePricesResponse, error) {
 	return do[*V1GetClosePricesResponse](
@@ -30,7 +30,7 @@ func (s marketDataServiceClient) GetClosePrices(
 	)
 }
 
-func (s marketDataServiceClient) GetLastPrices(
+func (s *marketDataServiceClient) GetLastPrices(
 	ctx context.Context, req *V1GetLastPricesRequest,
 ) (*V1GetLastPricesResponse, error) {
 	return do[*V1GetLastPricesResponse](
@@ -38,7 +38,7 @@ func (s marketDataServiceClient) GetLastPrices(
 	)
 }
 
-func (s marketDataServiceClient) GetLastTrades(
+func (s *marketDataServiceClient) GetLastTrades(
 	ctx context.Context, req *V1GetLastTradesRequest,
 ) (*V1GetLastTradesResponse, error) {
 	return do[*V1GetLastTradesResponse](
@@ -46,7 +46,7 @@ func (s marketDataServiceClient) GetLastTrades(
 	)
 }
 
-func (s marketDataServiceClient) GetMarketValues(
+func (s *marketDataServiceClient) GetMarketValues(
 	ctx context.Context, req *V1GetMarketValuesRequest,
 ) (*V1GetMarketValuesResponse, error) {
 	return do[*V1GetMarketValuesResponse](
@@ -54,7 +54,7 @@ func (s marketDataServiceClient) GetMarketValues(
 	)
 }
 
-func (s marketDataServiceClient) GetOrderBook(
+func (s *marketDataServiceClient) GetOrderBook(
 	ctx context.Context, req *V1GetOrderBookRequest,
 ) (*V1GetOrderBookResponse, error) {
 	return do[*V1GetOrderBookResponse](
@@ -65,7 +65,7 @@ func (s marketDataServiceClient) GetOrderBook(
 	)
 }
 
-func (s marketDataServiceClient) GetTechAnalysis(
+func (s *marketDataServiceClient) GetTechAnalysis(
 	ctx context.Context, req *V1GetTechAnalysisRequest,
 ) (*V1GetTechAnalysisResponse, error) {
 	return do[*V1GetTechAnalysisResponse](
@@ -73,7 +73,7 @@ func (s marketDataServiceClient) GetTechAnalysis(
 	)
 }
 
-func (s marketDataServiceClient) GetTradingStatus(
+func (s *marketDataServiceClient) GetTradingStatus(
 	ctx context.Context, req *V1GetTradingStatusRequest,
 ) (*V1GetTradingStatusResponse, error) {
 	return do[*V1GetTradingStatusResponse](
@@ -81,7 +81,7 @@ func (s marketDataServiceClient) GetTradingStatus(
 	)
 }
 
-func (s marketDataServiceClient) GetTradingStatuses(
+func (s *marketDataServiceClient) GetTradingStatuses(
 	ctx context.Context, req *V1GetTradingStatusesRequest,
 ) (*V1GetTradingStatusesResponse, error) {
 	return do[*V1GetTradingStatusesResponse](

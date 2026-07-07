@@ -14,7 +14,7 @@ const (
 	pathOperationsGetWithdrawLimits         = "/tinkoff.public.invest.api.contract.v1.OperationsService/GetWithdrawLimits"
 )
 
-func (s operationsServiceClient) GetBrokerReport(
+func (s *operationsServiceClient) GetBrokerReport(
 	ctx context.Context, req *V1BrokerReportRequest,
 ) (*V1BrokerReportResponse, error) {
 	return do[*V1BrokerReportResponse](
@@ -22,7 +22,7 @@ func (s operationsServiceClient) GetBrokerReport(
 	)
 }
 
-func (s operationsServiceClient) GetDividendsForeignIssuer(
+func (s *operationsServiceClient) GetDividendsForeignIssuer(
 	ctx context.Context, req *V1GetDividendsForeignIssuerRequest,
 ) (*V1GetDividendsForeignIssuerResponse, error) {
 	return do[*V1GetDividendsForeignIssuerResponse](
@@ -30,7 +30,7 @@ func (s operationsServiceClient) GetDividendsForeignIssuer(
 	)
 }
 
-func (s operationsServiceClient) GetOperations(
+func (s *operationsServiceClient) GetOperations(
 	ctx context.Context, req *V1OperationsRequest,
 ) (*V1OperationsResponse, error) {
 	return do[*V1OperationsResponse](
@@ -38,7 +38,7 @@ func (s operationsServiceClient) GetOperations(
 	)
 }
 
-func (s operationsServiceClient) GetOperationsByCursor(
+func (s *operationsServiceClient) GetOperationsByCursor(
 	ctx context.Context, req *V1GetOperationsByCursorRequest,
 ) (*V1GetOperationsByCursorResponse, error) {
 	return do[*V1GetOperationsByCursorResponse](
@@ -46,19 +46,19 @@ func (s operationsServiceClient) GetOperationsByCursor(
 	)
 }
 
-func (s operationsServiceClient) GetPortfolio(
+func (s *operationsServiceClient) GetPortfolio(
 	ctx context.Context, req *V1PortfolioRequest,
 ) (*V1PortfolioResponse, error) {
 	return do[*V1PortfolioResponse](ctx, s.c, pathOperationsGetPortfolio, req)
 }
 
-func (s operationsServiceClient) GetPositions(
+func (s *operationsServiceClient) GetPositions(
 	ctx context.Context, req *V1PositionsRequest,
 ) (*V1PositionsResponse, error) {
 	return do[*V1PositionsResponse](ctx, s.c, pathOperationsGetPositions, req)
 }
 
-func (s operationsServiceClient) GetWithdrawLimits(
+func (s *operationsServiceClient) GetWithdrawLimits(
 	ctx context.Context, req *V1WithdrawLimitsRequest,
 ) (*V1WithdrawLimitsResponse, error) {
 	return do[*V1WithdrawLimitsResponse](
