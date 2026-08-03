@@ -9,7 +9,7 @@ require (
 	github.com/stretchr/testify v1.11.1
 	go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc v0.69.0
 	google.golang.org/genproto/googleapis/api v0.0.0-20260724162435-b2f20204f0df
-	google.golang.org/grpc v1.82.1
+	google.golang.org/grpc v1.83.0
 	google.golang.org/protobuf v1.36.11
 )
 
