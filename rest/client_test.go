@@ -27,7 +27,8 @@ func TestClient_GetAccounts_HappyPath(t *testing.T) {
 					{"id": "acc-1", "name": "Brokerage"},
 				},
 			})
-		}))
+		},
+	))
 	defer srv.Close()
 
 	c, err := rest.NewClient(srv.URL, "tkn-123")
@@ -54,7 +55,8 @@ func TestClient_APIError(t *testing.T) {
 		func(w http.ResponseWriter, r *http.Request) {
 			w.WriteHeader(http.StatusUnauthorized)
 			_, _ = w.Write([]byte(`{"code":16,"message":"auth"}`))
-		}))
+		},
+	))
 	defer srv.Close()
 
 	c, err := rest.NewClient(srv.URL, "bad")
@@ -75,7 +77,8 @@ func TestClient_RequestError_Unmarshal(t *testing.T) {
 		func(w http.ResponseWriter, r *http.Request) {
 			w.Header().Set("Content-Type", "application/json")
 			_, _ = w.Write([]byte(`{ not valid json `))
-		}))
+		},
+	))
 	defer srv.Close()
 
 	c, err := rest.NewClient(srv.URL, "tkn")
@@ -95,7 +98,8 @@ func TestClient_RequestError_Send(t *testing.T) {
 	// A server that is shut down before the call yields a connection refused,
 	// surfacing as a RequestError at the send stage.
 	srv := httptest.NewServer(http.HandlerFunc(
-		func(w http.ResponseWriter, r *http.Request) {}))
+		func(w http.ResponseWriter, r *http.Request) {},
+	))
 	url := srv.URL
 	srv.Close()
 
@@ -130,7 +134,8 @@ func TestNewClient_WithOptions(t *testing.T) {
 			gotApp = r.Header.Get("x-app-name")
 			w.Header().Set("Content-Type", "application/json")
 			_, _ = w.Write([]byte(`{}`))
-		}))
+		},
+	))
 	defer srv.Close()
 
 	c, err := rest.NewClient(srv.URL, "tkn",

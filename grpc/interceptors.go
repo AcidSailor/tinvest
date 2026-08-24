@@ -49,7 +49,8 @@ func unaryAuthInterceptor(token, appName string) grpc.UnaryClientInterceptor {
 			req,
 			reply,
 			cc,
-			opts...)
+			opts...,
+		)
 	}
 }
 
@@ -69,6 +70,7 @@ func streamAuthInterceptor(token, appName string) grpc.StreamClientInterceptor {
 			desc,
 			cc,
 			method,
-			opts...)
+			opts...,
+		)
 	}
 }
