@@ -27,37 +27,49 @@ const (
 type AccountType int32
 
 const (
-	AccountType_ACCOUNT_TYPE_UNSPECIFIED AccountType = 0 //Тип аккаунта не определeн.
-	AccountType_ACCOUNT_TYPE_TINKOFF     AccountType = 1 //Брокерский счeт Т-Инвестиций.
-	AccountType_ACCOUNT_TYPE_TINKOFF_IIS AccountType = 2 //ИИС.
-	AccountType_ACCOUNT_TYPE_INVEST_BOX  AccountType = 3 //Инвесткопилка.
-	AccountType_ACCOUNT_TYPE_INVEST_FUND AccountType = 4 //Фонд денежного рынка.
-	AccountType_ACCOUNT_TYPE_DEBIT       AccountType = 5 //Дебетовый карточный счeт.
-	AccountType_ACCOUNT_TYPE_SAVING      AccountType = 6 //Накопительный счeт.
-	AccountType_ACCOUNT_TYPE_DFA         AccountType = 7 //Смарт-счет.
+	AccountType_ACCOUNT_TYPE_UNSPECIFIED   AccountType = 0  //Тип аккаунта не определeн.
+	AccountType_ACCOUNT_TYPE_TINKOFF       AccountType = 1  //Брокерский счeт Т-Инвестиций.
+	AccountType_ACCOUNT_TYPE_TINKOFF_IIS   AccountType = 2  //ИИС.
+	AccountType_ACCOUNT_TYPE_INVEST_BOX    AccountType = 3  //Инвесткопилка.
+	AccountType_ACCOUNT_TYPE_INVEST_FUND   AccountType = 4  //Фонд денежного рынка.
+	AccountType_ACCOUNT_TYPE_DEBIT         AccountType = 5  //Дебетовый карточный счeт.
+	AccountType_ACCOUNT_TYPE_SAVING        AccountType = 6  //Накопительный счeт.
+	AccountType_ACCOUNT_TYPE_DFA           AccountType = 7  //Смарт-счет.
+	AccountType_ACCOUNT_TYPE_SHARED_SAVING AccountType = 8  //Совместный накопительный счет.
+	AccountType_ACCOUNT_TYPE_DEPOSIT       AccountType = 9  //Вклад.
+	AccountType_ACCOUNT_TYPE_OMS           AccountType = 10 //ОМС.
+	AccountType_ACCOUNT_TYPE_OFP_DEPOSIT   AccountType = 11 //ОФП вклад.
 )
 
 // Enum value maps for AccountType.
 var (
 	AccountType_name = map[int32]string{
-		0: "ACCOUNT_TYPE_UNSPECIFIED",
-		1: "ACCOUNT_TYPE_TINKOFF",
-		2: "ACCOUNT_TYPE_TINKOFF_IIS",
-		3: "ACCOUNT_TYPE_INVEST_BOX",
-		4: "ACCOUNT_TYPE_INVEST_FUND",
-		5: "ACCOUNT_TYPE_DEBIT",
-		6: "ACCOUNT_TYPE_SAVING",
-		7: "ACCOUNT_TYPE_DFA",
+		0:  "ACCOUNT_TYPE_UNSPECIFIED",
+		1:  "ACCOUNT_TYPE_TINKOFF",
+		2:  "ACCOUNT_TYPE_TINKOFF_IIS",
+		3:  "ACCOUNT_TYPE_INVEST_BOX",
+		4:  "ACCOUNT_TYPE_INVEST_FUND",
+		5:  "ACCOUNT_TYPE_DEBIT",
+		6:  "ACCOUNT_TYPE_SAVING",
+		7:  "ACCOUNT_TYPE_DFA",
+		8:  "ACCOUNT_TYPE_SHARED_SAVING",
+		9:  "ACCOUNT_TYPE_DEPOSIT",
+		10: "ACCOUNT_TYPE_OMS",
+		11: "ACCOUNT_TYPE_OFP_DEPOSIT",
 	}
 	AccountType_value = map[string]int32{
-		"ACCOUNT_TYPE_UNSPECIFIED": 0,
-		"ACCOUNT_TYPE_TINKOFF":     1,
-		"ACCOUNT_TYPE_TINKOFF_IIS": 2,
-		"ACCOUNT_TYPE_INVEST_BOX":  3,
-		"ACCOUNT_TYPE_INVEST_FUND": 4,
-		"ACCOUNT_TYPE_DEBIT":       5,
-		"ACCOUNT_TYPE_SAVING":      6,
-		"ACCOUNT_TYPE_DFA":         7,
+		"ACCOUNT_TYPE_UNSPECIFIED":   0,
+		"ACCOUNT_TYPE_TINKOFF":       1,
+		"ACCOUNT_TYPE_TINKOFF_IIS":   2,
+		"ACCOUNT_TYPE_INVEST_BOX":    3,
+		"ACCOUNT_TYPE_INVEST_FUND":   4,
+		"ACCOUNT_TYPE_DEBIT":         5,
+		"ACCOUNT_TYPE_SAVING":        6,
+		"ACCOUNT_TYPE_DFA":           7,
+		"ACCOUNT_TYPE_SHARED_SAVING": 8,
+		"ACCOUNT_TYPE_DEPOSIT":       9,
+		"ACCOUNT_TYPE_OMS":           10,
+		"ACCOUNT_TYPE_OFP_DEPOSIT":   11,
 	}
 )
 
@@ -1563,7 +1575,7 @@ const file_users_proto_rawDesc = "" +
 	"\x06values\x18\x02 \x03(\v2:.tinkoff.public.invest.api.contract.v1.InstrumentParameterR\x06values\"\xa7\x01\n" +
 	"\x13InstrumentParameter\x12G\n" +
 	"\x04name\x18\x01 \x01(\x0e23.tinkoff.public.invest.api.contract.v1.AccountValueR\x04name\x12G\n" +
-	"\x05value\x18\x02 \x01(\v21.tinkoff.public.invest.api.contract.v1.MoneyValueR\x05value*\xe5\x01\n" +
+	"\x05value\x18\x02 \x01(\v21.tinkoff.public.invest.api.contract.v1.MoneyValueR\x05value*\xd3\x02\n" +
 	"\vAccountType\x12\x1c\n" +
 	"\x18ACCOUNT_TYPE_UNSPECIFIED\x10\x00\x12\x18\n" +
 	"\x14ACCOUNT_TYPE_TINKOFF\x10\x01\x12\x1c\n" +
@@ -1572,7 +1584,12 @@ const file_users_proto_rawDesc = "" +
 	"\x18ACCOUNT_TYPE_INVEST_FUND\x10\x04\x12\x16\n" +
 	"\x12ACCOUNT_TYPE_DEBIT\x10\x05\x12\x17\n" +
 	"\x13ACCOUNT_TYPE_SAVING\x10\x06\x12\x14\n" +
-	"\x10ACCOUNT_TYPE_DFA\x10\a*\x93\x01\n" +
+	"\x10ACCOUNT_TYPE_DFA\x10\a\x12\x1e\n" +
+	"\x1aACCOUNT_TYPE_SHARED_SAVING\x10\b\x12\x18\n" +
+	"\x14ACCOUNT_TYPE_DEPOSIT\x10\t\x12\x14\n" +
+	"\x10ACCOUNT_TYPE_OMS\x10\n" +
+	"\x12\x1c\n" +
+	"\x18ACCOUNT_TYPE_OFP_DEPOSIT\x10\v*\x93\x01\n" +
 	"\rAccountStatus\x12\x1e\n" +
 	"\x1aACCOUNT_STATUS_UNSPECIFIED\x10\x00\x12\x16\n" +
 	"\x12ACCOUNT_STATUS_NEW\x10\x01\x12\x17\n" +
