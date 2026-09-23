@@ -6,7 +6,7 @@
     "contact": {
       "email": "invest-public-api@tbank.ru"
     },
-    "version": "1.49",
+    "version": "1.51",
     "license": {
       "name": "Apache 2.0",
       "url": "https://www.apache.org/licenses/LICENSE-2.0"
@@ -163,6 +163,22 @@
                         "currency": "currency",
                         "units": "units"
                       },
+                      "ratings": [
+                        {
+                          "ratingDate": "2000-01-23T04:56:07.000Z",
+                          "forecast": "forecast",
+                          "agencyName": "agencyName",
+                          "ratingLevel": "ratingLevel",
+                          "isUnderWatch": true
+                        },
+                        {
+                          "ratingDate": "2000-01-23T04:56:07.000Z",
+                          "forecast": "forecast",
+                          "agencyName": "agencyName",
+                          "ratingLevel": "ratingLevel",
+                          "isUnderWatch": true
+                        }
+                      ],
                       "currency": "currency",
                       "aciValue": {
                         "nano": 5,
@@ -272,6 +288,22 @@
                           "currency": "currency",
                           "units": "units"
                         },
+                        "ratings": [
+                          {
+                            "ratingDate": "2000-01-23T04:56:07.000Z",
+                            "forecast": "forecast",
+                            "agencyName": "agencyName",
+                            "ratingLevel": "ratingLevel",
+                            "isUnderWatch": true
+                          },
+                          {
+                            "ratingDate": "2000-01-23T04:56:07.000Z",
+                            "forecast": "forecast",
+                            "agencyName": "agencyName",
+                            "ratingLevel": "ratingLevel",
+                            "isUnderWatch": true
+                          }
+                        ],
                         "currency": "currency",
                         "aciValue": {
                           "nano": 5,
@@ -847,6 +879,44 @@
                             }
                           },
                           "type": "object"
+                        },
+                        "ratings": {
+                          "description": "Массив рейтингов.",
+                          "items": {
+                            "description": "Объект передачи информации о рейтинге.",
+                            "example": {
+                              "ratingDate": "2000-01-23T04:56:07.000Z",
+                              "forecast": "forecast",
+                              "agencyName": "agencyName",
+                              "ratingLevel": "ratingLevel",
+                              "isUnderWatch": true
+                            },
+                            "properties": {
+                              "agencyName": {
+                                "description": "Название рейтингового агентства.",
+                                "type": "string"
+                              },
+                              "ratingLevel": {
+                                "description": "Рейтинг.",
+                                "type": "string"
+                              },
+                              "ratingDate": {
+                                "description": "Дата выставления рейтинга.",
+                                "format": "date-time",
+                                "type": "string"
+                              },
+                              "forecast": {
+                                "description": "Прогноз.",
+                                "type": "string"
+                              },
+                              "isUnderWatch": {
+                                "description": "Признак нахождения под наблюдением.",
+                                "type": "boolean"
+                              }
+                            },
+                            "type": "object"
+                          },
+                          "type": "array"
                         }
                       },
                       "type": "object"
@@ -1206,6 +1276,22 @@
                           "currency": "currency",
                           "units": "units"
                         },
+                        "ratings": [
+                          {
+                            "ratingDate": "2000-01-23T04:56:07.000Z",
+                            "forecast": "forecast",
+                            "agencyName": "agencyName",
+                            "ratingLevel": "ratingLevel",
+                            "isUnderWatch": true
+                          },
+                          {
+                            "ratingDate": "2000-01-23T04:56:07.000Z",
+                            "forecast": "forecast",
+                            "agencyName": "agencyName",
+                            "ratingLevel": "ratingLevel",
+                            "isUnderWatch": true
+                          }
+                        ],
                         "currency": "currency",
                         "aciValue": {
                           "nano": 5,
@@ -1311,6 +1397,22 @@
                           "currency": "currency",
                           "units": "units"
                         },
+                        "ratings": [
+                          {
+                            "ratingDate": "2000-01-23T04:56:07.000Z",
+                            "forecast": "forecast",
+                            "agencyName": "agencyName",
+                            "ratingLevel": "ratingLevel",
+                            "isUnderWatch": true
+                          },
+                          {
+                            "ratingDate": "2000-01-23T04:56:07.000Z",
+                            "forecast": "forecast",
+                            "agencyName": "agencyName",
+                            "ratingLevel": "ratingLevel",
+                            "isUnderWatch": true
+                          }
+                        ],
                         "currency": "currency",
                         "aciValue": {
                           "nano": 5,
@@ -1423,6 +1525,22 @@
                             "currency": "currency",
                             "units": "units"
                           },
+                          "ratings": [
+                            {
+                              "ratingDate": "2000-01-23T04:56:07.000Z",
+                              "forecast": "forecast",
+                              "agencyName": "agencyName",
+                              "ratingLevel": "ratingLevel",
+                              "isUnderWatch": true
+                            },
+                            {
+                              "ratingDate": "2000-01-23T04:56:07.000Z",
+                              "forecast": "forecast",
+                              "agencyName": "agencyName",
+                              "ratingLevel": "ratingLevel",
+                              "isUnderWatch": true
+                            }
+                          ],
                           "currency": "currency",
                           "aciValue": {
                             "nano": 5,
@@ -1998,6 +2116,44 @@
                               }
                             },
                             "type": "object"
+                          },
+                          "ratings": {
+                            "description": "Массив рейтингов.",
+                            "items": {
+                              "description": "Объект передачи информации о рейтинге.",
+                              "example": {
+                                "ratingDate": "2000-01-23T04:56:07.000Z",
+                                "forecast": "forecast",
+                                "agencyName": "agencyName",
+                                "ratingLevel": "ratingLevel",
+                                "isUnderWatch": true
+                              },
+                              "properties": {
+                                "agencyName": {
+                                  "description": "Название рейтингового агентства.",
+                                  "type": "string"
+                                },
+                                "ratingLevel": {
+                                  "description": "Рейтинг.",
+                                  "type": "string"
+                                },
+                                "ratingDate": {
+                                  "description": "Дата выставления рейтинга.",
+                                  "format": "date-time",
+                                  "type": "string"
+                                },
+                                "forecast": {
+                                  "description": "Прогноз.",
+                                  "type": "string"
+                                },
+                                "isUnderWatch": {
+                                  "description": "Признак нахождения под наблюдением.",
+                                  "type": "boolean"
+                                }
+                              },
+                              "type": "object"
+                            },
+                            "type": "array"
                           }
                         },
                         "type": "object"
@@ -30301,6 +30457,7 @@
                 "schema": {
                   "description": "Список свечей.",
                   "example": {
+                    "priceCurrency": "priceCurrency",
                     "candles": [
                       {
                         "volume": "volume",
@@ -30497,6 +30654,10 @@
                         "type": "object"
                       },
                       "type": "array"
+                    },
+                    "priceCurrency": {
+                      "description": "Валюта цены.",
+                      "type": "string"
                     }
                   },
                   "type": "object"
@@ -31637,6 +31798,7 @@
                 "schema": {
                   "description": "Обезличенных сделок за последний час.",
                   "example": {
+                    "priceCurrency": "priceCurrency",
                     "trades": [
                       {
                         "classCode": "classCode",
@@ -31753,6 +31915,10 @@
                         "type": "object"
                       },
                       "type": "array"
+                    },
+                    "priceCurrency": {
+                      "description": "Валюта цены.",
+                      "type": "string"
                     }
                   },
                   "type": "object"
@@ -32058,6 +32224,12 @@
                       {
                         "classCode": "classCode",
                         "ticker": "ticker",
+                        "statistic": {
+                          "interestedCount": 0,
+                          "tradedCount": 6,
+                          "time": "2000-01-23T04:56:07.000Z"
+                        },
+                        "priceCurrency": "priceCurrency",
                         "instrumentUid": "instrumentUid",
                         "values": [
                           {
@@ -32079,6 +32251,12 @@
                       {
                         "classCode": "classCode",
                         "ticker": "ticker",
+                        "statistic": {
+                          "interestedCount": 0,
+                          "tradedCount": 6,
+                          "time": "2000-01-23T04:56:07.000Z"
+                        },
+                        "priceCurrency": "priceCurrency",
                         "instrumentUid": "instrumentUid",
                         "values": [
                           {
@@ -32106,6 +32284,12 @@
                         "example": {
                           "classCode": "classCode",
                           "ticker": "ticker",
+                          "statistic": {
+                            "interestedCount": 0,
+                            "tradedCount": 6,
+                            "time": "2000-01-23T04:56:07.000Z"
+                          },
+                          "priceCurrency": "priceCurrency",
                           "instrumentUid": "instrumentUid",
                           "values": [
                             {
@@ -32191,6 +32375,35 @@
                           },
                           "classCode": {
                             "description": "Класс-код (секция торгов).",
+                            "type": "string"
+                          },
+                          "statistic": {
+                            "example": {
+                              "interestedCount": 0,
+                              "tradedCount": 6,
+                              "time": "2000-01-23T04:56:07.000Z"
+                            },
+                            "properties": {
+                              "interestedCount": {
+                                "description": "Количество человек, просматривающих инструмент.",
+                                "format": "int32",
+                                "type": "integer"
+                              },
+                              "tradedCount": {
+                                "description": "Количество человек, торгующих инструментом.",
+                                "format": "int32",
+                                "type": "integer"
+                              },
+                              "time": {
+                                "description": "Дата и время актуализации данных.",
+                                "format": "date-time",
+                                "type": "string"
+                              }
+                            },
+                            "type": "object"
+                          },
+                          "priceCurrency": {
+                            "description": "Валюта цены.",
                             "type": "string"
                           }
                         },
@@ -32497,6 +32710,7 @@
                       "nano": 6,
                       "units": "units"
                     },
+                    "priceCurrency": "priceCurrency",
                     "depth": 0,
                     "lastPriceTs": "2000-01-23T04:56:07.000Z",
                     "asks": [
@@ -32742,6 +32956,10 @@
                     "orderbookTs": {
                       "description": "Время формирования стакана на бирже.",
                       "format": "date-time",
+                      "type": "string"
+                    },
+                    "priceCurrency": {
+                      "description": "Валюта цены.",
                       "type": "string"
                     }
                   },
@@ -33114,12 +33332,15 @@
                       }
                     },
                     "type": "object"
+                  },
+                  "instrumentId": {
+                    "description": "Идентификатор инструмента. Принимает значение `figi`, `instrument_uid` или `ticker + '_' + class_code`.",
+                    "type": "string"
                   }
                 },
                 "required": [
                   "from",
                   "indicatorType",
-                  "instrumentUid",
                   "interval",
                   "to",
                   "typeOfPrice"
@@ -42736,6 +42957,16 @@
                       "currency": "currency",
                       "units": "units"
                     },
+                    "totalVarMarginSettled": {
+                      "nano": 5,
+                      "currency": "currency",
+                      "units": "units"
+                    },
+                    "totalVarMargin": {
+                      "nano": 5,
+                      "currency": "currency",
+                      "units": "units"
+                    },
                     "positions": [
                       {
                         "varMargin": {
@@ -43914,6 +44145,56 @@
                       "type": "object"
                     },
                     "totalAmountDfa": {
+                      "description": "Денежная сумма в определенной валюте.",
+                      "example": {
+                        "nano": 5,
+                        "currency": "currency",
+                        "units": "units"
+                      },
+                      "properties": {
+                        "currency": {
+                          "description": "Строковый ISO-код валюты.",
+                          "type": "string"
+                        },
+                        "units": {
+                          "description": "Целая часть суммы, может быть отрицательным числом.",
+                          "format": "int64",
+                          "type": "string"
+                        },
+                        "nano": {
+                          "description": "Дробная часть суммы, может быть отрицательным числом.",
+                          "format": "int32",
+                          "type": "integer"
+                        }
+                      },
+                      "type": "object"
+                    },
+                    "totalVarMargin": {
+                      "description": "Денежная сумма в определенной валюте.",
+                      "example": {
+                        "nano": 5,
+                        "currency": "currency",
+                        "units": "units"
+                      },
+                      "properties": {
+                        "currency": {
+                          "description": "Строковый ISO-код валюты.",
+                          "type": "string"
+                        },
+                        "units": {
+                          "description": "Целая часть суммы, может быть отрицательным числом.",
+                          "format": "int64",
+                          "type": "string"
+                        },
+                        "nano": {
+                          "description": "Дробная часть суммы, может быть отрицательным числом.",
+                          "format": "int32",
+                          "type": "integer"
+                        }
+                      },
+                      "type": "object"
+                    },
+                    "totalVarMarginSettled": {
                       "description": "Денежная сумма в определенной валюте.",
                       "example": {
                         "nano": 5,
@@ -45942,6 +46223,16 @@
                           "currency": "currency",
                           "units": "units"
                         },
+                        "totalVarMarginSettled": {
+                          "nano": 5,
+                          "currency": "currency",
+                          "units": "units"
+                        },
+                        "totalVarMargin": {
+                          "nano": 5,
+                          "currency": "currency",
+                          "units": "units"
+                        },
                         "positions": [
                           {
                             "varMargin": {
@@ -46256,6 +46547,16 @@
                             "units": "units"
                           },
                           "totalAmountSp": {
+                            "nano": 5,
+                            "currency": "currency",
+                            "units": "units"
+                          },
+                          "totalVarMarginSettled": {
+                            "nano": 5,
+                            "currency": "currency",
+                            "units": "units"
+                          },
+                          "totalVarMargin": {
                             "nano": 5,
                             "currency": "currency",
                             "units": "units"
@@ -46602,6 +46903,16 @@
                               "units": "units"
                             },
                             "totalAmountSp": {
+                              "nano": 5,
+                              "currency": "currency",
+                              "units": "units"
+                            },
+                            "totalVarMarginSettled": {
+                              "nano": 5,
+                              "currency": "currency",
+                              "units": "units"
+                            },
+                            "totalVarMargin": {
                               "nano": 5,
                               "currency": "currency",
                               "units": "units"
@@ -47784,6 +48095,56 @@
                               "type": "object"
                             },
                             "totalAmountDfa": {
+                              "description": "Денежная сумма в определенной валюте.",
+                              "example": {
+                                "nano": 5,
+                                "currency": "currency",
+                                "units": "units"
+                              },
+                              "properties": {
+                                "currency": {
+                                  "description": "Строковый ISO-код валюты.",
+                                  "type": "string"
+                                },
+                                "units": {
+                                  "description": "Целая часть суммы, может быть отрицательным числом.",
+                                  "format": "int64",
+                                  "type": "string"
+                                },
+                                "nano": {
+                                  "description": "Дробная часть суммы, может быть отрицательным числом.",
+                                  "format": "int32",
+                                  "type": "integer"
+                                }
+                              },
+                              "type": "object"
+                            },
+                            "totalVarMargin": {
+                              "description": "Денежная сумма в определенной валюте.",
+                              "example": {
+                                "nano": 5,
+                                "currency": "currency",
+                                "units": "units"
+                              },
+                              "properties": {
+                                "currency": {
+                                  "description": "Строковый ISO-код валюты.",
+                                  "type": "string"
+                                },
+                                "units": {
+                                  "description": "Целая часть суммы, может быть отрицательным числом.",
+                                  "format": "int64",
+                                  "type": "string"
+                                },
+                                "nano": {
+                                  "description": "Дробная часть суммы, может быть отрицательным числом.",
+                                  "format": "int32",
+                                  "type": "integer"
+                                }
+                              },
+                              "type": "object"
+                            },
+                            "totalVarMarginSettled": {
                               "description": "Денежная сумма в определенной валюте.",
                               "example": {
                                 "nano": 5,
@@ -57169,7 +57530,7 @@
                           },
                           "type": {
                             "default": "ACCOUNT_TYPE_UNSPECIFIED",
-                            "description": "Тип счeта.\n\n - ACCOUNT_TYPE_UNSPECIFIED: Тип аккаунта не определeн.\n - ACCOUNT_TYPE_TINKOFF: Брокерский счeт Т-Инвестиций.\n - ACCOUNT_TYPE_TINKOFF_IIS: ИИС.\n - ACCOUNT_TYPE_INVEST_BOX: Инвесткопилка.\n - ACCOUNT_TYPE_INVEST_FUND: Фонд денежного рынка.\n - ACCOUNT_TYPE_DEBIT: Дебетовый карточный счeт.\n - ACCOUNT_TYPE_SAVING: Накопительный счeт.\n - ACCOUNT_TYPE_DFA: Смарт-счет.",
+                            "description": "Тип счeта.\n\n - ACCOUNT_TYPE_UNSPECIFIED: Тип аккаунта не определeн.\n - ACCOUNT_TYPE_TINKOFF: Брокерский счeт Т-Инвестиций.\n - ACCOUNT_TYPE_TINKOFF_IIS: ИИС.\n - ACCOUNT_TYPE_INVEST_BOX: Инвесткопилка.\n - ACCOUNT_TYPE_INVEST_FUND: Фонд денежного рынка.\n - ACCOUNT_TYPE_DEBIT: Дебетовый карточный счeт.\n - ACCOUNT_TYPE_SAVING: Накопительный счeт.\n - ACCOUNT_TYPE_DFA: Смарт-счет.\n - ACCOUNT_TYPE_SHARED_SAVING: Совместный накопительный счет.\n - ACCOUNT_TYPE_DEPOSIT: Вклад.\n - ACCOUNT_TYPE_OMS: ОМС.\n - ACCOUNT_TYPE_OFP_DEPOSIT: ОФП вклад.",
                             "enum": [
                               "ACCOUNT_TYPE_UNSPECIFIED",
                               "ACCOUNT_TYPE_TINKOFF",
@@ -57178,7 +57539,11 @@
                               "ACCOUNT_TYPE_INVEST_FUND",
                               "ACCOUNT_TYPE_DEBIT",
                               "ACCOUNT_TYPE_SAVING",
-                              "ACCOUNT_TYPE_DFA"
+                              "ACCOUNT_TYPE_DFA",
+                              "ACCOUNT_TYPE_SHARED_SAVING",
+                              "ACCOUNT_TYPE_DEPOSIT",
+                              "ACCOUNT_TYPE_OMS",
+                              "ACCOUNT_TYPE_OFP_DEPOSIT"
                             ],
                             "type": "string"
                           },
@@ -62319,6 +62684,16 @@
                       "currency": "currency",
                       "units": "units"
                     },
+                    "totalVarMarginSettled": {
+                      "nano": 5,
+                      "currency": "currency",
+                      "units": "units"
+                    },
+                    "totalVarMargin": {
+                      "nano": 5,
+                      "currency": "currency",
+                      "units": "units"
+                    },
                     "positions": [
                       {
                         "varMargin": {
@@ -63497,6 +63872,56 @@
                       "type": "object"
                     },
                     "totalAmountDfa": {
+                      "description": "Денежная сумма в определенной валюте.",
+                      "example": {
+                        "nano": 5,
+                        "currency": "currency",
+                        "units": "units"
+                      },
+                      "properties": {
+                        "currency": {
+                          "description": "Строковый ISO-код валюты.",
+                          "type": "string"
+                        },
+                        "units": {
+                          "description": "Целая часть суммы, может быть отрицательным числом.",
+                          "format": "int64",
+                          "type": "string"
+                        },
+                        "nano": {
+                          "description": "Дробная часть суммы, может быть отрицательным числом.",
+                          "format": "int32",
+                          "type": "integer"
+                        }
+                      },
+                      "type": "object"
+                    },
+                    "totalVarMargin": {
+                      "description": "Денежная сумма в определенной валюте.",
+                      "example": {
+                        "nano": 5,
+                        "currency": "currency",
+                        "units": "units"
+                      },
+                      "properties": {
+                        "currency": {
+                          "description": "Строковый ISO-код валюты.",
+                          "type": "string"
+                        },
+                        "units": {
+                          "description": "Целая часть суммы, может быть отрицательным числом.",
+                          "format": "int64",
+                          "type": "string"
+                        },
+                        "nano": {
+                          "description": "Дробная часть суммы, может быть отрицательным числом.",
+                          "format": "int32",
+                          "type": "integer"
+                        }
+                      },
+                      "type": "object"
+                    },
+                    "totalVarMarginSettled": {
                       "description": "Денежная сумма в определенной валюте.",
                       "example": {
                         "nano": 5,
@@ -71908,7 +72333,7 @@
                           },
                           "type": {
                             "default": "ACCOUNT_TYPE_UNSPECIFIED",
-                            "description": "Тип счeта.\n\n - ACCOUNT_TYPE_UNSPECIFIED: Тип аккаунта не определeн.\n - ACCOUNT_TYPE_TINKOFF: Брокерский счeт Т-Инвестиций.\n - ACCOUNT_TYPE_TINKOFF_IIS: ИИС.\n - ACCOUNT_TYPE_INVEST_BOX: Инвесткопилка.\n - ACCOUNT_TYPE_INVEST_FUND: Фонд денежного рынка.\n - ACCOUNT_TYPE_DEBIT: Дебетовый карточный счeт.\n - ACCOUNT_TYPE_SAVING: Накопительный счeт.\n - ACCOUNT_TYPE_DFA: Смарт-счет.",
+                            "description": "Тип счeта.\n\n - ACCOUNT_TYPE_UNSPECIFIED: Тип аккаунта не определeн.\n - ACCOUNT_TYPE_TINKOFF: Брокерский счeт Т-Инвестиций.\n - ACCOUNT_TYPE_TINKOFF_IIS: ИИС.\n - ACCOUNT_TYPE_INVEST_BOX: Инвесткопилка.\n - ACCOUNT_TYPE_INVEST_FUND: Фонд денежного рынка.\n - ACCOUNT_TYPE_DEBIT: Дебетовый карточный счeт.\n - ACCOUNT_TYPE_SAVING: Накопительный счeт.\n - ACCOUNT_TYPE_DFA: Смарт-счет.\n - ACCOUNT_TYPE_SHARED_SAVING: Совместный накопительный счет.\n - ACCOUNT_TYPE_DEPOSIT: Вклад.\n - ACCOUNT_TYPE_OMS: ОМС.\n - ACCOUNT_TYPE_OFP_DEPOSIT: ОФП вклад.",
                             "enum": [
                               "ACCOUNT_TYPE_UNSPECIFIED",
                               "ACCOUNT_TYPE_TINKOFF",
@@ -71917,7 +72342,11 @@
                               "ACCOUNT_TYPE_INVEST_FUND",
                               "ACCOUNT_TYPE_DEBIT",
                               "ACCOUNT_TYPE_SAVING",
-                              "ACCOUNT_TYPE_DFA"
+                              "ACCOUNT_TYPE_DFA",
+                              "ACCOUNT_TYPE_SHARED_SAVING",
+                              "ACCOUNT_TYPE_DEPOSIT",
+                              "ACCOUNT_TYPE_OMS",
+                              "ACCOUNT_TYPE_OFP_DEPOSIT"
                             ],
                             "type": "string"
                           },
@@ -72342,7 +72771,7 @@
                           },
                           "type": {
                             "default": "ACCOUNT_TYPE_UNSPECIFIED",
-                            "description": "Тип счeта.\n\n - ACCOUNT_TYPE_UNSPECIFIED: Тип аккаунта не определeн.\n - ACCOUNT_TYPE_TINKOFF: Брокерский счeт Т-Инвестиций.\n - ACCOUNT_TYPE_TINKOFF_IIS: ИИС.\n - ACCOUNT_TYPE_INVEST_BOX: Инвесткопилка.\n - ACCOUNT_TYPE_INVEST_FUND: Фонд денежного рынка.\n - ACCOUNT_TYPE_DEBIT: Дебетовый карточный счeт.\n - ACCOUNT_TYPE_SAVING: Накопительный счeт.\n - ACCOUNT_TYPE_DFA: Смарт-счет.",
+                            "description": "Тип счeта.\n\n - ACCOUNT_TYPE_UNSPECIFIED: Тип аккаунта не определeн.\n - ACCOUNT_TYPE_TINKOFF: Брокерский счeт Т-Инвестиций.\n - ACCOUNT_TYPE_TINKOFF_IIS: ИИС.\n - ACCOUNT_TYPE_INVEST_BOX: Инвесткопилка.\n - ACCOUNT_TYPE_INVEST_FUND: Фонд денежного рынка.\n - ACCOUNT_TYPE_DEBIT: Дебетовый карточный счeт.\n - ACCOUNT_TYPE_SAVING: Накопительный счeт.\n - ACCOUNT_TYPE_DFA: Смарт-счет.\n - ACCOUNT_TYPE_SHARED_SAVING: Совместный накопительный счет.\n - ACCOUNT_TYPE_DEPOSIT: Вклад.\n - ACCOUNT_TYPE_OMS: ОМС.\n - ACCOUNT_TYPE_OFP_DEPOSIT: ОФП вклад.",
                             "enum": [
                               "ACCOUNT_TYPE_UNSPECIFIED",
                               "ACCOUNT_TYPE_TINKOFF",
@@ -72351,7 +72780,11 @@
                               "ACCOUNT_TYPE_INVEST_FUND",
                               "ACCOUNT_TYPE_DEBIT",
                               "ACCOUNT_TYPE_SAVING",
-                              "ACCOUNT_TYPE_DFA"
+                              "ACCOUNT_TYPE_DFA",
+                              "ACCOUNT_TYPE_SHARED_SAVING",
+                              "ACCOUNT_TYPE_DEPOSIT",
+                              "ACCOUNT_TYPE_OMS",
+                              "ACCOUNT_TYPE_OFP_DEPOSIT"
                             ],
                             "type": "string"
                           }
@@ -76868,7 +77301,7 @@
           },
           "type": {
             "default": "ACCOUNT_TYPE_UNSPECIFIED",
-            "description": "Тип счeта.\n\n - ACCOUNT_TYPE_UNSPECIFIED: Тип аккаунта не определeн.\n - ACCOUNT_TYPE_TINKOFF: Брокерский счeт Т-Инвестиций.\n - ACCOUNT_TYPE_TINKOFF_IIS: ИИС.\n - ACCOUNT_TYPE_INVEST_BOX: Инвесткопилка.\n - ACCOUNT_TYPE_INVEST_FUND: Фонд денежного рынка.\n - ACCOUNT_TYPE_DEBIT: Дебетовый карточный счeт.\n - ACCOUNT_TYPE_SAVING: Накопительный счeт.\n - ACCOUNT_TYPE_DFA: Смарт-счет.",
+            "description": "Тип счeта.\n\n - ACCOUNT_TYPE_UNSPECIFIED: Тип аккаунта не определeн.\n - ACCOUNT_TYPE_TINKOFF: Брокерский счeт Т-Инвестиций.\n - ACCOUNT_TYPE_TINKOFF_IIS: ИИС.\n - ACCOUNT_TYPE_INVEST_BOX: Инвесткопилка.\n - ACCOUNT_TYPE_INVEST_FUND: Фонд денежного рынка.\n - ACCOUNT_TYPE_DEBIT: Дебетовый карточный счeт.\n - ACCOUNT_TYPE_SAVING: Накопительный счeт.\n - ACCOUNT_TYPE_DFA: Смарт-счет.\n - ACCOUNT_TYPE_SHARED_SAVING: Совместный накопительный счет.\n - ACCOUNT_TYPE_DEPOSIT: Вклад.\n - ACCOUNT_TYPE_OMS: ОМС.\n - ACCOUNT_TYPE_OFP_DEPOSIT: ОФП вклад.",
             "enum": [
               "ACCOUNT_TYPE_UNSPECIFIED",
               "ACCOUNT_TYPE_TINKOFF",
@@ -76877,7 +77310,11 @@
               "ACCOUNT_TYPE_INVEST_FUND",
               "ACCOUNT_TYPE_DEBIT",
               "ACCOUNT_TYPE_SAVING",
-              "ACCOUNT_TYPE_DFA"
+              "ACCOUNT_TYPE_DFA",
+              "ACCOUNT_TYPE_SHARED_SAVING",
+              "ACCOUNT_TYPE_DEPOSIT",
+              "ACCOUNT_TYPE_OMS",
+              "ACCOUNT_TYPE_OFP_DEPOSIT"
             ],
             "type": "string"
           },
@@ -76959,7 +77396,7 @@
       },
       "v1AccountType": {
         "default": "ACCOUNT_TYPE_UNSPECIFIED",
-        "description": "Тип счeта.\n\n - ACCOUNT_TYPE_UNSPECIFIED: Тип аккаунта не определeн.\n - ACCOUNT_TYPE_TINKOFF: Брокерский счeт Т-Инвестиций.\n - ACCOUNT_TYPE_TINKOFF_IIS: ИИС.\n - ACCOUNT_TYPE_INVEST_BOX: Инвесткопилка.\n - ACCOUNT_TYPE_INVEST_FUND: Фонд денежного рынка.\n - ACCOUNT_TYPE_DEBIT: Дебетовый карточный счeт.\n - ACCOUNT_TYPE_SAVING: Накопительный счeт.\n - ACCOUNT_TYPE_DFA: Смарт-счет.",
+        "description": "Тип счeта.\n\n - ACCOUNT_TYPE_UNSPECIFIED: Тип аккаунта не определeн.\n - ACCOUNT_TYPE_TINKOFF: Брокерский счeт Т-Инвестиций.\n - ACCOUNT_TYPE_TINKOFF_IIS: ИИС.\n - ACCOUNT_TYPE_INVEST_BOX: Инвесткопилка.\n - ACCOUNT_TYPE_INVEST_FUND: Фонд денежного рынка.\n - ACCOUNT_TYPE_DEBIT: Дебетовый карточный счeт.\n - ACCOUNT_TYPE_SAVING: Накопительный счeт.\n - ACCOUNT_TYPE_DFA: Смарт-счет.\n - ACCOUNT_TYPE_SHARED_SAVING: Совместный накопительный счет.\n - ACCOUNT_TYPE_DEPOSIT: Вклад.\n - ACCOUNT_TYPE_OMS: ОМС.\n - ACCOUNT_TYPE_OFP_DEPOSIT: ОФП вклад.",
         "enum": [
           "ACCOUNT_TYPE_UNSPECIFIED",
           "ACCOUNT_TYPE_TINKOFF",
@@ -76968,7 +77405,11 @@
           "ACCOUNT_TYPE_INVEST_FUND",
           "ACCOUNT_TYPE_DEBIT",
           "ACCOUNT_TYPE_SAVING",
-          "ACCOUNT_TYPE_DFA"
+          "ACCOUNT_TYPE_DFA",
+          "ACCOUNT_TYPE_SHARED_SAVING",
+          "ACCOUNT_TYPE_DEPOSIT",
+          "ACCOUNT_TYPE_OMS",
+          "ACCOUNT_TYPE_OFP_DEPOSIT"
         ],
         "type": "string"
       },
@@ -83543,7 +83984,7 @@
           },
           "type": {
             "default": "ACCOUNT_TYPE_UNSPECIFIED",
-            "description": "Тип счeта.\n\n - ACCOUNT_TYPE_UNSPECIFIED: Тип аккаунта не определeн.\n - ACCOUNT_TYPE_TINKOFF: Брокерский счeт Т-Инвестиций.\n - ACCOUNT_TYPE_TINKOFF_IIS: ИИС.\n - ACCOUNT_TYPE_INVEST_BOX: Инвесткопилка.\n - ACCOUNT_TYPE_INVEST_FUND: Фонд денежного рынка.\n - ACCOUNT_TYPE_DEBIT: Дебетовый карточный счeт.\n - ACCOUNT_TYPE_SAVING: Накопительный счeт.\n - ACCOUNT_TYPE_DFA: Смарт-счет.",
+            "description": "Тип счeта.\n\n - ACCOUNT_TYPE_UNSPECIFIED: Тип аккаунта не определeн.\n - ACCOUNT_TYPE_TINKOFF: Брокерский счeт Т-Инвестиций.\n - ACCOUNT_TYPE_TINKOFF_IIS: ИИС.\n - ACCOUNT_TYPE_INVEST_BOX: Инвесткопилка.\n - ACCOUNT_TYPE_INVEST_FUND: Фонд денежного рынка.\n - ACCOUNT_TYPE_DEBIT: Дебетовый карточный счeт.\n - ACCOUNT_TYPE_SAVING: Накопительный счeт.\n - ACCOUNT_TYPE_DFA: Смарт-счет.\n - ACCOUNT_TYPE_SHARED_SAVING: Совместный накопительный счет.\n - ACCOUNT_TYPE_DEPOSIT: Вклад.\n - ACCOUNT_TYPE_OMS: ОМС.\n - ACCOUNT_TYPE_OFP_DEPOSIT: ОФП вклад.",
             "enum": [
               "ACCOUNT_TYPE_UNSPECIFIED",
               "ACCOUNT_TYPE_TINKOFF",
@@ -83552,7 +83993,11 @@
               "ACCOUNT_TYPE_INVEST_FUND",
               "ACCOUNT_TYPE_DEBIT",
               "ACCOUNT_TYPE_SAVING",
-              "ACCOUNT_TYPE_DFA"
+              "ACCOUNT_TYPE_DFA",
+              "ACCOUNT_TYPE_SHARED_SAVING",
+              "ACCOUNT_TYPE_DEPOSIT",
+              "ACCOUNT_TYPE_OMS",
+              "ACCOUNT_TYPE_OFP_DEPOSIT"
             ],
             "type": "string"
           }
@@ -83620,6 +84065,22 @@
             "currency": "currency",
             "units": "units"
           },
+          "ratings": [
+            {
+              "ratingDate": "2000-01-23T04:56:07.000Z",
+              "forecast": "forecast",
+              "agencyName": "agencyName",
+              "ratingLevel": "ratingLevel",
+              "isUnderWatch": true
+            },
+            {
+              "ratingDate": "2000-01-23T04:56:07.000Z",
+              "forecast": "forecast",
+              "agencyName": "agencyName",
+              "ratingLevel": "ratingLevel",
+              "isUnderWatch": true
+            }
+          ],
           "currency": "currency",
           "aciValue": {
             "nano": 5,
@@ -84195,6 +84656,44 @@
               }
             },
             "type": "object"
+          },
+          "ratings": {
+            "description": "Массив рейтингов.",
+            "items": {
+              "description": "Объект передачи информации о рейтинге.",
+              "example": {
+                "ratingDate": "2000-01-23T04:56:07.000Z",
+                "forecast": "forecast",
+                "agencyName": "agencyName",
+                "ratingLevel": "ratingLevel",
+                "isUnderWatch": true
+              },
+              "properties": {
+                "agencyName": {
+                  "description": "Название рейтингового агентства.",
+                  "type": "string"
+                },
+                "ratingLevel": {
+                  "description": "Рейтинг.",
+                  "type": "string"
+                },
+                "ratingDate": {
+                  "description": "Дата выставления рейтинга.",
+                  "format": "date-time",
+                  "type": "string"
+                },
+                "forecast": {
+                  "description": "Прогноз.",
+                  "type": "string"
+                },
+                "isUnderWatch": {
+                  "description": "Признак нахождения под наблюдением.",
+                  "type": "boolean"
+                }
+              },
+              "type": "object"
+            },
+            "type": "array"
           }
         },
         "type": "object"
@@ -84261,6 +84760,22 @@
               "currency": "currency",
               "units": "units"
             },
+            "ratings": [
+              {
+                "ratingDate": "2000-01-23T04:56:07.000Z",
+                "forecast": "forecast",
+                "agencyName": "agencyName",
+                "ratingLevel": "ratingLevel",
+                "isUnderWatch": true
+              },
+              {
+                "ratingDate": "2000-01-23T04:56:07.000Z",
+                "forecast": "forecast",
+                "agencyName": "agencyName",
+                "ratingLevel": "ratingLevel",
+                "isUnderWatch": true
+              }
+            ],
             "currency": "currency",
             "aciValue": {
               "nano": 5,
@@ -84370,6 +84885,22 @@
                 "currency": "currency",
                 "units": "units"
               },
+              "ratings": [
+                {
+                  "ratingDate": "2000-01-23T04:56:07.000Z",
+                  "forecast": "forecast",
+                  "agencyName": "agencyName",
+                  "ratingLevel": "ratingLevel",
+                  "isUnderWatch": true
+                },
+                {
+                  "ratingDate": "2000-01-23T04:56:07.000Z",
+                  "forecast": "forecast",
+                  "agencyName": "agencyName",
+                  "ratingLevel": "ratingLevel",
+                  "isUnderWatch": true
+                }
+              ],
               "currency": "currency",
               "aciValue": {
                 "nano": 5,
@@ -84945,6 +85476,44 @@
                   }
                 },
                 "type": "object"
+              },
+              "ratings": {
+                "description": "Массив рейтингов.",
+                "items": {
+                  "description": "Объект передачи информации о рейтинге.",
+                  "example": {
+                    "ratingDate": "2000-01-23T04:56:07.000Z",
+                    "forecast": "forecast",
+                    "agencyName": "agencyName",
+                    "ratingLevel": "ratingLevel",
+                    "isUnderWatch": true
+                  },
+                  "properties": {
+                    "agencyName": {
+                      "description": "Название рейтингового агентства.",
+                      "type": "string"
+                    },
+                    "ratingLevel": {
+                      "description": "Рейтинг.",
+                      "type": "string"
+                    },
+                    "ratingDate": {
+                      "description": "Дата выставления рейтинга.",
+                      "format": "date-time",
+                      "type": "string"
+                    },
+                    "forecast": {
+                      "description": "Прогноз.",
+                      "type": "string"
+                    },
+                    "isUnderWatch": {
+                      "description": "Признак нахождения под наблюдением.",
+                      "type": "boolean"
+                    }
+                  },
+                  "type": "object"
+                },
+                "type": "array"
               }
             },
             "type": "object"
@@ -85024,6 +85593,22 @@
                 "currency": "currency",
                 "units": "units"
               },
+              "ratings": [
+                {
+                  "ratingDate": "2000-01-23T04:56:07.000Z",
+                  "forecast": "forecast",
+                  "agencyName": "agencyName",
+                  "ratingLevel": "ratingLevel",
+                  "isUnderWatch": true
+                },
+                {
+                  "ratingDate": "2000-01-23T04:56:07.000Z",
+                  "forecast": "forecast",
+                  "agencyName": "agencyName",
+                  "ratingLevel": "ratingLevel",
+                  "isUnderWatch": true
+                }
+              ],
               "currency": "currency",
               "aciValue": {
                 "nano": 5,
@@ -85129,6 +85714,22 @@
                 "currency": "currency",
                 "units": "units"
               },
+              "ratings": [
+                {
+                  "ratingDate": "2000-01-23T04:56:07.000Z",
+                  "forecast": "forecast",
+                  "agencyName": "agencyName",
+                  "ratingLevel": "ratingLevel",
+                  "isUnderWatch": true
+                },
+                {
+                  "ratingDate": "2000-01-23T04:56:07.000Z",
+                  "forecast": "forecast",
+                  "agencyName": "agencyName",
+                  "ratingLevel": "ratingLevel",
+                  "isUnderWatch": true
+                }
+              ],
               "currency": "currency",
               "aciValue": {
                 "nano": 5,
@@ -85241,6 +85842,22 @@
                   "currency": "currency",
                   "units": "units"
                 },
+                "ratings": [
+                  {
+                    "ratingDate": "2000-01-23T04:56:07.000Z",
+                    "forecast": "forecast",
+                    "agencyName": "agencyName",
+                    "ratingLevel": "ratingLevel",
+                    "isUnderWatch": true
+                  },
+                  {
+                    "ratingDate": "2000-01-23T04:56:07.000Z",
+                    "forecast": "forecast",
+                    "agencyName": "agencyName",
+                    "ratingLevel": "ratingLevel",
+                    "isUnderWatch": true
+                  }
+                ],
                 "currency": "currency",
                 "aciValue": {
                   "nano": 5,
@@ -85816,6 +86433,44 @@
                     }
                   },
                   "type": "object"
+                },
+                "ratings": {
+                  "description": "Массив рейтингов.",
+                  "items": {
+                    "description": "Объект передачи информации о рейтинге.",
+                    "example": {
+                      "ratingDate": "2000-01-23T04:56:07.000Z",
+                      "forecast": "forecast",
+                      "agencyName": "agencyName",
+                      "ratingLevel": "ratingLevel",
+                      "isUnderWatch": true
+                    },
+                    "properties": {
+                      "agencyName": {
+                        "description": "Название рейтингового агентства.",
+                        "type": "string"
+                      },
+                      "ratingLevel": {
+                        "description": "Рейтинг.",
+                        "type": "string"
+                      },
+                      "ratingDate": {
+                        "description": "Дата выставления рейтинга.",
+                        "format": "date-time",
+                        "type": "string"
+                      },
+                      "forecast": {
+                        "description": "Прогноз.",
+                        "type": "string"
+                      },
+                      "isUnderWatch": {
+                        "description": "Признак нахождения под наблюдением.",
+                        "type": "boolean"
+                      }
+                    },
+                    "type": "object"
+                  },
+                  "type": "array"
                 }
               },
               "type": "object"
@@ -94944,7 +95599,7 @@
                 },
                 "type": {
                   "default": "ACCOUNT_TYPE_UNSPECIFIED",
-                  "description": "Тип счeта.\n\n - ACCOUNT_TYPE_UNSPECIFIED: Тип аккаунта не определeн.\n - ACCOUNT_TYPE_TINKOFF: Брокерский счeт Т-Инвестиций.\n - ACCOUNT_TYPE_TINKOFF_IIS: ИИС.\n - ACCOUNT_TYPE_INVEST_BOX: Инвесткопилка.\n - ACCOUNT_TYPE_INVEST_FUND: Фонд денежного рынка.\n - ACCOUNT_TYPE_DEBIT: Дебетовый карточный счeт.\n - ACCOUNT_TYPE_SAVING: Накопительный счeт.\n - ACCOUNT_TYPE_DFA: Смарт-счет.",
+                  "description": "Тип счeта.\n\n - ACCOUNT_TYPE_UNSPECIFIED: Тип аккаунта не определeн.\n - ACCOUNT_TYPE_TINKOFF: Брокерский счeт Т-Инвестиций.\n - ACCOUNT_TYPE_TINKOFF_IIS: ИИС.\n - ACCOUNT_TYPE_INVEST_BOX: Инвесткопилка.\n - ACCOUNT_TYPE_INVEST_FUND: Фонд денежного рынка.\n - ACCOUNT_TYPE_DEBIT: Дебетовый карточный счeт.\n - ACCOUNT_TYPE_SAVING: Накопительный счeт.\n - ACCOUNT_TYPE_DFA: Смарт-счет.\n - ACCOUNT_TYPE_SHARED_SAVING: Совместный накопительный счет.\n - ACCOUNT_TYPE_DEPOSIT: Вклад.\n - ACCOUNT_TYPE_OMS: ОМС.\n - ACCOUNT_TYPE_OFP_DEPOSIT: ОФП вклад.",
                   "enum": [
                     "ACCOUNT_TYPE_UNSPECIFIED",
                     "ACCOUNT_TYPE_TINKOFF",
@@ -94953,7 +95608,11 @@
                     "ACCOUNT_TYPE_INVEST_FUND",
                     "ACCOUNT_TYPE_DEBIT",
                     "ACCOUNT_TYPE_SAVING",
-                    "ACCOUNT_TYPE_DFA"
+                    "ACCOUNT_TYPE_DFA",
+                    "ACCOUNT_TYPE_SHARED_SAVING",
+                    "ACCOUNT_TYPE_DEPOSIT",
+                    "ACCOUNT_TYPE_OMS",
+                    "ACCOUNT_TYPE_OFP_DEPOSIT"
                   ],
                   "type": "string"
                 },
@@ -95851,7 +96510,7 @@
                 },
                 "type": {
                   "default": "ACCOUNT_TYPE_UNSPECIFIED",
-                  "description": "Тип счeта.\n\n - ACCOUNT_TYPE_UNSPECIFIED: Тип аккаунта не определeн.\n - ACCOUNT_TYPE_TINKOFF: Брокерский счeт Т-Инвестиций.\n - ACCOUNT_TYPE_TINKOFF_IIS: ИИС.\n - ACCOUNT_TYPE_INVEST_BOX: Инвесткопилка.\n - ACCOUNT_TYPE_INVEST_FUND: Фонд денежного рынка.\n - ACCOUNT_TYPE_DEBIT: Дебетовый карточный счeт.\n - ACCOUNT_TYPE_SAVING: Накопительный счeт.\n - ACCOUNT_TYPE_DFA: Смарт-счет.",
+                  "description": "Тип счeта.\n\n - ACCOUNT_TYPE_UNSPECIFIED: Тип аккаунта не определeн.\n - ACCOUNT_TYPE_TINKOFF: Брокерский счeт Т-Инвестиций.\n - ACCOUNT_TYPE_TINKOFF_IIS: ИИС.\n - ACCOUNT_TYPE_INVEST_BOX: Инвесткопилка.\n - ACCOUNT_TYPE_INVEST_FUND: Фонд денежного рынка.\n - ACCOUNT_TYPE_DEBIT: Дебетовый карточный счeт.\n - ACCOUNT_TYPE_SAVING: Накопительный счeт.\n - ACCOUNT_TYPE_DFA: Смарт-счет.\n - ACCOUNT_TYPE_SHARED_SAVING: Совместный накопительный счет.\n - ACCOUNT_TYPE_DEPOSIT: Вклад.\n - ACCOUNT_TYPE_OMS: ОМС.\n - ACCOUNT_TYPE_OFP_DEPOSIT: ОФП вклад.",
                   "enum": [
                     "ACCOUNT_TYPE_UNSPECIFIED",
                     "ACCOUNT_TYPE_TINKOFF",
@@ -95860,7 +96519,11 @@
                     "ACCOUNT_TYPE_INVEST_FUND",
                     "ACCOUNT_TYPE_DEBIT",
                     "ACCOUNT_TYPE_SAVING",
-                    "ACCOUNT_TYPE_DFA"
+                    "ACCOUNT_TYPE_DFA",
+                    "ACCOUNT_TYPE_SHARED_SAVING",
+                    "ACCOUNT_TYPE_DEPOSIT",
+                    "ACCOUNT_TYPE_OMS",
+                    "ACCOUNT_TYPE_OFP_DEPOSIT"
                   ],
                   "type": "string"
                 }
@@ -97119,6 +97782,7 @@
       "v1GetCandlesResponse": {
         "description": "Список свечей.",
         "example": {
+          "priceCurrency": "priceCurrency",
           "candles": [
             {
               "volume": "volume",
@@ -97315,6 +97979,10 @@
               "type": "object"
             },
             "type": "array"
+          },
+          "priceCurrency": {
+            "description": "Валюта цены.",
+            "type": "string"
           }
         },
         "type": "object"
@@ -99842,6 +100510,7 @@
       "v1GetLastTradesResponse": {
         "description": "Обезличенных сделок за последний час.",
         "example": {
+          "priceCurrency": "priceCurrency",
           "trades": [
             {
               "classCode": "classCode",
@@ -99958,6 +100627,10 @@
               "type": "object"
             },
             "type": "array"
+          },
+          "priceCurrency": {
+            "description": "Валюта цены.",
+            "type": "string"
           }
         },
         "type": "object"
@@ -100224,6 +100897,12 @@
             {
               "classCode": "classCode",
               "ticker": "ticker",
+              "statistic": {
+                "interestedCount": 0,
+                "tradedCount": 6,
+                "time": "2000-01-23T04:56:07.000Z"
+              },
+              "priceCurrency": "priceCurrency",
               "instrumentUid": "instrumentUid",
               "values": [
                 {
@@ -100245,6 +100924,12 @@
             {
               "classCode": "classCode",
               "ticker": "ticker",
+              "statistic": {
+                "interestedCount": 0,
+                "tradedCount": 6,
+                "time": "2000-01-23T04:56:07.000Z"
+              },
+              "priceCurrency": "priceCurrency",
               "instrumentUid": "instrumentUid",
               "values": [
                 {
@@ -100272,6 +100957,12 @@
               "example": {
                 "classCode": "classCode",
                 "ticker": "ticker",
+                "statistic": {
+                  "interestedCount": 0,
+                  "tradedCount": 6,
+                  "time": "2000-01-23T04:56:07.000Z"
+                },
+                "priceCurrency": "priceCurrency",
                 "instrumentUid": "instrumentUid",
                 "values": [
                   {
@@ -100357,6 +101048,35 @@
                 },
                 "classCode": {
                   "description": "Класс-код (секция торгов).",
+                  "type": "string"
+                },
+                "statistic": {
+                  "example": {
+                    "interestedCount": 0,
+                    "tradedCount": 6,
+                    "time": "2000-01-23T04:56:07.000Z"
+                  },
+                  "properties": {
+                    "interestedCount": {
+                      "description": "Количество человек, просматривающих инструмент.",
+                      "format": "int32",
+                      "type": "integer"
+                    },
+                    "tradedCount": {
+                      "description": "Количество человек, торгующих инструментом.",
+                      "format": "int32",
+                      "type": "integer"
+                    },
+                    "time": {
+                      "description": "Дата и время актуализации данных.",
+                      "format": "date-time",
+                      "type": "string"
+                    }
+                  },
+                  "type": "object"
+                },
+                "priceCurrency": {
+                  "description": "Валюта цены.",
                   "type": "string"
                 }
               },
@@ -101623,6 +102343,7 @@
             "nano": 6,
             "units": "units"
           },
+          "priceCurrency": "priceCurrency",
           "depth": 0,
           "lastPriceTs": "2000-01-23T04:56:07.000Z",
           "asks": [
@@ -101868,6 +102589,10 @@
           "orderbookTs": {
             "description": "Время формирования стакана на бирже.",
             "format": "date-time",
+            "type": "string"
+          },
+          "priceCurrency": {
+            "description": "Валюта цены.",
             "type": "string"
           }
         },
@@ -104070,12 +104795,15 @@
               }
             },
             "type": "object"
+          },
+          "instrumentId": {
+            "description": "Идентификатор инструмента. Принимает значение `figi`, `instrument_uid` или `ticker + '_' + class_code`.",
+            "type": "string"
           }
         },
         "required": [
           "from",
           "indicatorType",
-          "instrumentUid",
           "interval",
           "to",
           "typeOfPrice"
@@ -108805,6 +109533,12 @@
         "example": {
           "classCode": "classCode",
           "ticker": "ticker",
+          "statistic": {
+            "interestedCount": 0,
+            "tradedCount": 6,
+            "time": "2000-01-23T04:56:07.000Z"
+          },
+          "priceCurrency": "priceCurrency",
           "instrumentUid": "instrumentUid",
           "values": [
             {
@@ -108890,6 +109624,60 @@
           },
           "classCode": {
             "description": "Класс-код (секция торгов).",
+            "type": "string"
+          },
+          "statistic": {
+            "example": {
+              "interestedCount": 0,
+              "tradedCount": 6,
+              "time": "2000-01-23T04:56:07.000Z"
+            },
+            "properties": {
+              "interestedCount": {
+                "description": "Количество человек, просматривающих инструмент.",
+                "format": "int32",
+                "type": "integer"
+              },
+              "tradedCount": {
+                "description": "Количество человек, торгующих инструментом.",
+                "format": "int32",
+                "type": "integer"
+              },
+              "time": {
+                "description": "Дата и время актуализации данных.",
+                "format": "date-time",
+                "type": "string"
+              }
+            },
+            "type": "object"
+          },
+          "priceCurrency": {
+            "description": "Валюта цены.",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "v1MarketValueStatistic": {
+        "example": {
+          "interestedCount": 0,
+          "tradedCount": 6,
+          "time": "2000-01-23T04:56:07.000Z"
+        },
+        "properties": {
+          "interestedCount": {
+            "description": "Количество человек, просматривающих инструмент.",
+            "format": "int32",
+            "type": "integer"
+          },
+          "tradedCount": {
+            "description": "Количество человек, торгующих инструментом.",
+            "format": "int32",
+            "type": "integer"
+          },
+          "time": {
+            "description": "Дата и время актуализации данных.",
+            "format": "date-time",
             "type": "string"
           }
         },
@@ -116214,6 +117002,16 @@
             "currency": "currency",
             "units": "units"
           },
+          "totalVarMarginSettled": {
+            "nano": 5,
+            "currency": "currency",
+            "units": "units"
+          },
+          "totalVarMargin": {
+            "nano": 5,
+            "currency": "currency",
+            "units": "units"
+          },
           "positions": [
             {
               "varMargin": {
@@ -117415,6 +118213,56 @@
               }
             },
             "type": "object"
+          },
+          "totalVarMargin": {
+            "description": "Денежная сумма в определенной валюте.",
+            "example": {
+              "nano": 5,
+              "currency": "currency",
+              "units": "units"
+            },
+            "properties": {
+              "currency": {
+                "description": "Строковый ISO-код валюты.",
+                "type": "string"
+              },
+              "units": {
+                "description": "Целая часть суммы, может быть отрицательным числом.",
+                "format": "int64",
+                "type": "string"
+              },
+              "nano": {
+                "description": "Дробная часть суммы, может быть отрицательным числом.",
+                "format": "int32",
+                "type": "integer"
+              }
+            },
+            "type": "object"
+          },
+          "totalVarMarginSettled": {
+            "description": "Денежная сумма в определенной валюте.",
+            "example": {
+              "nano": 5,
+              "currency": "currency",
+              "units": "units"
+            },
+            "properties": {
+              "currency": {
+                "description": "Строковый ISO-код валюты.",
+                "type": "string"
+              },
+              "units": {
+                "description": "Целая часть суммы, может быть отрицательным числом.",
+                "format": "int64",
+                "type": "string"
+              },
+              "nano": {
+                "description": "Дробная часть суммы, может быть отрицательным числом.",
+                "format": "int32",
+                "type": "integer"
+              }
+            },
+            "type": "object"
           }
         },
         "type": "object"
@@ -117469,6 +118317,16 @@
               "units": "units"
             },
             "totalAmountSp": {
+              "nano": 5,
+              "currency": "currency",
+              "units": "units"
+            },
+            "totalVarMarginSettled": {
+              "nano": 5,
+              "currency": "currency",
+              "units": "units"
+            },
+            "totalVarMargin": {
               "nano": 5,
               "currency": "currency",
               "units": "units"
@@ -117815,6 +118673,16 @@
                 "units": "units"
               },
               "totalAmountSp": {
+                "nano": 5,
+                "currency": "currency",
+                "units": "units"
+              },
+              "totalVarMarginSettled": {
+                "nano": 5,
+                "currency": "currency",
+                "units": "units"
+              },
+              "totalVarMargin": {
                 "nano": 5,
                 "currency": "currency",
                 "units": "units"
@@ -118997,6 +119865,56 @@
                 "type": "object"
               },
               "totalAmountDfa": {
+                "description": "Денежная сумма в определенной валюте.",
+                "example": {
+                  "nano": 5,
+                  "currency": "currency",
+                  "units": "units"
+                },
+                "properties": {
+                  "currency": {
+                    "description": "Строковый ISO-код валюты.",
+                    "type": "string"
+                  },
+                  "units": {
+                    "description": "Целая часть суммы, может быть отрицательным числом.",
+                    "format": "int64",
+                    "type": "string"
+                  },
+                  "nano": {
+                    "description": "Дробная часть суммы, может быть отрицательным числом.",
+                    "format": "int32",
+                    "type": "integer"
+                  }
+                },
+                "type": "object"
+              },
+              "totalVarMargin": {
+                "description": "Денежная сумма в определенной валюте.",
+                "example": {
+                  "nano": 5,
+                  "currency": "currency",
+                  "units": "units"
+                },
+                "properties": {
+                  "currency": {
+                    "description": "Строковый ISO-код валюты.",
+                    "type": "string"
+                  },
+                  "units": {
+                    "description": "Целая часть суммы, может быть отрицательным числом.",
+                    "format": "int64",
+                    "type": "string"
+                  },
+                  "nano": {
+                    "description": "Дробная часть суммы, может быть отрицательным числом.",
+                    "format": "int32",
+                    "type": "integer"
+                  }
+                },
+                "type": "object"
+              },
+              "totalVarMarginSettled": {
                 "description": "Денежная сумма в определенной валюте.",
                 "example": {
                   "nano": 5,
@@ -121949,6 +122867,40 @@
             "description": "Дробная часть суммы, может быть отрицательным числом.",
             "format": "int32",
             "type": "integer"
+          }
+        },
+        "type": "object"
+      },
+      "v1Rating": {
+        "description": "Объект передачи информации о рейтинге.",
+        "example": {
+          "ratingDate": "2000-01-23T04:56:07.000Z",
+          "forecast": "forecast",
+          "agencyName": "agencyName",
+          "ratingLevel": "ratingLevel",
+          "isUnderWatch": true
+        },
+        "properties": {
+          "agencyName": {
+            "description": "Название рейтингового агентства.",
+            "type": "string"
+          },
+          "ratingLevel": {
+            "description": "Рейтинг.",
+            "type": "string"
+          },
+          "ratingDate": {
+            "description": "Дата выставления рейтинга.",
+            "format": "date-time",
+            "type": "string"
+          },
+          "forecast": {
+            "description": "Прогноз.",
+            "type": "string"
+          },
+          "isUnderWatch": {
+            "description": "Признак нахождения под наблюдением.",
+            "type": "boolean"
           }
         },
         "type": "object"
@@ -132291,6 +133243,16 @@
                 "currency": "currency",
                 "units": "units"
               },
+              "totalVarMarginSettled": {
+                "nano": 5,
+                "currency": "currency",
+                "units": "units"
+              },
+              "totalVarMargin": {
+                "nano": 5,
+                "currency": "currency",
+                "units": "units"
+              },
               "positions": [
                 {
                   "varMargin": {
@@ -132605,6 +133567,16 @@
                   "units": "units"
                 },
                 "totalAmountSp": {
+                  "nano": 5,
+                  "currency": "currency",
+                  "units": "units"
+                },
+                "totalVarMarginSettled": {
+                  "nano": 5,
+                  "currency": "currency",
+                  "units": "units"
+                },
+                "totalVarMargin": {
                   "nano": 5,
                   "currency": "currency",
                   "units": "units"
@@ -132951,6 +133923,16 @@
                     "units": "units"
                   },
                   "totalAmountSp": {
+                    "nano": 5,
+                    "currency": "currency",
+                    "units": "units"
+                  },
+                  "totalVarMarginSettled": {
+                    "nano": 5,
+                    "currency": "currency",
+                    "units": "units"
+                  },
+                  "totalVarMargin": {
                     "nano": 5,
                     "currency": "currency",
                     "units": "units"
@@ -134133,6 +135115,56 @@
                     "type": "object"
                   },
                   "totalAmountDfa": {
+                    "description": "Денежная сумма в определенной валюте.",
+                    "example": {
+                      "nano": 5,
+                      "currency": "currency",
+                      "units": "units"
+                    },
+                    "properties": {
+                      "currency": {
+                        "description": "Строковый ISO-код валюты.",
+                        "type": "string"
+                      },
+                      "units": {
+                        "description": "Целая часть суммы, может быть отрицательным числом.",
+                        "format": "int64",
+                        "type": "string"
+                      },
+                      "nano": {
+                        "description": "Дробная часть суммы, может быть отрицательным числом.",
+                        "format": "int32",
+                        "type": "integer"
+                      }
+                    },
+                    "type": "object"
+                  },
+                  "totalVarMargin": {
+                    "description": "Денежная сумма в определенной валюте.",
+                    "example": {
+                      "nano": 5,
+                      "currency": "currency",
+                      "units": "units"
+                    },
+                    "properties": {
+                      "currency": {
+                        "description": "Строковый ISO-код валюты.",
+                        "type": "string"
+                      },
+                      "units": {
+                        "description": "Целая часть суммы, может быть отрицательным числом.",
+                        "format": "int64",
+                        "type": "string"
+                      },
+                      "nano": {
+                        "description": "Дробная часть суммы, может быть отрицательным числом.",
+                        "format": "int32",
+                        "type": "integer"
+                      }
+                    },
+                    "type": "object"
+                  },
+                  "totalVarMarginSettled": {
                     "description": "Денежная сумма в определенной валюте.",
                     "example": {
                       "nano": 5,

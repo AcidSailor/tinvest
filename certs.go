@@ -29,13 +29,18 @@ var russianTrustedRootCA []byte
 func RootCAs() (*x509.CertPool, error) {
 	pool, err := x509.SystemCertPool()
 	if err != nil {
-		return nil, fmt.Errorf("tinvest: load system cert pool: %w", err)
+		return nil, fmt.Errorf(
+			"tinvest: can't load system cert pool: %w",
+			err,
+		)
 	}
 	if pool == nil {
 		pool = x509.NewCertPool()
 	}
 	if !pool.AppendCertsFromPEM(russianTrustedRootCA) {
-		return nil, fmt.Errorf("tinvest: append Russian Trusted Root CA")
+		return nil, fmt.Errorf(
+			"tinvest: can't append Russian Trusted Root CA",
+		)
 	}
 	return pool, nil
 }

@@ -157,14 +157,18 @@ const (
 
 // Defines values for V1AccountType.
 const (
-	ACCOUNTTYPEDEBIT       V1AccountType = "ACCOUNT_TYPE_DEBIT"
-	ACCOUNTTYPEDFA         V1AccountType = "ACCOUNT_TYPE_DFA"
-	ACCOUNTTYPEINVESTBOX   V1AccountType = "ACCOUNT_TYPE_INVEST_BOX"
-	ACCOUNTTYPEINVESTFUND  V1AccountType = "ACCOUNT_TYPE_INVEST_FUND"
-	ACCOUNTTYPESAVING      V1AccountType = "ACCOUNT_TYPE_SAVING"
-	ACCOUNTTYPETINKOFF     V1AccountType = "ACCOUNT_TYPE_TINKOFF"
-	ACCOUNTTYPETINKOFFIIS  V1AccountType = "ACCOUNT_TYPE_TINKOFF_IIS"
-	ACCOUNTTYPEUNSPECIFIED V1AccountType = "ACCOUNT_TYPE_UNSPECIFIED"
+	ACCOUNTTYPEDEBIT        V1AccountType = "ACCOUNT_TYPE_DEBIT"
+	ACCOUNTTYPEDEPOSIT      V1AccountType = "ACCOUNT_TYPE_DEPOSIT"
+	ACCOUNTTYPEDFA          V1AccountType = "ACCOUNT_TYPE_DFA"
+	ACCOUNTTYPEINVESTBOX    V1AccountType = "ACCOUNT_TYPE_INVEST_BOX"
+	ACCOUNTTYPEINVESTFUND   V1AccountType = "ACCOUNT_TYPE_INVEST_FUND"
+	ACCOUNTTYPEOFPDEPOSIT   V1AccountType = "ACCOUNT_TYPE_OFP_DEPOSIT"
+	ACCOUNTTYPEOMS          V1AccountType = "ACCOUNT_TYPE_OMS"
+	ACCOUNTTYPESAVING       V1AccountType = "ACCOUNT_TYPE_SAVING"
+	ACCOUNTTYPESHAREDSAVING V1AccountType = "ACCOUNT_TYPE_SHARED_SAVING"
+	ACCOUNTTYPETINKOFF      V1AccountType = "ACCOUNT_TYPE_TINKOFF"
+	ACCOUNTTYPETINKOFFIIS   V1AccountType = "ACCOUNT_TYPE_TINKOFF_IIS"
+	ACCOUNTTYPEUNSPECIFIED  V1AccountType = "ACCOUNT_TYPE_UNSPECIFIED"
 )
 
 // Defines values for V1AccountValue.
@@ -1620,6 +1624,10 @@ type V1Account struct {
 	//  - ACCOUNT_TYPE_DEBIT: Дебетовый карточный счeт.
 	//  - ACCOUNT_TYPE_SAVING: Накопительный счeт.
 	//  - ACCOUNT_TYPE_DFA: Смарт-счет.
+	//  - ACCOUNT_TYPE_SHARED_SAVING: Совместный накопительный счет.
+	//  - ACCOUNT_TYPE_DEPOSIT: Вклад.
+	//  - ACCOUNT_TYPE_OMS: ОМС.
+	//  - ACCOUNT_TYPE_OFP_DEPOSIT: ОФП вклад.
 	Type *V1AccountType `json:"type,omitempty"`
 }
 
@@ -1656,6 +1664,10 @@ type V1AccountSubscriptionStatus struct {
 //   - ACCOUNT_TYPE_DEBIT: Дебетовый карточный счeт.
 //   - ACCOUNT_TYPE_SAVING: Накопительный счeт.
 //   - ACCOUNT_TYPE_DFA: Смарт-счет.
+//   - ACCOUNT_TYPE_SHARED_SAVING: Совместный накопительный счет.
+//   - ACCOUNT_TYPE_DEPOSIT: Вклад.
+//   - ACCOUNT_TYPE_OMS: ОМС.
+//   - ACCOUNT_TYPE_OFP_DEPOSIT: ОФП вклад.
 type V1AccountType string
 
 // V1AccountValue  - ACCOUNT_VALUE_UNSPECIFIED: Не определён.
@@ -2211,6 +2223,10 @@ type V1BankAccount struct {
 	//  - ACCOUNT_TYPE_DEBIT: Дебетовый карточный счeт.
 	//  - ACCOUNT_TYPE_SAVING: Накопительный счeт.
 	//  - ACCOUNT_TYPE_DFA: Смарт-счет.
+	//  - ACCOUNT_TYPE_SHARED_SAVING: Совместный накопительный счет.
+	//  - ACCOUNT_TYPE_DEPOSIT: Вклад.
+	//  - ACCOUNT_TYPE_OMS: ОМС.
+	//  - ACCOUNT_TYPE_OFP_DEPOSIT: ОФП вклад.
 	Type *V1AccountType `json:"type,omitempty"`
 }
 
@@ -2349,6 +2365,9 @@ type V1Bond struct {
 
 	// PositionUid Уникальный идентификатор позиции инструмента.
 	PositionUid *string `json:"positionUid,omitempty"`
+
+	// Ratings Массив рейтингов.
+	Ratings *[]V1Rating `json:"ratings,omitempty"`
 
 	// RealExchange Реальная площадка исполнения расчетов.
 	//
@@ -3988,6 +4007,9 @@ type V1GetCandlesRequestCandleSource string
 type V1GetCandlesResponse struct {
 	// Candles Массив свечей.
 	Candles *[]V1HistoricCandle `json:"candles,omitempty"`
+
+	// PriceCurrency Валюта цены.
+	PriceCurrency *string `json:"priceCurrency,omitempty"`
 }
 
 // V1GetClosePricesRequest Запрос цен закрытия торговой сессии по инструментам.
@@ -4249,6 +4271,9 @@ type V1GetLastTradesRequest struct {
 
 // V1GetLastTradesResponse Обезличенных сделок за последний час.
 type V1GetLastTradesResponse struct {
+	// PriceCurrency Валюта цены.
+	PriceCurrency *string `json:"priceCurrency,omitempty"`
+
 	// Trades Массив сделок.
 	Trades *[]V1Trade `json:"trades,omitempty"`
 }
@@ -4423,6 +4448,9 @@ type V1GetOrderBookResponse struct {
 
 	// OrderbookTs Время формирования стакана на бирже.
 	OrderbookTs *time.Time `json:"orderbookTs,omitempty"`
+
+	// PriceCurrency Валюта цены.
+	PriceCurrency *string `json:"priceCurrency,omitempty"`
 
 	// Ticker Тикер инструмента.
 	Ticker *string `json:"ticker,omitempty"`
@@ -4608,8 +4636,11 @@ type V1GetTechAnalysisRequest struct {
 	//  - INDICATOR_TYPE_SMA: Simple Moving Average — простое скользящее среднее.
 	IndicatorType GetTechAnalysisRequestIndicatorType `json:"indicatorType"`
 
+	// InstrumentId Идентификатор инструмента. Принимает значение `figi`, `instrument_uid` или `ticker + '_' + class_code`.
+	InstrumentId *string `json:"instrumentId,omitempty"`
+
 	// InstrumentUid UID инструмента.
-	InstrumentUid string `json:"instrumentUid"`
+	InstrumentUid *string `json:"instrumentUid,omitempty"`
 
 	// Interval Интервал свечи.
 	//
@@ -5415,11 +5446,27 @@ type V1MarketValueInstrument struct {
 	// InstrumentUid Идентификатор инструмента.
 	InstrumentUid *string `json:"instrumentUid,omitempty"`
 
+	// PriceCurrency Валюта цены.
+	PriceCurrency *string                 `json:"priceCurrency,omitempty"`
+	Statistic     *V1MarketValueStatistic `json:"statistic,omitempty"`
+
 	// Ticker Тикер инструмента.
 	Ticker *string `json:"ticker,omitempty"`
 
 	// Values Массив параметров инструмента.
 	Values *[]V1MarketValue `json:"values,omitempty"`
+}
+
+// V1MarketValueStatistic defines model for v1MarketValueStatistic.
+type V1MarketValueStatistic struct {
+	// InterestedCount Количество человек, просматривающих инструмент.
+	InterestedCount *int32 `json:"interestedCount,omitempty"`
+
+	// Time Дата и время актуализации данных.
+	Time *time.Time `json:"time,omitempty"`
+
+	// TradedCount Количество человек, торгующих инструментом.
+	TradedCount *int32 `json:"tradedCount,omitempty"`
 }
 
 // V1MarketValueType defines model for v1MarketValueType.
@@ -6918,6 +6965,12 @@ type V1PortfolioResponse struct {
 	// TotalAmountSp Денежная сумма в определенной валюте.
 	TotalAmountSp *V1MoneyValue `json:"totalAmountSp,omitempty"`
 
+	// TotalVarMargin Денежная сумма в определенной валюте.
+	TotalVarMargin *V1MoneyValue `json:"totalVarMargin,omitempty"`
+
+	// TotalVarMarginSettled Денежная сумма в определенной валюте.
+	TotalVarMarginSettled *V1MoneyValue `json:"totalVarMarginSettled,omitempty"`
+
 	// VirtualPositions Массив виртуальных позиций портфеля.
 	VirtualPositions *[]V1VirtualPortfolioPosition `json:"virtualPositions,omitempty"`
 }
@@ -7463,6 +7516,24 @@ type V1Quotation struct {
 
 	// Units Целая часть суммы, может быть отрицательным числом.
 	Units *string `json:"units,omitempty"`
+}
+
+// V1Rating Объект передачи информации о рейтинге.
+type V1Rating struct {
+	// AgencyName Название рейтингового агентства.
+	AgencyName *string `json:"agencyName,omitempty"`
+
+	// Forecast Прогноз.
+	Forecast *string `json:"forecast,omitempty"`
+
+	// IsUnderWatch Признак нахождения под наблюдением.
+	IsUnderWatch *bool `json:"isUnderWatch,omitempty"`
+
+	// RatingDate Дата выставления рейтинга.
+	RatingDate *time.Time `json:"ratingDate,omitempty"`
+
+	// RatingLevel Рейтинг.
+	RatingLevel *string `json:"ratingLevel,omitempty"`
 }
 
 // V1RealExchange Реальная площадка исполнения расчетов.

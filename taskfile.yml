@@ -4,7 +4,7 @@ vars:
   # Single source of truth for the upstream invest-contracts release.
   # Pins both the proto contracts (git tag) and the REST spec (raw tag URL)
   # so the two transports never drift onto different upstream versions.
-  CONTRACTS_VERSION: "1.49"
+  CONTRACTS_VERSION: "1.51"
 
 tasks:
   lint:
