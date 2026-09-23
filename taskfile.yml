@@ -96,19 +96,17 @@ tasks:
   proto:
     desc: Generate Go code from T-Invest proto contracts
     vars:
-      # Versioned so a CONTRACTS_VERSION bump never reuses a stale clone.
-      CONTRACTS_DIR: tmp/invest-contracts-{{.CONTRACTS_VERSION}}
+      CONTRACTS_DIR: tmp/invest-contracts
     cmds:
+      # Always clone fresh so a CONTRACTS_VERSION bump never reuses a stale
+      # checkout.
+      - rm -rf {{.CONTRACTS_DIR}}
+      - defer: rm -rf {{.CONTRACTS_DIR}}
       - |
-        [ -d {{.CONTRACTS_DIR}} ] || git clone --depth 1 --branch {{.CONTRACTS_VERSION}} \
+        git clone --depth 1 --branch {{.CONTRACTS_VERSION}} \
           https://opensource.tbank.ru/invest/invest-contracts.git \
           {{.CONTRACTS_DIR}}
       - buf generate {{.CONTRACTS_DIR}}/src/docs/contracts
-    sources:
-      - "{{.CONTRACTS_DIR}}/src/docs/contracts/**/*.proto"
-      - buf.gen.yaml
-    generates:
-      - grpc/pb/**/*.go
 
   spec:
     desc: Download the upstream T-Invest OpenAPI spec (committed verbatim)
