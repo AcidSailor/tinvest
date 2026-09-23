@@ -3467,7 +3467,8 @@ func (x *GetCandlesRequest) GetLimit() int32 {
 // Список свечей.
 type GetCandlesResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Candles       []*HistoricCandle      `protobuf:"bytes,1,rep,name=candles,proto3" json:"candles,omitempty"` //Массив свечей.
+	Candles       []*HistoricCandle      `protobuf:"bytes,1,rep,name=candles,proto3" json:"candles,omitempty"`                                  //Массив свечей.
+	PriceCurrency string                 `protobuf:"bytes,2,opt,name=price_currency,json=priceCurrency,proto3" json:"price_currency,omitempty"` //Валюта цены.
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -3507,6 +3508,13 @@ func (x *GetCandlesResponse) GetCandles() []*HistoricCandle {
 		return x.Candles
 	}
 	return nil
+}
+
+func (x *GetCandlesResponse) GetPriceCurrency() string {
+	if x != nil {
+		return x.PriceCurrency
+	}
+	return ""
 }
 
 // Информация о свече.
@@ -3977,20 +3985,21 @@ func (x *GetOrderBookRequest) GetInstrumentId() string {
 // Информация о стакане.
 type GetOrderBookResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Figi          string                 `protobuf:"bytes,1,opt,name=figi,proto3" json:"figi,omitempty"`                                        //FIGI-идентификатор инструмента.
-	Depth         int32                  `protobuf:"varint,2,opt,name=depth,proto3" json:"depth,omitempty"`                                     //Глубина стакана.
-	Bids          []*Order               `protobuf:"bytes,3,rep,name=bids,proto3" json:"bids,omitempty"`                                        //Множество пар значений на покупку.
-	Asks          []*Order               `protobuf:"bytes,4,rep,name=asks,proto3" json:"asks,omitempty"`                                        //Множество пар значений на продажу.
-	LastPrice     *Quotation             `protobuf:"bytes,5,opt,name=last_price,json=lastPrice,proto3" json:"last_price,omitempty"`             //Цена последней сделки за 1 инструмент. Чтобы получить стоимость лота, нужно умножить на лотность инструмента. [Подробнее про перевод цен в валюту](./faq_marketdata/#_15).
-	ClosePrice    *Quotation             `protobuf:"bytes,6,opt,name=close_price,json=closePrice,proto3" json:"close_price,omitempty"`          //Цена закрытия за 1 инструмент. Чтобы получить стоимость лота, нужно умножить на лотность инструмента. [Подробнее про перевод цен в валюту](./faq_marketdata/#_15).
-	LimitUp       *Quotation             `protobuf:"bytes,7,opt,name=limit_up,json=limitUp,proto3" json:"limit_up,omitempty"`                   //Верхний лимит цены за 1 инструмент. Чтобы получить стоимость лота, нужно умножить на лотность инструмента. [Подробнее про перевод цен в валюту](./faq_marketdata/#_15).
-	LimitDown     *Quotation             `protobuf:"bytes,8,opt,name=limit_down,json=limitDown,proto3" json:"limit_down,omitempty"`             //Нижний лимит цены за 1 инструмент. Чтобы получить стоимость лота, нужно умножить на лотность инструмента. [Подробнее про перевод цен в валюту](./faq_marketdata/#_15).
-	InstrumentUid string                 `protobuf:"bytes,9,opt,name=instrument_uid,json=instrumentUid,proto3" json:"instrument_uid,omitempty"` //UID инструмента.
-	Ticker        string                 `protobuf:"bytes,10,opt,name=ticker,proto3" json:"ticker,omitempty"`                                   //Тикер инструмента.
-	ClassCode     string                 `protobuf:"bytes,11,opt,name=class_code,json=classCode,proto3" json:"class_code,omitempty"`            //Класс-код (секция торгов).
-	LastPriceTs   *timestamppb.Timestamp `protobuf:"bytes,21,opt,name=last_price_ts,json=lastPriceTs,proto3" json:"last_price_ts,omitempty"`    //Время получения цены последней сделки.
-	ClosePriceTs  *timestamppb.Timestamp `protobuf:"bytes,22,opt,name=close_price_ts,json=closePriceTs,proto3" json:"close_price_ts,omitempty"` //Время получения цены закрытия.
-	OrderbookTs   *timestamppb.Timestamp `protobuf:"bytes,23,opt,name=orderbook_ts,json=orderbookTs,proto3" json:"orderbook_ts,omitempty"`      //Время формирования стакана на бирже.
+	Figi          string                 `protobuf:"bytes,1,opt,name=figi,proto3" json:"figi,omitempty"`                                         //FIGI-идентификатор инструмента.
+	Depth         int32                  `protobuf:"varint,2,opt,name=depth,proto3" json:"depth,omitempty"`                                      //Глубина стакана.
+	Bids          []*Order               `protobuf:"bytes,3,rep,name=bids,proto3" json:"bids,omitempty"`                                         //Множество пар значений на покупку.
+	Asks          []*Order               `protobuf:"bytes,4,rep,name=asks,proto3" json:"asks,omitempty"`                                         //Множество пар значений на продажу.
+	LastPrice     *Quotation             `protobuf:"bytes,5,opt,name=last_price,json=lastPrice,proto3" json:"last_price,omitempty"`              //Цена последней сделки за 1 инструмент. Чтобы получить стоимость лота, нужно умножить на лотность инструмента. [Подробнее про перевод цен в валюту](./faq_marketdata/#_15).
+	ClosePrice    *Quotation             `protobuf:"bytes,6,opt,name=close_price,json=closePrice,proto3" json:"close_price,omitempty"`           //Цена закрытия за 1 инструмент. Чтобы получить стоимость лота, нужно умножить на лотность инструмента. [Подробнее про перевод цен в валюту](./faq_marketdata/#_15).
+	LimitUp       *Quotation             `protobuf:"bytes,7,opt,name=limit_up,json=limitUp,proto3" json:"limit_up,omitempty"`                    //Верхний лимит цены за 1 инструмент. Чтобы получить стоимость лота, нужно умножить на лотность инструмента. [Подробнее про перевод цен в валюту](./faq_marketdata/#_15).
+	LimitDown     *Quotation             `protobuf:"bytes,8,opt,name=limit_down,json=limitDown,proto3" json:"limit_down,omitempty"`              //Нижний лимит цены за 1 инструмент. Чтобы получить стоимость лота, нужно умножить на лотность инструмента. [Подробнее про перевод цен в валюту](./faq_marketdata/#_15).
+	InstrumentUid string                 `protobuf:"bytes,9,opt,name=instrument_uid,json=instrumentUid,proto3" json:"instrument_uid,omitempty"`  //UID инструмента.
+	Ticker        string                 `protobuf:"bytes,10,opt,name=ticker,proto3" json:"ticker,omitempty"`                                    //Тикер инструмента.
+	ClassCode     string                 `protobuf:"bytes,11,opt,name=class_code,json=classCode,proto3" json:"class_code,omitempty"`             //Класс-код (секция торгов).
+	LastPriceTs   *timestamppb.Timestamp `protobuf:"bytes,21,opt,name=last_price_ts,json=lastPriceTs,proto3" json:"last_price_ts,omitempty"`     //Время получения цены последней сделки.
+	ClosePriceTs  *timestamppb.Timestamp `protobuf:"bytes,22,opt,name=close_price_ts,json=closePriceTs,proto3" json:"close_price_ts,omitempty"`  //Время получения цены закрытия.
+	OrderbookTs   *timestamppb.Timestamp `protobuf:"bytes,23,opt,name=orderbook_ts,json=orderbookTs,proto3" json:"orderbook_ts,omitempty"`       //Время формирования стакана на бирже.
+	PriceCurrency string                 `protobuf:"bytes,24,opt,name=price_currency,json=priceCurrency,proto3" json:"price_currency,omitempty"` //Валюта цены.
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -4121,6 +4130,13 @@ func (x *GetOrderBookResponse) GetOrderbookTs() *timestamppb.Timestamp {
 		return x.OrderbookTs
 	}
 	return nil
+}
+
+func (x *GetOrderBookResponse) GetPriceCurrency() string {
+	if x != nil {
+		return x.PriceCurrency
+	}
+	return ""
 }
 
 // Запрос получения торгового статуса.
@@ -4467,7 +4483,8 @@ func (x *GetLastTradesRequest) GetTradeSource() TradeSourceType {
 // Обезличенных сделок за последний час.
 type GetLastTradesResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Trades        []*Trade               `protobuf:"bytes,1,rep,name=trades,proto3" json:"trades,omitempty"` //Массив сделок.
+	Trades        []*Trade               `protobuf:"bytes,1,rep,name=trades,proto3" json:"trades,omitempty"`                                    //Массив сделок.
+	PriceCurrency string                 `protobuf:"bytes,2,opt,name=price_currency,json=priceCurrency,proto3" json:"price_currency,omitempty"` //Валюта цены.
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -4507,6 +4524,13 @@ func (x *GetLastTradesResponse) GetTrades() []*Trade {
 		return x.Trades
 	}
 	return nil
+}
+
+func (x *GetLastTradesResponse) GetPriceCurrency() string {
+	if x != nil {
+		return x.PriceCurrency
+	}
+	return ""
 }
 
 // Запрос активных подписок. Возвращает по одному сообщению на каждый тип активных подписок — `SubscribeLastPriceResponse`, `SubscribeInfoResponse`, `SubscribeTradesResponse`, `SubscribeOrderBookResponse`, `SubscribeCandlesResponse`.
@@ -4793,7 +4817,7 @@ func (x *InstrumentClosePriceResponse) GetEveningSessionPriceTime() *timestamppb
 type GetTechAnalysisRequest struct {
 	state         protoimpl.MessageState                   `protogen:"open.v1"`
 	IndicatorType GetTechAnalysisRequest_IndicatorType     `protobuf:"varint,1,opt,name=indicator_type,json=indicatorType,proto3,enum=tinkoff.public.invest.api.contract.v1.GetTechAnalysisRequest_IndicatorType" json:"indicator_type,omitempty"` //Тип технического индикатора.
-	InstrumentUid string                                   `protobuf:"bytes,2,opt,name=instrument_uid,json=instrumentUid,proto3" json:"instrument_uid,omitempty"`                                                                                  //UID инструмента.
+	InstrumentUid *string                                  `protobuf:"bytes,2,opt,name=instrument_uid,json=instrumentUid,proto3,oneof" json:"instrument_uid,omitempty"`                                                                            //UID инструмента.
 	From          *timestamppb.Timestamp                   `protobuf:"bytes,3,opt,name=from,proto3" json:"from,omitempty"`                                                                                                                         //Начало запрашиваемого периода по UTC.
 	To            *timestamppb.Timestamp                   `protobuf:"bytes,4,opt,name=to,proto3" json:"to,omitempty"`                                                                                                                             //Окончание запрашиваемого периода по UTC.
 	Interval      GetTechAnalysisRequest_IndicatorInterval `protobuf:"varint,5,opt,name=interval,proto3,enum=tinkoff.public.invest.api.contract.v1.GetTechAnalysisRequest_IndicatorInterval" json:"interval,omitempty"`                            //Интервал, за который рассчитывается индикатор.
@@ -4801,6 +4825,7 @@ type GetTechAnalysisRequest struct {
 	Length        int32                                    `protobuf:"varint,7,opt,name=length,proto3" json:"length,omitempty"`                                                                                                                    //Торговый период, за который рассчитывается индикатор.
 	Deviation     *GetTechAnalysisRequest_Deviation        `protobuf:"bytes,8,opt,name=deviation,proto3" json:"deviation,omitempty"`                                                                                                               //Параметры отклонения.
 	Smoothing     *GetTechAnalysisRequest_Smoothing        `protobuf:"bytes,9,opt,name=smoothing,proto3" json:"smoothing,omitempty"`                                                                                                               //Параметры сглаживания.
+	InstrumentId  *string                                  `protobuf:"bytes,10,opt,name=instrument_id,json=instrumentId,proto3,oneof" json:"instrument_id,omitempty"`                                                                              //Идентификатор инструмента. Принимает значение `figi`, `instrument_uid` или `ticker + '_' + class_code`.
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -4843,8 +4868,8 @@ func (x *GetTechAnalysisRequest) GetIndicatorType() GetTechAnalysisRequest_Indic
 }
 
 func (x *GetTechAnalysisRequest) GetInstrumentUid() string {
-	if x != nil {
-		return x.InstrumentUid
+	if x != nil && x.InstrumentUid != nil {
+		return *x.InstrumentUid
 	}
 	return ""
 }
@@ -4896,6 +4921,13 @@ func (x *GetTechAnalysisRequest) GetSmoothing() *GetTechAnalysisRequest_Smoothin
 		return x.Smoothing
 	}
 	return nil
+}
+
+func (x *GetTechAnalysisRequest) GetInstrumentId() string {
+	if x != nil && x.InstrumentId != nil {
+		return *x.InstrumentId
+	}
+	return ""
 }
 
 type GetTechAnalysisResponse struct {
@@ -5044,6 +5076,8 @@ type MarketValueInstrument struct {
 	Values        []*MarketValue         `protobuf:"bytes,2,rep,name=values,proto3" json:"values,omitempty"`                                    //Массив параметров инструмента.
 	Ticker        string                 `protobuf:"bytes,3,opt,name=ticker,proto3" json:"ticker,omitempty"`                                    //Тикер инструмента.
 	ClassCode     string                 `protobuf:"bytes,4,opt,name=class_code,json=classCode,proto3" json:"class_code,omitempty"`             //Класс-код (секция торгов).
+	Statistic     *MarketValueStatistic  `protobuf:"bytes,5,opt,name=statistic,proto3" json:"statistic,omitempty"`                              //Дополнительная информация.
+	PriceCurrency string                 `protobuf:"bytes,6,opt,name=price_currency,json=priceCurrency,proto3" json:"price_currency,omitempty"` //Валюта цены.
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -5106,6 +5140,80 @@ func (x *MarketValueInstrument) GetClassCode() string {
 	return ""
 }
 
+func (x *MarketValueInstrument) GetStatistic() *MarketValueStatistic {
+	if x != nil {
+		return x.Statistic
+	}
+	return nil
+}
+
+func (x *MarketValueInstrument) GetPriceCurrency() string {
+	if x != nil {
+		return x.PriceCurrency
+	}
+	return ""
+}
+
+type MarketValueStatistic struct {
+	state           protoimpl.MessageState `protogen:"open.v1"`
+	InterestedCount *int32                 `protobuf:"varint,1,opt,name=interested_count,json=interestedCount,proto3,oneof" json:"interested_count,omitempty"` //Количество человек, просматривающих инструмент.
+	TradedCount     *int32                 `protobuf:"varint,2,opt,name=traded_count,json=tradedCount,proto3,oneof" json:"traded_count,omitempty"`             //Количество человек, торгующих инструментом.
+	Time            *timestamppb.Timestamp `protobuf:"bytes,3,opt,name=time,proto3" json:"time,omitempty"`                                                     //Дата и время актуализации данных.
+	unknownFields   protoimpl.UnknownFields
+	sizeCache       protoimpl.SizeCache
+}
+
+func (x *MarketValueStatistic) Reset() {
+	*x = MarketValueStatistic{}
+	mi := &file_marketdata_proto_msgTypes[53]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *MarketValueStatistic) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*MarketValueStatistic) ProtoMessage() {}
+
+func (x *MarketValueStatistic) ProtoReflect() protoreflect.Message {
+	mi := &file_marketdata_proto_msgTypes[53]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use MarketValueStatistic.ProtoReflect.Descriptor instead.
+func (*MarketValueStatistic) Descriptor() ([]byte, []int) {
+	return file_marketdata_proto_rawDescGZIP(), []int{53}
+}
+
+func (x *MarketValueStatistic) GetInterestedCount() int32 {
+	if x != nil && x.InterestedCount != nil {
+		return *x.InterestedCount
+	}
+	return 0
+}
+
+func (x *MarketValueStatistic) GetTradedCount() int32 {
+	if x != nil && x.TradedCount != nil {
+		return *x.TradedCount
+	}
+	return 0
+}
+
+func (x *MarketValueStatistic) GetTime() *timestamppb.Timestamp {
+	if x != nil {
+		return x.Time
+	}
+	return nil
+}
+
 type MarketValue struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Type          *MarketValueType       `protobuf:"varint,1,opt,name=type,proto3,enum=tinkoff.public.invest.api.contract.v1.MarketValueType,oneof" json:"type,omitempty"` //Тип параметра.
@@ -5117,7 +5225,7 @@ type MarketValue struct {
 
 func (x *MarketValue) Reset() {
 	*x = MarketValue{}
-	mi := &file_marketdata_proto_msgTypes[53]
+	mi := &file_marketdata_proto_msgTypes[54]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -5129,7 +5237,7 @@ func (x *MarketValue) String() string {
 func (*MarketValue) ProtoMessage() {}
 
 func (x *MarketValue) ProtoReflect() protoreflect.Message {
-	mi := &file_marketdata_proto_msgTypes[53]
+	mi := &file_marketdata_proto_msgTypes[54]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5142,7 +5250,7 @@ func (x *MarketValue) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use MarketValue.ProtoReflect.Descriptor instead.
 func (*MarketValue) Descriptor() ([]byte, []int) {
-	return file_marketdata_proto_rawDescGZIP(), []int{53}
+	return file_marketdata_proto_rawDescGZIP(), []int{54}
 }
 
 func (x *MarketValue) GetType() MarketValueType {
@@ -5177,7 +5285,7 @@ type GetTechAnalysisRequest_Smoothing struct {
 
 func (x *GetTechAnalysisRequest_Smoothing) Reset() {
 	*x = GetTechAnalysisRequest_Smoothing{}
-	mi := &file_marketdata_proto_msgTypes[54]
+	mi := &file_marketdata_proto_msgTypes[55]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -5189,7 +5297,7 @@ func (x *GetTechAnalysisRequest_Smoothing) String() string {
 func (*GetTechAnalysisRequest_Smoothing) ProtoMessage() {}
 
 func (x *GetTechAnalysisRequest_Smoothing) ProtoReflect() protoreflect.Message {
-	mi := &file_marketdata_proto_msgTypes[54]
+	mi := &file_marketdata_proto_msgTypes[55]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5235,7 +5343,7 @@ type GetTechAnalysisRequest_Deviation struct {
 
 func (x *GetTechAnalysisRequest_Deviation) Reset() {
 	*x = GetTechAnalysisRequest_Deviation{}
-	mi := &file_marketdata_proto_msgTypes[55]
+	mi := &file_marketdata_proto_msgTypes[56]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -5247,7 +5355,7 @@ func (x *GetTechAnalysisRequest_Deviation) String() string {
 func (*GetTechAnalysisRequest_Deviation) ProtoMessage() {}
 
 func (x *GetTechAnalysisRequest_Deviation) ProtoReflect() protoreflect.Message {
-	mi := &file_marketdata_proto_msgTypes[55]
+	mi := &file_marketdata_proto_msgTypes[56]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5284,7 +5392,7 @@ type GetTechAnalysisResponse_TechAnalysisItem struct {
 
 func (x *GetTechAnalysisResponse_TechAnalysisItem) Reset() {
 	*x = GetTechAnalysisResponse_TechAnalysisItem{}
-	mi := &file_marketdata_proto_msgTypes[56]
+	mi := &file_marketdata_proto_msgTypes[57]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -5296,7 +5404,7 @@ func (x *GetTechAnalysisResponse_TechAnalysisItem) String() string {
 func (*GetTechAnalysisResponse_TechAnalysisItem) ProtoMessage() {}
 
 func (x *GetTechAnalysisResponse_TechAnalysisItem) ProtoReflect() protoreflect.Message {
-	mi := &file_marketdata_proto_msgTypes[56]
+	mi := &file_marketdata_proto_msgTypes[57]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5586,9 +5694,10 @@ const file_marketdata_proto_rawDesc = "" +
 	"\x05_figiB\x10\n" +
 	"\x0e_instrument_idB\x15\n" +
 	"\x13_candle_source_typeB\b\n" +
-	"\x06_limit\"e\n" +
+	"\x06_limit\"\x8c\x01\n" +
 	"\x12GetCandlesResponse\x12O\n" +
-	"\acandles\x18\x01 \x03(\v25.tinkoff.public.invest.api.contract.v1.HistoricCandleR\acandles\"\xab\x04\n" +
+	"\acandles\x18\x01 \x03(\v25.tinkoff.public.invest.api.contract.v1.HistoricCandleR\acandles\x12%\n" +
+	"\x0eprice_currency\x18\x02 \x01(\tR\rpriceCurrency\"\xab\x04\n" +
 	"\x0eHistoricCandle\x12D\n" +
 	"\x04open\x18\x01 \x01(\v20.tinkoff.public.invest.api.contract.v1.QuotationR\x04open\x12D\n" +
 	"\x04high\x18\x02 \x01(\v20.tinkoff.public.invest.api.contract.v1.QuotationR\x04high\x12B\n" +
@@ -5635,7 +5744,7 @@ const file_marketdata_proto_rawDesc = "" +
 	"\x05depth\x18\x02 \x01(\x05B\x04\xe2A\x01\x02R\x05depth\x12(\n" +
 	"\rinstrument_id\x18\x03 \x01(\tH\x01R\finstrumentId\x88\x01\x01B\a\n" +
 	"\x05_figiB\x10\n" +
-	"\x0e_instrument_id\"\xa5\x06\n" +
+	"\x0e_instrument_id\"\xcc\x06\n" +
 	"\x14GetOrderBookResponse\x12\x12\n" +
 	"\x04figi\x18\x01 \x01(\tR\x04figi\x12\x14\n" +
 	"\x05depth\x18\x02 \x01(\x05R\x05depth\x12@\n" +
@@ -5655,7 +5764,8 @@ const file_marketdata_proto_rawDesc = "" +
 	"class_code\x18\v \x01(\tR\tclassCode\x12>\n" +
 	"\rlast_price_ts\x18\x15 \x01(\v2\x1a.google.protobuf.TimestampR\vlastPriceTs\x12@\n" +
 	"\x0eclose_price_ts\x18\x16 \x01(\v2\x1a.google.protobuf.TimestampR\fclosePriceTs\x12=\n" +
-	"\forderbook_ts\x18\x17 \x01(\v2\x1a.google.protobuf.TimestampR\vorderbookTs\"{\n" +
+	"\forderbook_ts\x18\x17 \x01(\v2\x1a.google.protobuf.TimestampR\vorderbookTs\x12%\n" +
+	"\x0eprice_currency\x18\x18 \x01(\tR\rpriceCurrency\"{\n" +
 	"\x17GetTradingStatusRequest\x12\x1b\n" +
 	"\x04figi\x18\x01 \x01(\tB\x02\x18\x01H\x00R\x04figi\x88\x01\x01\x12(\n" +
 	"\rinstrument_id\x18\x02 \x01(\tH\x01R\finstrumentId\x88\x01\x01B\a\n" +
@@ -5685,9 +5795,10 @@ const file_marketdata_proto_rawDesc = "" +
 	"\rinstrument_id\x18\x04 \x01(\tH\x01R\finstrumentId\x88\x01\x01\x12Y\n" +
 	"\ftrade_source\x18\x05 \x01(\x0e26.tinkoff.public.invest.api.contract.v1.TradeSourceTypeR\vtradeSourceB\a\n" +
 	"\x05_figiB\x10\n" +
-	"\x0e_instrument_id\"]\n" +
+	"\x0e_instrument_id\"\x84\x01\n" +
 	"\x15GetLastTradesResponse\x12D\n" +
-	"\x06trades\x18\x01 \x03(\v2,.tinkoff.public.invest.api.contract.v1.TradeR\x06trades\"\x14\n" +
+	"\x06trades\x18\x01 \x03(\v2,.tinkoff.public.invest.api.contract.v1.TradeR\x06trades\x12%\n" +
+	"\x0eprice_currency\x18\x02 \x01(\tR\rpriceCurrency\"\x14\n" +
 	"\x12GetMySubscriptions\"\x84\x02\n" +
 	"\x15GetClosePricesRequest\x12j\n" +
 	"\vinstruments\x18\x01 \x03(\v2B.tinkoff.public.invest.api.contract.v1.InstrumentClosePriceRequestB\x04\xe2A\x01\x02R\vinstruments\x12i\n" +
@@ -5706,17 +5817,19 @@ const file_marketdata_proto_rawDesc = "" +
 	"\x05price\x18\v \x01(\v20.tinkoff.public.invest.api.contract.v1.QuotationR\x05price\x12d\n" +
 	"\x15evening_session_price\x18\f \x01(\v20.tinkoff.public.invest.api.contract.v1.QuotationR\x13eveningSessionPrice\x12.\n" +
 	"\x04time\x18\x15 \x01(\v2\x1a.google.protobuf.TimestampR\x04time\x12W\n" +
-	"\x1aevening_session_price_time\x18\x17 \x01(\v2\x1a.google.protobuf.TimestampR\x17eveningSessionPriceTime\"\x8f\x0e\n" +
+	"\x1aevening_session_price_time\x18\x17 \x01(\v2\x1a.google.protobuf.TimestampR\x17eveningSessionPriceTime\"\xdd\x0e\n" +
 	"\x16GetTechAnalysisRequest\x12x\n" +
-	"\x0eindicator_type\x18\x01 \x01(\x0e2K.tinkoff.public.invest.api.contract.v1.GetTechAnalysisRequest.IndicatorTypeB\x04\xe2A\x01\x02R\rindicatorType\x12+\n" +
-	"\x0einstrument_uid\x18\x02 \x01(\tB\x04\xe2A\x01\x02R\rinstrumentUid\x124\n" +
+	"\x0eindicator_type\x18\x01 \x01(\x0e2K.tinkoff.public.invest.api.contract.v1.GetTechAnalysisRequest.IndicatorTypeB\x04\xe2A\x01\x02R\rindicatorType\x12*\n" +
+	"\x0einstrument_uid\x18\x02 \x01(\tH\x00R\rinstrumentUid\x88\x01\x01\x124\n" +
 	"\x04from\x18\x03 \x01(\v2\x1a.google.protobuf.TimestampB\x04\xe2A\x01\x02R\x04from\x120\n" +
 	"\x02to\x18\x04 \x01(\v2\x1a.google.protobuf.TimestampB\x04\xe2A\x01\x02R\x02to\x12q\n" +
 	"\binterval\x18\x05 \x01(\x0e2O.tinkoff.public.invest.api.contract.v1.GetTechAnalysisRequest.IndicatorIntervalB\x04\xe2A\x01\x02R\binterval\x12s\n" +
 	"\rtype_of_price\x18\x06 \x01(\x0e2I.tinkoff.public.invest.api.contract.v1.GetTechAnalysisRequest.TypeOfPriceB\x04\xe2A\x01\x02R\vtypeOfPrice\x12\x16\n" +
 	"\x06length\x18\a \x01(\x05R\x06length\x12e\n" +
 	"\tdeviation\x18\b \x01(\v2G.tinkoff.public.invest.api.contract.v1.GetTechAnalysisRequest.DeviationR\tdeviation\x12e\n" +
-	"\tsmoothing\x18\t \x01(\v2G.tinkoff.public.invest.api.contract.v1.GetTechAnalysisRequest.SmoothingR\tsmoothing\x1ax\n" +
+	"\tsmoothing\x18\t \x01(\v2G.tinkoff.public.invest.api.contract.v1.GetTechAnalysisRequest.SmoothingR\tsmoothing\x12(\n" +
+	"\rinstrument_id\x18\n" +
+	" \x01(\tH\x01R\finstrumentId\x88\x01\x01\x1ax\n" +
 	"\tSmoothing\x12\x1f\n" +
 	"\vfast_length\x18\x01 \x01(\x05R\n" +
 	"fastLength\x12\x1f\n" +
@@ -5754,7 +5867,9 @@ const file_marketdata_proto_rawDesc = "" +
 	"\x12INDICATOR_TYPE_EMA\x10\x02\x12\x16\n" +
 	"\x12INDICATOR_TYPE_RSI\x10\x03\x12\x17\n" +
 	"\x13INDICATOR_TYPE_MACD\x10\x04\x12\x16\n" +
-	"\x12INDICATOR_TYPE_SMA\x10\x05\"\xcd\x05\n" +
+	"\x12INDICATOR_TYPE_SMA\x10\x05B\x11\n" +
+	"\x0f_instrument_uidB\x10\n" +
+	"\x0e_instrument_id\"\xcd\x05\n" +
 	"\x17GetTechAnalysisResponse\x12\x82\x01\n" +
 	"\x14technical_indicators\x18\x01 \x03(\v2O.tinkoff.public.invest.api.contract.v1.GetTechAnalysisResponse.TechAnalysisItemR\x13technicalIndicators\x1a\xac\x04\n" +
 	"\x10TechAnalysisItem\x128\n" +
@@ -5776,13 +5891,21 @@ const file_marketdata_proto_rawDesc = "" +
 	"\rinstrument_id\x18\x01 \x03(\tR\finstrumentId\x12N\n" +
 	"\x06values\x18\x02 \x03(\x0e26.tinkoff.public.invest.api.contract.v1.MarketValueTypeR\x06values\"y\n" +
 	"\x17GetMarketValuesResponse\x12^\n" +
-	"\vinstruments\x18\x01 \x03(\v2<.tinkoff.public.invest.api.contract.v1.MarketValueInstrumentR\vinstruments\"\xc1\x01\n" +
+	"\vinstruments\x18\x01 \x03(\v2<.tinkoff.public.invest.api.contract.v1.MarketValueInstrumentR\vinstruments\"\xc3\x02\n" +
 	"\x15MarketValueInstrument\x12%\n" +
 	"\x0einstrument_uid\x18\x01 \x01(\tR\rinstrumentUid\x12J\n" +
 	"\x06values\x18\x02 \x03(\v22.tinkoff.public.invest.api.contract.v1.MarketValueR\x06values\x12\x16\n" +
 	"\x06ticker\x18\x03 \x01(\tR\x06ticker\x12\x1d\n" +
 	"\n" +
-	"class_code\x18\x04 \x01(\tR\tclassCode\"\xfc\x01\n" +
+	"class_code\x18\x04 \x01(\tR\tclassCode\x12Y\n" +
+	"\tstatistic\x18\x05 \x01(\v2;.tinkoff.public.invest.api.contract.v1.MarketValueStatisticR\tstatistic\x12%\n" +
+	"\x0eprice_currency\x18\x06 \x01(\tR\rpriceCurrency\"\xc4\x01\n" +
+	"\x14MarketValueStatistic\x12.\n" +
+	"\x10interested_count\x18\x01 \x01(\x05H\x00R\x0finterestedCount\x88\x01\x01\x12&\n" +
+	"\ftraded_count\x18\x02 \x01(\x05H\x01R\vtradedCount\x88\x01\x01\x12.\n" +
+	"\x04time\x18\x03 \x01(\v2\x1a.google.protobuf.TimestampR\x04timeB\x13\n" +
+	"\x11_interested_countB\x0f\n" +
+	"\r_traded_count\"\xfc\x01\n" +
 	"\vMarketValue\x12O\n" +
 	"\x04type\x18\x01 \x01(\x0e26.tinkoff.public.invest.api.contract.v1.MarketValueTypeH\x00R\x04type\x88\x01\x01\x12K\n" +
 	"\x05value\x18\x02 \x01(\v20.tinkoff.public.invest.api.contract.v1.QuotationH\x01R\x05value\x88\x01\x01\x123\n" +
@@ -5903,7 +6026,7 @@ func file_marketdata_proto_rawDescGZIP() []byte {
 }
 
 var file_marketdata_proto_enumTypes = make([]protoimpl.EnumInfo, 14)
-var file_marketdata_proto_msgTypes = make([]protoimpl.MessageInfo, 57)
+var file_marketdata_proto_msgTypes = make([]protoimpl.MessageInfo, 58)
 var file_marketdata_proto_goTypes = []any{
 	(SubscriptionAction)(0),                          // 0: tinkoff.public.invest.api.contract.v1.SubscriptionAction
 	(SubscriptionInterval)(0),                        // 1: tinkoff.public.invest.api.contract.v1.SubscriptionInterval
@@ -5972,17 +6095,18 @@ var file_marketdata_proto_goTypes = []any{
 	(*GetMarketValuesRequest)(nil),                   // 64: tinkoff.public.invest.api.contract.v1.GetMarketValuesRequest
 	(*GetMarketValuesResponse)(nil),                  // 65: tinkoff.public.invest.api.contract.v1.GetMarketValuesResponse
 	(*MarketValueInstrument)(nil),                    // 66: tinkoff.public.invest.api.contract.v1.MarketValueInstrument
-	(*MarketValue)(nil),                              // 67: tinkoff.public.invest.api.contract.v1.MarketValue
-	(*GetTechAnalysisRequest_Smoothing)(nil),         // 68: tinkoff.public.invest.api.contract.v1.GetTechAnalysisRequest.Smoothing
-	(*GetTechAnalysisRequest_Deviation)(nil),         // 69: tinkoff.public.invest.api.contract.v1.GetTechAnalysisRequest.Deviation
-	(*GetTechAnalysisResponse_TechAnalysisItem)(nil), // 70: tinkoff.public.invest.api.contract.v1.GetTechAnalysisResponse.TechAnalysisItem
-	(*PingRequest)(nil),                              // 71: tinkoff.public.invest.api.contract.v1.PingRequest
-	(*PingDelaySettings)(nil),                        // 72: tinkoff.public.invest.api.contract.v1.PingDelaySettings
-	(*Ping)(nil),                                     // 73: tinkoff.public.invest.api.contract.v1.Ping
-	(*Quotation)(nil),                                // 74: tinkoff.public.invest.api.contract.v1.Quotation
-	(*timestamppb.Timestamp)(nil),                    // 75: google.protobuf.Timestamp
-	(SecurityTradingStatus)(0),                       // 76: tinkoff.public.invest.api.contract.v1.SecurityTradingStatus
-	(InstrumentStatus)(0),                            // 77: tinkoff.public.invest.api.contract.v1.InstrumentStatus
+	(*MarketValueStatistic)(nil),                     // 67: tinkoff.public.invest.api.contract.v1.MarketValueStatistic
+	(*MarketValue)(nil),                              // 68: tinkoff.public.invest.api.contract.v1.MarketValue
+	(*GetTechAnalysisRequest_Smoothing)(nil),         // 69: tinkoff.public.invest.api.contract.v1.GetTechAnalysisRequest.Smoothing
+	(*GetTechAnalysisRequest_Deviation)(nil),         // 70: tinkoff.public.invest.api.contract.v1.GetTechAnalysisRequest.Deviation
+	(*GetTechAnalysisResponse_TechAnalysisItem)(nil), // 71: tinkoff.public.invest.api.contract.v1.GetTechAnalysisResponse.TechAnalysisItem
+	(*PingRequest)(nil),                              // 72: tinkoff.public.invest.api.contract.v1.PingRequest
+	(*PingDelaySettings)(nil),                        // 73: tinkoff.public.invest.api.contract.v1.PingDelaySettings
+	(*Ping)(nil),                                     // 74: tinkoff.public.invest.api.contract.v1.Ping
+	(*Quotation)(nil),                                // 75: tinkoff.public.invest.api.contract.v1.Quotation
+	(*timestamppb.Timestamp)(nil),                    // 76: google.protobuf.Timestamp
+	(SecurityTradingStatus)(0),                       // 77: tinkoff.public.invest.api.contract.v1.SecurityTradingStatus
+	(InstrumentStatus)(0),                            // 78: tinkoff.public.invest.api.contract.v1.InstrumentStatus
 }
 var file_marketdata_proto_depIdxs = []int32{
 	17,  // 0: tinkoff.public.invest.api.contract.v1.MarketDataRequest.subscribe_candles_request:type_name -> tinkoff.public.invest.api.contract.v1.SubscribeCandlesRequest
@@ -5991,14 +6115,14 @@ var file_marketdata_proto_depIdxs = []int32{
 	29,  // 3: tinkoff.public.invest.api.contract.v1.MarketDataRequest.subscribe_info_request:type_name -> tinkoff.public.invest.api.contract.v1.SubscribeInfoRequest
 	33,  // 4: tinkoff.public.invest.api.contract.v1.MarketDataRequest.subscribe_last_price_request:type_name -> tinkoff.public.invest.api.contract.v1.SubscribeLastPriceRequest
 	57,  // 5: tinkoff.public.invest.api.contract.v1.MarketDataRequest.get_my_subscriptions:type_name -> tinkoff.public.invest.api.contract.v1.GetMySubscriptions
-	71,  // 6: tinkoff.public.invest.api.contract.v1.MarketDataRequest.ping:type_name -> tinkoff.public.invest.api.contract.v1.PingRequest
-	72,  // 7: tinkoff.public.invest.api.contract.v1.MarketDataRequest.ping_settings:type_name -> tinkoff.public.invest.api.contract.v1.PingDelaySettings
+	72,  // 6: tinkoff.public.invest.api.contract.v1.MarketDataRequest.ping:type_name -> tinkoff.public.invest.api.contract.v1.PingRequest
+	73,  // 7: tinkoff.public.invest.api.contract.v1.MarketDataRequest.ping_settings:type_name -> tinkoff.public.invest.api.contract.v1.PingDelaySettings
 	17,  // 8: tinkoff.public.invest.api.contract.v1.MarketDataServerSideStreamRequest.subscribe_candles_request:type_name -> tinkoff.public.invest.api.contract.v1.SubscribeCandlesRequest
 	21,  // 9: tinkoff.public.invest.api.contract.v1.MarketDataServerSideStreamRequest.subscribe_order_book_request:type_name -> tinkoff.public.invest.api.contract.v1.SubscribeOrderBookRequest
 	25,  // 10: tinkoff.public.invest.api.contract.v1.MarketDataServerSideStreamRequest.subscribe_trades_request:type_name -> tinkoff.public.invest.api.contract.v1.SubscribeTradesRequest
 	29,  // 11: tinkoff.public.invest.api.contract.v1.MarketDataServerSideStreamRequest.subscribe_info_request:type_name -> tinkoff.public.invest.api.contract.v1.SubscribeInfoRequest
 	33,  // 12: tinkoff.public.invest.api.contract.v1.MarketDataServerSideStreamRequest.subscribe_last_price_request:type_name -> tinkoff.public.invest.api.contract.v1.SubscribeLastPriceRequest
-	72,  // 13: tinkoff.public.invest.api.contract.v1.MarketDataServerSideStreamRequest.ping_settings:type_name -> tinkoff.public.invest.api.contract.v1.PingDelaySettings
+	73,  // 13: tinkoff.public.invest.api.contract.v1.MarketDataServerSideStreamRequest.ping_settings:type_name -> tinkoff.public.invest.api.contract.v1.PingDelaySettings
 	19,  // 14: tinkoff.public.invest.api.contract.v1.MarketDataResponse.subscribe_candles_response:type_name -> tinkoff.public.invest.api.contract.v1.SubscribeCandlesResponse
 	23,  // 15: tinkoff.public.invest.api.contract.v1.MarketDataResponse.subscribe_order_book_response:type_name -> tinkoff.public.invest.api.contract.v1.SubscribeOrderBookResponse
 	27,  // 16: tinkoff.public.invest.api.contract.v1.MarketDataResponse.subscribe_trades_response:type_name -> tinkoff.public.invest.api.contract.v1.SubscribeTradesResponse
@@ -6007,7 +6131,7 @@ var file_marketdata_proto_depIdxs = []int32{
 	40,  // 19: tinkoff.public.invest.api.contract.v1.MarketDataResponse.trade:type_name -> tinkoff.public.invest.api.contract.v1.Trade
 	38,  // 20: tinkoff.public.invest.api.contract.v1.MarketDataResponse.orderbook:type_name -> tinkoff.public.invest.api.contract.v1.OrderBook
 	41,  // 21: tinkoff.public.invest.api.contract.v1.MarketDataResponse.trading_status:type_name -> tinkoff.public.invest.api.contract.v1.TradingStatus
-	73,  // 22: tinkoff.public.invest.api.contract.v1.MarketDataResponse.ping:type_name -> tinkoff.public.invest.api.contract.v1.Ping
+	74,  // 22: tinkoff.public.invest.api.contract.v1.MarketDataResponse.ping:type_name -> tinkoff.public.invest.api.contract.v1.Ping
 	35,  // 23: tinkoff.public.invest.api.contract.v1.MarketDataResponse.subscribe_last_price_response:type_name -> tinkoff.public.invest.api.contract.v1.SubscribeLastPriceResponse
 	47,  // 24: tinkoff.public.invest.api.contract.v1.MarketDataResponse.last_price:type_name -> tinkoff.public.invest.api.contract.v1.LastPrice
 	48,  // 25: tinkoff.public.invest.api.contract.v1.MarketDataResponse.open_interest:type_name -> tinkoff.public.invest.api.contract.v1.OpenInterest
@@ -6045,114 +6169,116 @@ var file_marketdata_proto_depIdxs = []int32{
 	2,   // 57: tinkoff.public.invest.api.contract.v1.LastPriceSubscription.subscription_status:type_name -> tinkoff.public.invest.api.contract.v1.SubscriptionStatus
 	0,   // 58: tinkoff.public.invest.api.contract.v1.LastPriceSubscription.subscription_action:type_name -> tinkoff.public.invest.api.contract.v1.SubscriptionAction
 	1,   // 59: tinkoff.public.invest.api.contract.v1.Candle.interval:type_name -> tinkoff.public.invest.api.contract.v1.SubscriptionInterval
-	74,  // 60: tinkoff.public.invest.api.contract.v1.Candle.open:type_name -> tinkoff.public.invest.api.contract.v1.Quotation
-	74,  // 61: tinkoff.public.invest.api.contract.v1.Candle.high:type_name -> tinkoff.public.invest.api.contract.v1.Quotation
-	74,  // 62: tinkoff.public.invest.api.contract.v1.Candle.low:type_name -> tinkoff.public.invest.api.contract.v1.Quotation
-	74,  // 63: tinkoff.public.invest.api.contract.v1.Candle.close:type_name -> tinkoff.public.invest.api.contract.v1.Quotation
-	75,  // 64: tinkoff.public.invest.api.contract.v1.Candle.time:type_name -> google.protobuf.Timestamp
-	75,  // 65: tinkoff.public.invest.api.contract.v1.Candle.last_trade_ts:type_name -> google.protobuf.Timestamp
+	75,  // 60: tinkoff.public.invest.api.contract.v1.Candle.open:type_name -> tinkoff.public.invest.api.contract.v1.Quotation
+	75,  // 61: tinkoff.public.invest.api.contract.v1.Candle.high:type_name -> tinkoff.public.invest.api.contract.v1.Quotation
+	75,  // 62: tinkoff.public.invest.api.contract.v1.Candle.low:type_name -> tinkoff.public.invest.api.contract.v1.Quotation
+	75,  // 63: tinkoff.public.invest.api.contract.v1.Candle.close:type_name -> tinkoff.public.invest.api.contract.v1.Quotation
+	76,  // 64: tinkoff.public.invest.api.contract.v1.Candle.time:type_name -> google.protobuf.Timestamp
+	76,  // 65: tinkoff.public.invest.api.contract.v1.Candle.last_trade_ts:type_name -> google.protobuf.Timestamp
 	6,   // 66: tinkoff.public.invest.api.contract.v1.Candle.candle_source_type:type_name -> tinkoff.public.invest.api.contract.v1.CandleSource
 	39,  // 67: tinkoff.public.invest.api.contract.v1.OrderBook.bids:type_name -> tinkoff.public.invest.api.contract.v1.Order
 	39,  // 68: tinkoff.public.invest.api.contract.v1.OrderBook.asks:type_name -> tinkoff.public.invest.api.contract.v1.Order
-	75,  // 69: tinkoff.public.invest.api.contract.v1.OrderBook.time:type_name -> google.protobuf.Timestamp
-	74,  // 70: tinkoff.public.invest.api.contract.v1.OrderBook.limit_up:type_name -> tinkoff.public.invest.api.contract.v1.Quotation
-	74,  // 71: tinkoff.public.invest.api.contract.v1.OrderBook.limit_down:type_name -> tinkoff.public.invest.api.contract.v1.Quotation
+	76,  // 69: tinkoff.public.invest.api.contract.v1.OrderBook.time:type_name -> google.protobuf.Timestamp
+	75,  // 70: tinkoff.public.invest.api.contract.v1.OrderBook.limit_up:type_name -> tinkoff.public.invest.api.contract.v1.Quotation
+	75,  // 71: tinkoff.public.invest.api.contract.v1.OrderBook.limit_down:type_name -> tinkoff.public.invest.api.contract.v1.Quotation
 	8,   // 72: tinkoff.public.invest.api.contract.v1.OrderBook.order_book_type:type_name -> tinkoff.public.invest.api.contract.v1.OrderBookType
-	74,  // 73: tinkoff.public.invest.api.contract.v1.Order.price:type_name -> tinkoff.public.invest.api.contract.v1.Quotation
+	75,  // 73: tinkoff.public.invest.api.contract.v1.Order.price:type_name -> tinkoff.public.invest.api.contract.v1.Quotation
 	4,   // 74: tinkoff.public.invest.api.contract.v1.Trade.direction:type_name -> tinkoff.public.invest.api.contract.v1.TradeDirection
-	74,  // 75: tinkoff.public.invest.api.contract.v1.Trade.price:type_name -> tinkoff.public.invest.api.contract.v1.Quotation
-	75,  // 76: tinkoff.public.invest.api.contract.v1.Trade.time:type_name -> google.protobuf.Timestamp
+	75,  // 75: tinkoff.public.invest.api.contract.v1.Trade.price:type_name -> tinkoff.public.invest.api.contract.v1.Quotation
+	76,  // 76: tinkoff.public.invest.api.contract.v1.Trade.time:type_name -> google.protobuf.Timestamp
 	3,   // 77: tinkoff.public.invest.api.contract.v1.Trade.trade_source:type_name -> tinkoff.public.invest.api.contract.v1.TradeSourceType
-	76,  // 78: tinkoff.public.invest.api.contract.v1.TradingStatus.trading_status:type_name -> tinkoff.public.invest.api.contract.v1.SecurityTradingStatus
-	75,  // 79: tinkoff.public.invest.api.contract.v1.TradingStatus.time:type_name -> google.protobuf.Timestamp
-	75,  // 80: tinkoff.public.invest.api.contract.v1.GetCandlesRequest.from:type_name -> google.protobuf.Timestamp
-	75,  // 81: tinkoff.public.invest.api.contract.v1.GetCandlesRequest.to:type_name -> google.protobuf.Timestamp
+	77,  // 78: tinkoff.public.invest.api.contract.v1.TradingStatus.trading_status:type_name -> tinkoff.public.invest.api.contract.v1.SecurityTradingStatus
+	76,  // 79: tinkoff.public.invest.api.contract.v1.TradingStatus.time:type_name -> google.protobuf.Timestamp
+	76,  // 80: tinkoff.public.invest.api.contract.v1.GetCandlesRequest.from:type_name -> google.protobuf.Timestamp
+	76,  // 81: tinkoff.public.invest.api.contract.v1.GetCandlesRequest.to:type_name -> google.protobuf.Timestamp
 	5,   // 82: tinkoff.public.invest.api.contract.v1.GetCandlesRequest.interval:type_name -> tinkoff.public.invest.api.contract.v1.CandleInterval
 	10,  // 83: tinkoff.public.invest.api.contract.v1.GetCandlesRequest.candle_source_type:type_name -> tinkoff.public.invest.api.contract.v1.GetCandlesRequest.CandleSource
 	44,  // 84: tinkoff.public.invest.api.contract.v1.GetCandlesResponse.candles:type_name -> tinkoff.public.invest.api.contract.v1.HistoricCandle
-	74,  // 85: tinkoff.public.invest.api.contract.v1.HistoricCandle.open:type_name -> tinkoff.public.invest.api.contract.v1.Quotation
-	74,  // 86: tinkoff.public.invest.api.contract.v1.HistoricCandle.high:type_name -> tinkoff.public.invest.api.contract.v1.Quotation
-	74,  // 87: tinkoff.public.invest.api.contract.v1.HistoricCandle.low:type_name -> tinkoff.public.invest.api.contract.v1.Quotation
-	74,  // 88: tinkoff.public.invest.api.contract.v1.HistoricCandle.close:type_name -> tinkoff.public.invest.api.contract.v1.Quotation
-	75,  // 89: tinkoff.public.invest.api.contract.v1.HistoricCandle.time:type_name -> google.protobuf.Timestamp
+	75,  // 85: tinkoff.public.invest.api.contract.v1.HistoricCandle.open:type_name -> tinkoff.public.invest.api.contract.v1.Quotation
+	75,  // 86: tinkoff.public.invest.api.contract.v1.HistoricCandle.high:type_name -> tinkoff.public.invest.api.contract.v1.Quotation
+	75,  // 87: tinkoff.public.invest.api.contract.v1.HistoricCandle.low:type_name -> tinkoff.public.invest.api.contract.v1.Quotation
+	75,  // 88: tinkoff.public.invest.api.contract.v1.HistoricCandle.close:type_name -> tinkoff.public.invest.api.contract.v1.Quotation
+	76,  // 89: tinkoff.public.invest.api.contract.v1.HistoricCandle.time:type_name -> google.protobuf.Timestamp
 	6,   // 90: tinkoff.public.invest.api.contract.v1.HistoricCandle.candle_source:type_name -> tinkoff.public.invest.api.contract.v1.CandleSource
 	9,   // 91: tinkoff.public.invest.api.contract.v1.GetLastPricesRequest.last_price_type:type_name -> tinkoff.public.invest.api.contract.v1.LastPriceType
-	77,  // 92: tinkoff.public.invest.api.contract.v1.GetLastPricesRequest.instrument_status:type_name -> tinkoff.public.invest.api.contract.v1.InstrumentStatus
+	78,  // 92: tinkoff.public.invest.api.contract.v1.GetLastPricesRequest.instrument_status:type_name -> tinkoff.public.invest.api.contract.v1.InstrumentStatus
 	47,  // 93: tinkoff.public.invest.api.contract.v1.GetLastPricesResponse.last_prices:type_name -> tinkoff.public.invest.api.contract.v1.LastPrice
-	74,  // 94: tinkoff.public.invest.api.contract.v1.LastPrice.price:type_name -> tinkoff.public.invest.api.contract.v1.Quotation
-	75,  // 95: tinkoff.public.invest.api.contract.v1.LastPrice.time:type_name -> google.protobuf.Timestamp
+	75,  // 94: tinkoff.public.invest.api.contract.v1.LastPrice.price:type_name -> tinkoff.public.invest.api.contract.v1.Quotation
+	76,  // 95: tinkoff.public.invest.api.contract.v1.LastPrice.time:type_name -> google.protobuf.Timestamp
 	9,   // 96: tinkoff.public.invest.api.contract.v1.LastPrice.last_price_type:type_name -> tinkoff.public.invest.api.contract.v1.LastPriceType
-	75,  // 97: tinkoff.public.invest.api.contract.v1.OpenInterest.time:type_name -> google.protobuf.Timestamp
+	76,  // 97: tinkoff.public.invest.api.contract.v1.OpenInterest.time:type_name -> google.protobuf.Timestamp
 	39,  // 98: tinkoff.public.invest.api.contract.v1.GetOrderBookResponse.bids:type_name -> tinkoff.public.invest.api.contract.v1.Order
 	39,  // 99: tinkoff.public.invest.api.contract.v1.GetOrderBookResponse.asks:type_name -> tinkoff.public.invest.api.contract.v1.Order
-	74,  // 100: tinkoff.public.invest.api.contract.v1.GetOrderBookResponse.last_price:type_name -> tinkoff.public.invest.api.contract.v1.Quotation
-	74,  // 101: tinkoff.public.invest.api.contract.v1.GetOrderBookResponse.close_price:type_name -> tinkoff.public.invest.api.contract.v1.Quotation
-	74,  // 102: tinkoff.public.invest.api.contract.v1.GetOrderBookResponse.limit_up:type_name -> tinkoff.public.invest.api.contract.v1.Quotation
-	74,  // 103: tinkoff.public.invest.api.contract.v1.GetOrderBookResponse.limit_down:type_name -> tinkoff.public.invest.api.contract.v1.Quotation
-	75,  // 104: tinkoff.public.invest.api.contract.v1.GetOrderBookResponse.last_price_ts:type_name -> google.protobuf.Timestamp
-	75,  // 105: tinkoff.public.invest.api.contract.v1.GetOrderBookResponse.close_price_ts:type_name -> google.protobuf.Timestamp
-	75,  // 106: tinkoff.public.invest.api.contract.v1.GetOrderBookResponse.orderbook_ts:type_name -> google.protobuf.Timestamp
+	75,  // 100: tinkoff.public.invest.api.contract.v1.GetOrderBookResponse.last_price:type_name -> tinkoff.public.invest.api.contract.v1.Quotation
+	75,  // 101: tinkoff.public.invest.api.contract.v1.GetOrderBookResponse.close_price:type_name -> tinkoff.public.invest.api.contract.v1.Quotation
+	75,  // 102: tinkoff.public.invest.api.contract.v1.GetOrderBookResponse.limit_up:type_name -> tinkoff.public.invest.api.contract.v1.Quotation
+	75,  // 103: tinkoff.public.invest.api.contract.v1.GetOrderBookResponse.limit_down:type_name -> tinkoff.public.invest.api.contract.v1.Quotation
+	76,  // 104: tinkoff.public.invest.api.contract.v1.GetOrderBookResponse.last_price_ts:type_name -> google.protobuf.Timestamp
+	76,  // 105: tinkoff.public.invest.api.contract.v1.GetOrderBookResponse.close_price_ts:type_name -> google.protobuf.Timestamp
+	76,  // 106: tinkoff.public.invest.api.contract.v1.GetOrderBookResponse.orderbook_ts:type_name -> google.protobuf.Timestamp
 	54,  // 107: tinkoff.public.invest.api.contract.v1.GetTradingStatusesResponse.trading_statuses:type_name -> tinkoff.public.invest.api.contract.v1.GetTradingStatusResponse
-	76,  // 108: tinkoff.public.invest.api.contract.v1.GetTradingStatusResponse.trading_status:type_name -> tinkoff.public.invest.api.contract.v1.SecurityTradingStatus
-	75,  // 109: tinkoff.public.invest.api.contract.v1.GetLastTradesRequest.from:type_name -> google.protobuf.Timestamp
-	75,  // 110: tinkoff.public.invest.api.contract.v1.GetLastTradesRequest.to:type_name -> google.protobuf.Timestamp
+	77,  // 108: tinkoff.public.invest.api.contract.v1.GetTradingStatusResponse.trading_status:type_name -> tinkoff.public.invest.api.contract.v1.SecurityTradingStatus
+	76,  // 109: tinkoff.public.invest.api.contract.v1.GetLastTradesRequest.from:type_name -> google.protobuf.Timestamp
+	76,  // 110: tinkoff.public.invest.api.contract.v1.GetLastTradesRequest.to:type_name -> google.protobuf.Timestamp
 	3,   // 111: tinkoff.public.invest.api.contract.v1.GetLastTradesRequest.trade_source:type_name -> tinkoff.public.invest.api.contract.v1.TradeSourceType
 	40,  // 112: tinkoff.public.invest.api.contract.v1.GetLastTradesResponse.trades:type_name -> tinkoff.public.invest.api.contract.v1.Trade
 	59,  // 113: tinkoff.public.invest.api.contract.v1.GetClosePricesRequest.instruments:type_name -> tinkoff.public.invest.api.contract.v1.InstrumentClosePriceRequest
-	77,  // 114: tinkoff.public.invest.api.contract.v1.GetClosePricesRequest.instrument_status:type_name -> tinkoff.public.invest.api.contract.v1.InstrumentStatus
+	78,  // 114: tinkoff.public.invest.api.contract.v1.GetClosePricesRequest.instrument_status:type_name -> tinkoff.public.invest.api.contract.v1.InstrumentStatus
 	61,  // 115: tinkoff.public.invest.api.contract.v1.GetClosePricesResponse.close_prices:type_name -> tinkoff.public.invest.api.contract.v1.InstrumentClosePriceResponse
-	74,  // 116: tinkoff.public.invest.api.contract.v1.InstrumentClosePriceResponse.price:type_name -> tinkoff.public.invest.api.contract.v1.Quotation
-	74,  // 117: tinkoff.public.invest.api.contract.v1.InstrumentClosePriceResponse.evening_session_price:type_name -> tinkoff.public.invest.api.contract.v1.Quotation
-	75,  // 118: tinkoff.public.invest.api.contract.v1.InstrumentClosePriceResponse.time:type_name -> google.protobuf.Timestamp
-	75,  // 119: tinkoff.public.invest.api.contract.v1.InstrumentClosePriceResponse.evening_session_price_time:type_name -> google.protobuf.Timestamp
+	75,  // 116: tinkoff.public.invest.api.contract.v1.InstrumentClosePriceResponse.price:type_name -> tinkoff.public.invest.api.contract.v1.Quotation
+	75,  // 117: tinkoff.public.invest.api.contract.v1.InstrumentClosePriceResponse.evening_session_price:type_name -> tinkoff.public.invest.api.contract.v1.Quotation
+	76,  // 118: tinkoff.public.invest.api.contract.v1.InstrumentClosePriceResponse.time:type_name -> google.protobuf.Timestamp
+	76,  // 119: tinkoff.public.invest.api.contract.v1.InstrumentClosePriceResponse.evening_session_price_time:type_name -> google.protobuf.Timestamp
 	13,  // 120: tinkoff.public.invest.api.contract.v1.GetTechAnalysisRequest.indicator_type:type_name -> tinkoff.public.invest.api.contract.v1.GetTechAnalysisRequest.IndicatorType
-	75,  // 121: tinkoff.public.invest.api.contract.v1.GetTechAnalysisRequest.from:type_name -> google.protobuf.Timestamp
-	75,  // 122: tinkoff.public.invest.api.contract.v1.GetTechAnalysisRequest.to:type_name -> google.protobuf.Timestamp
+	76,  // 121: tinkoff.public.invest.api.contract.v1.GetTechAnalysisRequest.from:type_name -> google.protobuf.Timestamp
+	76,  // 122: tinkoff.public.invest.api.contract.v1.GetTechAnalysisRequest.to:type_name -> google.protobuf.Timestamp
 	11,  // 123: tinkoff.public.invest.api.contract.v1.GetTechAnalysisRequest.interval:type_name -> tinkoff.public.invest.api.contract.v1.GetTechAnalysisRequest.IndicatorInterval
 	12,  // 124: tinkoff.public.invest.api.contract.v1.GetTechAnalysisRequest.type_of_price:type_name -> tinkoff.public.invest.api.contract.v1.GetTechAnalysisRequest.TypeOfPrice
-	69,  // 125: tinkoff.public.invest.api.contract.v1.GetTechAnalysisRequest.deviation:type_name -> tinkoff.public.invest.api.contract.v1.GetTechAnalysisRequest.Deviation
-	68,  // 126: tinkoff.public.invest.api.contract.v1.GetTechAnalysisRequest.smoothing:type_name -> tinkoff.public.invest.api.contract.v1.GetTechAnalysisRequest.Smoothing
-	70,  // 127: tinkoff.public.invest.api.contract.v1.GetTechAnalysisResponse.technical_indicators:type_name -> tinkoff.public.invest.api.contract.v1.GetTechAnalysisResponse.TechAnalysisItem
+	70,  // 125: tinkoff.public.invest.api.contract.v1.GetTechAnalysisRequest.deviation:type_name -> tinkoff.public.invest.api.contract.v1.GetTechAnalysisRequest.Deviation
+	69,  // 126: tinkoff.public.invest.api.contract.v1.GetTechAnalysisRequest.smoothing:type_name -> tinkoff.public.invest.api.contract.v1.GetTechAnalysisRequest.Smoothing
+	71,  // 127: tinkoff.public.invest.api.contract.v1.GetTechAnalysisResponse.technical_indicators:type_name -> tinkoff.public.invest.api.contract.v1.GetTechAnalysisResponse.TechAnalysisItem
 	7,   // 128: tinkoff.public.invest.api.contract.v1.GetMarketValuesRequest.values:type_name -> tinkoff.public.invest.api.contract.v1.MarketValueType
 	66,  // 129: tinkoff.public.invest.api.contract.v1.GetMarketValuesResponse.instruments:type_name -> tinkoff.public.invest.api.contract.v1.MarketValueInstrument
-	67,  // 130: tinkoff.public.invest.api.contract.v1.MarketValueInstrument.values:type_name -> tinkoff.public.invest.api.contract.v1.MarketValue
-	7,   // 131: tinkoff.public.invest.api.contract.v1.MarketValue.type:type_name -> tinkoff.public.invest.api.contract.v1.MarketValueType
-	74,  // 132: tinkoff.public.invest.api.contract.v1.MarketValue.value:type_name -> tinkoff.public.invest.api.contract.v1.Quotation
-	75,  // 133: tinkoff.public.invest.api.contract.v1.MarketValue.time:type_name -> google.protobuf.Timestamp
-	74,  // 134: tinkoff.public.invest.api.contract.v1.GetTechAnalysisRequest.Deviation.deviation_multiplier:type_name -> tinkoff.public.invest.api.contract.v1.Quotation
-	75,  // 135: tinkoff.public.invest.api.contract.v1.GetTechAnalysisResponse.TechAnalysisItem.timestamp:type_name -> google.protobuf.Timestamp
-	74,  // 136: tinkoff.public.invest.api.contract.v1.GetTechAnalysisResponse.TechAnalysisItem.middle_band:type_name -> tinkoff.public.invest.api.contract.v1.Quotation
-	74,  // 137: tinkoff.public.invest.api.contract.v1.GetTechAnalysisResponse.TechAnalysisItem.upper_band:type_name -> tinkoff.public.invest.api.contract.v1.Quotation
-	74,  // 138: tinkoff.public.invest.api.contract.v1.GetTechAnalysisResponse.TechAnalysisItem.lower_band:type_name -> tinkoff.public.invest.api.contract.v1.Quotation
-	74,  // 139: tinkoff.public.invest.api.contract.v1.GetTechAnalysisResponse.TechAnalysisItem.signal:type_name -> tinkoff.public.invest.api.contract.v1.Quotation
-	74,  // 140: tinkoff.public.invest.api.contract.v1.GetTechAnalysisResponse.TechAnalysisItem.macd:type_name -> tinkoff.public.invest.api.contract.v1.Quotation
-	42,  // 141: tinkoff.public.invest.api.contract.v1.MarketDataService.GetCandles:input_type -> tinkoff.public.invest.api.contract.v1.GetCandlesRequest
-	45,  // 142: tinkoff.public.invest.api.contract.v1.MarketDataService.GetLastPrices:input_type -> tinkoff.public.invest.api.contract.v1.GetLastPricesRequest
-	49,  // 143: tinkoff.public.invest.api.contract.v1.MarketDataService.GetOrderBook:input_type -> tinkoff.public.invest.api.contract.v1.GetOrderBookRequest
-	51,  // 144: tinkoff.public.invest.api.contract.v1.MarketDataService.GetTradingStatus:input_type -> tinkoff.public.invest.api.contract.v1.GetTradingStatusRequest
-	52,  // 145: tinkoff.public.invest.api.contract.v1.MarketDataService.GetTradingStatuses:input_type -> tinkoff.public.invest.api.contract.v1.GetTradingStatusesRequest
-	55,  // 146: tinkoff.public.invest.api.contract.v1.MarketDataService.GetLastTrades:input_type -> tinkoff.public.invest.api.contract.v1.GetLastTradesRequest
-	58,  // 147: tinkoff.public.invest.api.contract.v1.MarketDataService.GetClosePrices:input_type -> tinkoff.public.invest.api.contract.v1.GetClosePricesRequest
-	62,  // 148: tinkoff.public.invest.api.contract.v1.MarketDataService.GetTechAnalysis:input_type -> tinkoff.public.invest.api.contract.v1.GetTechAnalysisRequest
-	64,  // 149: tinkoff.public.invest.api.contract.v1.MarketDataService.GetMarketValues:input_type -> tinkoff.public.invest.api.contract.v1.GetMarketValuesRequest
-	14,  // 150: tinkoff.public.invest.api.contract.v1.MarketDataStreamService.MarketDataStream:input_type -> tinkoff.public.invest.api.contract.v1.MarketDataRequest
-	15,  // 151: tinkoff.public.invest.api.contract.v1.MarketDataStreamService.MarketDataServerSideStream:input_type -> tinkoff.public.invest.api.contract.v1.MarketDataServerSideStreamRequest
-	43,  // 152: tinkoff.public.invest.api.contract.v1.MarketDataService.GetCandles:output_type -> tinkoff.public.invest.api.contract.v1.GetCandlesResponse
-	46,  // 153: tinkoff.public.invest.api.contract.v1.MarketDataService.GetLastPrices:output_type -> tinkoff.public.invest.api.contract.v1.GetLastPricesResponse
-	50,  // 154: tinkoff.public.invest.api.contract.v1.MarketDataService.GetOrderBook:output_type -> tinkoff.public.invest.api.contract.v1.GetOrderBookResponse
-	54,  // 155: tinkoff.public.invest.api.contract.v1.MarketDataService.GetTradingStatus:output_type -> tinkoff.public.invest.api.contract.v1.GetTradingStatusResponse
-	53,  // 156: tinkoff.public.invest.api.contract.v1.MarketDataService.GetTradingStatuses:output_type -> tinkoff.public.invest.api.contract.v1.GetTradingStatusesResponse
-	56,  // 157: tinkoff.public.invest.api.contract.v1.MarketDataService.GetLastTrades:output_type -> tinkoff.public.invest.api.contract.v1.GetLastTradesResponse
-	60,  // 158: tinkoff.public.invest.api.contract.v1.MarketDataService.GetClosePrices:output_type -> tinkoff.public.invest.api.contract.v1.GetClosePricesResponse
-	63,  // 159: tinkoff.public.invest.api.contract.v1.MarketDataService.GetTechAnalysis:output_type -> tinkoff.public.invest.api.contract.v1.GetTechAnalysisResponse
-	65,  // 160: tinkoff.public.invest.api.contract.v1.MarketDataService.GetMarketValues:output_type -> tinkoff.public.invest.api.contract.v1.GetMarketValuesResponse
-	16,  // 161: tinkoff.public.invest.api.contract.v1.MarketDataStreamService.MarketDataStream:output_type -> tinkoff.public.invest.api.contract.v1.MarketDataResponse
-	16,  // 162: tinkoff.public.invest.api.contract.v1.MarketDataStreamService.MarketDataServerSideStream:output_type -> tinkoff.public.invest.api.contract.v1.MarketDataResponse
-	152, // [152:163] is the sub-list for method output_type
-	141, // [141:152] is the sub-list for method input_type
-	141, // [141:141] is the sub-list for extension type_name
-	141, // [141:141] is the sub-list for extension extendee
-	0,   // [0:141] is the sub-list for field type_name
+	68,  // 130: tinkoff.public.invest.api.contract.v1.MarketValueInstrument.values:type_name -> tinkoff.public.invest.api.contract.v1.MarketValue
+	67,  // 131: tinkoff.public.invest.api.contract.v1.MarketValueInstrument.statistic:type_name -> tinkoff.public.invest.api.contract.v1.MarketValueStatistic
+	76,  // 132: tinkoff.public.invest.api.contract.v1.MarketValueStatistic.time:type_name -> google.protobuf.Timestamp
+	7,   // 133: tinkoff.public.invest.api.contract.v1.MarketValue.type:type_name -> tinkoff.public.invest.api.contract.v1.MarketValueType
+	75,  // 134: tinkoff.public.invest.api.contract.v1.MarketValue.value:type_name -> tinkoff.public.invest.api.contract.v1.Quotation
+	76,  // 135: tinkoff.public.invest.api.contract.v1.MarketValue.time:type_name -> google.protobuf.Timestamp
+	75,  // 136: tinkoff.public.invest.api.contract.v1.GetTechAnalysisRequest.Deviation.deviation_multiplier:type_name -> tinkoff.public.invest.api.contract.v1.Quotation
+	76,  // 137: tinkoff.public.invest.api.contract.v1.GetTechAnalysisResponse.TechAnalysisItem.timestamp:type_name -> google.protobuf.Timestamp
+	75,  // 138: tinkoff.public.invest.api.contract.v1.GetTechAnalysisResponse.TechAnalysisItem.middle_band:type_name -> tinkoff.public.invest.api.contract.v1.Quotation
+	75,  // 139: tinkoff.public.invest.api.contract.v1.GetTechAnalysisResponse.TechAnalysisItem.upper_band:type_name -> tinkoff.public.invest.api.contract.v1.Quotation
+	75,  // 140: tinkoff.public.invest.api.contract.v1.GetTechAnalysisResponse.TechAnalysisItem.lower_band:type_name -> tinkoff.public.invest.api.contract.v1.Quotation
+	75,  // 141: tinkoff.public.invest.api.contract.v1.GetTechAnalysisResponse.TechAnalysisItem.signal:type_name -> tinkoff.public.invest.api.contract.v1.Quotation
+	75,  // 142: tinkoff.public.invest.api.contract.v1.GetTechAnalysisResponse.TechAnalysisItem.macd:type_name -> tinkoff.public.invest.api.contract.v1.Quotation
+	42,  // 143: tinkoff.public.invest.api.contract.v1.MarketDataService.GetCandles:input_type -> tinkoff.public.invest.api.contract.v1.GetCandlesRequest
+	45,  // 144: tinkoff.public.invest.api.contract.v1.MarketDataService.GetLastPrices:input_type -> tinkoff.public.invest.api.contract.v1.GetLastPricesRequest
+	49,  // 145: tinkoff.public.invest.api.contract.v1.MarketDataService.GetOrderBook:input_type -> tinkoff.public.invest.api.contract.v1.GetOrderBookRequest
+	51,  // 146: tinkoff.public.invest.api.contract.v1.MarketDataService.GetTradingStatus:input_type -> tinkoff.public.invest.api.contract.v1.GetTradingStatusRequest
+	52,  // 147: tinkoff.public.invest.api.contract.v1.MarketDataService.GetTradingStatuses:input_type -> tinkoff.public.invest.api.contract.v1.GetTradingStatusesRequest
+	55,  // 148: tinkoff.public.invest.api.contract.v1.MarketDataService.GetLastTrades:input_type -> tinkoff.public.invest.api.contract.v1.GetLastTradesRequest
+	58,  // 149: tinkoff.public.invest.api.contract.v1.MarketDataService.GetClosePrices:input_type -> tinkoff.public.invest.api.contract.v1.GetClosePricesRequest
+	62,  // 150: tinkoff.public.invest.api.contract.v1.MarketDataService.GetTechAnalysis:input_type -> tinkoff.public.invest.api.contract.v1.GetTechAnalysisRequest
+	64,  // 151: tinkoff.public.invest.api.contract.v1.MarketDataService.GetMarketValues:input_type -> tinkoff.public.invest.api.contract.v1.GetMarketValuesRequest
+	14,  // 152: tinkoff.public.invest.api.contract.v1.MarketDataStreamService.MarketDataStream:input_type -> tinkoff.public.invest.api.contract.v1.MarketDataRequest
+	15,  // 153: tinkoff.public.invest.api.contract.v1.MarketDataStreamService.MarketDataServerSideStream:input_type -> tinkoff.public.invest.api.contract.v1.MarketDataServerSideStreamRequest
+	43,  // 154: tinkoff.public.invest.api.contract.v1.MarketDataService.GetCandles:output_type -> tinkoff.public.invest.api.contract.v1.GetCandlesResponse
+	46,  // 155: tinkoff.public.invest.api.contract.v1.MarketDataService.GetLastPrices:output_type -> tinkoff.public.invest.api.contract.v1.GetLastPricesResponse
+	50,  // 156: tinkoff.public.invest.api.contract.v1.MarketDataService.GetOrderBook:output_type -> tinkoff.public.invest.api.contract.v1.GetOrderBookResponse
+	54,  // 157: tinkoff.public.invest.api.contract.v1.MarketDataService.GetTradingStatus:output_type -> tinkoff.public.invest.api.contract.v1.GetTradingStatusResponse
+	53,  // 158: tinkoff.public.invest.api.contract.v1.MarketDataService.GetTradingStatuses:output_type -> tinkoff.public.invest.api.contract.v1.GetTradingStatusesResponse
+	56,  // 159: tinkoff.public.invest.api.contract.v1.MarketDataService.GetLastTrades:output_type -> tinkoff.public.invest.api.contract.v1.GetLastTradesResponse
+	60,  // 160: tinkoff.public.invest.api.contract.v1.MarketDataService.GetClosePrices:output_type -> tinkoff.public.invest.api.contract.v1.GetClosePricesResponse
+	63,  // 161: tinkoff.public.invest.api.contract.v1.MarketDataService.GetTechAnalysis:output_type -> tinkoff.public.invest.api.contract.v1.GetTechAnalysisResponse
+	65,  // 162: tinkoff.public.invest.api.contract.v1.MarketDataService.GetMarketValues:output_type -> tinkoff.public.invest.api.contract.v1.GetMarketValuesResponse
+	16,  // 163: tinkoff.public.invest.api.contract.v1.MarketDataStreamService.MarketDataStream:output_type -> tinkoff.public.invest.api.contract.v1.MarketDataResponse
+	16,  // 164: tinkoff.public.invest.api.contract.v1.MarketDataStreamService.MarketDataServerSideStream:output_type -> tinkoff.public.invest.api.contract.v1.MarketDataResponse
+	154, // [154:165] is the sub-list for method output_type
+	143, // [143:154] is the sub-list for method input_type
+	143, // [143:143] is the sub-list for extension type_name
+	143, // [143:143] is the sub-list for extension extendee
+	0,   // [0:143] is the sub-list for field type_name
 }
 
 func init() { file_marketdata_proto_init() }
@@ -6193,15 +6319,17 @@ func file_marketdata_proto_init() {
 	file_marketdata_proto_msgTypes[37].OneofWrappers = []any{}
 	file_marketdata_proto_msgTypes[41].OneofWrappers = []any{}
 	file_marketdata_proto_msgTypes[44].OneofWrappers = []any{}
+	file_marketdata_proto_msgTypes[48].OneofWrappers = []any{}
 	file_marketdata_proto_msgTypes[53].OneofWrappers = []any{}
-	file_marketdata_proto_msgTypes[56].OneofWrappers = []any{}
+	file_marketdata_proto_msgTypes[54].OneofWrappers = []any{}
+	file_marketdata_proto_msgTypes[57].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_marketdata_proto_rawDesc), len(file_marketdata_proto_rawDesc)),
 			NumEnums:      14,
-			NumMessages:   57,
+			NumMessages:   58,
 			NumExtensions: 0,
 			NumServices:   2,
 		},

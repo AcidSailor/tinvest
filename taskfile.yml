@@ -4,7 +4,7 @@ vars:
   # Single source of truth for the upstream invest-contracts release.
   # Pins both the proto contracts (git tag) and the REST spec (raw tag URL)
   # so the two transports never drift onto different upstream versions.
-  CONTRACTS_VERSION: "1.49"
+  CONTRACTS_VERSION: "1.51"
 
 tasks:
   lint:
@@ -95,17 +95,18 @@ tasks:
 
   proto:
     desc: Generate Go code from T-Invest proto contracts
+    vars:
+      CONTRACTS_DIR: tmp/invest-contracts
     cmds:
+      # Always clone fresh so a CONTRACTS_VERSION bump never reuses a stale
+      # checkout.
+      - rm -rf {{.CONTRACTS_DIR}}
+      - defer: rm -rf {{.CONTRACTS_DIR}}
       - |
-        [ -d tmp/invest-contracts ] || git clone --depth 1 --branch {{.CONTRACTS_VERSION}} \
+        git clone --depth 1 --branch {{.CONTRACTS_VERSION}} \
           https://opensource.tbank.ru/invest/invest-contracts.git \
-          tmp/invest-contracts
-      - buf generate tmp/invest-contracts/src/docs/contracts
-    sources:
-      - tmp/invest-contracts/src/docs/contracts/**/*.proto
-      - buf.gen.yaml
-    generates:
-      - grpc/pb/**/*.go
+          {{.CONTRACTS_DIR}}
+      - buf generate {{.CONTRACTS_DIR}}/src/docs/contracts
 
   spec:
     desc: Download the upstream T-Invest OpenAPI spec (committed verbatim)
