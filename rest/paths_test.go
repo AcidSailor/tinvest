@@ -57,10 +57,10 @@ func specUnaryPaths(t *testing.T) map[string]bool {
 }
 
 // invokedRESTPaths parses the package and returns every gateway path actually
-// dispatched through a do[...] call, resolved from the path constant each call
-// references. A path constant with no method binding never reaches a do[...]
-// call, so it is not reported as implemented — this is what makes the test
-// stronger than a plain source substring match.
+// dispatched through a call(...) invocation, resolved from the endpoint
+// constant each invocation references. A path constant with no method binding
+// never reaches a call(...), so it is not reported as implemented — this is
+// what makes the test stronger than a plain source substring match.
 func invokedRESTPaths(t *testing.T) map[string]bool {
 	t.Helper()
 
@@ -92,7 +92,7 @@ func invokedRESTPaths(t *testing.T) map[string]bool {
 	for _, file := range files {
 		ast.Inspect(file, func(n ast.Node) bool {
 			call, ok := n.(*ast.CallExpr)
-			if !ok || !isDoCall(call.Fun) {
+			if !ok || !isCallDispatch(call.Fun) {
 				return true
 			}
 			for _, arg := range call.Args {
@@ -111,15 +111,18 @@ func invokedRESTPaths(t *testing.T) map[string]bool {
 	return invoked
 }
 
-// isDoCall reports whether fun is a call to the generic do[...] dispatch helper.
-func isDoCall(fun ast.Expr) bool {
+// isCallDispatch reports whether fun is the generic call dispatch helper,
+// either with inferred type arguments or explicitly instantiated.
+func isCallDispatch(fun ast.Expr) bool {
 	switch f := fun.(type) {
-	case *ast.IndexExpr: // do[T](...)
+	case *ast.Ident: // call(...)
+		return f.Name == "call"
+	case *ast.IndexExpr: // call[Req](...)
 		id, ok := f.X.(*ast.Ident)
-		return ok && id.Name == "do"
-	case *ast.IndexListExpr: // do[T, U](...) — defensive
+		return ok && id.Name == "call"
+	case *ast.IndexListExpr: // call[Req, Resp](...)
 		id, ok := f.X.(*ast.Ident)
-		return ok && id.Name == "do"
+		return ok && id.Name == "call"
 	default:
 		return false
 	}
@@ -127,7 +130,7 @@ func isDoCall(fun ast.Expr) bool {
 
 // TestUnaryEndpointsMatchSpec asserts the hand-written REST surface is in exact
 // parity with the upstream contract: every non-streaming spec operation is
-// reachable through a real method (a do[...] dispatch), and every dispatched
+// reachable through a real method (a call(...) dispatch), and every dispatched
 // path exists in the spec (catching typos and removed-upstream endpoints).
 func TestUnaryEndpointsMatchSpec(t *testing.T) {
 	specPaths := specUnaryPaths(t)

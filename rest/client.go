@@ -133,14 +133,19 @@ func defaultHTTPClient() (*http.Client, error) {
 	return &http.Client{Timeout: defaultTimeout, Transport: tr}, nil
 }
 
-// do POSTs body as JSON to path and decodes the 2xx response into T. A non-2xx
-// becomes a *ResponseError; any other stage failure a *RequestError (both via
-// errors.As).
-func do[T any](
+// endpoint is a gateway POST path typed by its request and response, so call
+// can only send the request type the endpoint expects and decode into the
+// response type it returns.
+type endpoint[Req, Resp any] string
+
+// call POSTs req as JSON to the endpoint path and decodes the 2xx response into
+// Resp. A non-2xx becomes a *ResponseError; any other stage failure a
+// *RequestError (both via errors.As).
+func call[Req, Resp any](
 	ctx context.Context,
 	c *Client,
-	path string,
-	body any,
-) (T, error) {
-	return restkit.Do[T](ctx, c.rkClient, http.MethodPost, path, body)
+	p endpoint[Req, Resp],
+	req Req,
+) (Resp, error) {
+	return restkit.Do[Resp](ctx, c.rkClient, http.MethodPost, string(p), req)
 }
