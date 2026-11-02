@@ -5,7 +5,7 @@ go 1.26.0
 require (
 	github.com/acidsailor/restkit v0.3.0
 	github.com/google/uuid v1.6.0
-	github.com/quagmt/udecimal v1.10.1
+	github.com/quagmt/udecimal v1.11.0
 	github.com/stretchr/testify v1.12.1
 	go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc v0.72.0
 	google.golang.org/genproto/googleapis/api v0.0.0-20260819154853-08b0e4226688
