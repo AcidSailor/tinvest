@@ -97,7 +97,7 @@ No broad sentinel errors. The typed error *is* the category:
 
 ## Conventions
 
-- Go 1.26. Linting: `gofumpt` (extra-rules) + `golines` at **80 cols** + `modernize`. Keep lines ≤ 80.
+- Go 1.27. Linting: `gofumpt` (extra-rules) + `golines` at **80 cols** + `modernize`. Keep lines ≤ 80.
 - Prefer global `slog`/otel over dependency injection. A `ctx` parameter in a constructor is for trace/log context propagation (`slog.InfoContext`), not connection lifecycle.
 - Keep `Client` service fields **exported** — no accessor methods.
 - This repo is scaffolded from `acidsailor/go-scaffolds` (Copier). Do not hand-edit `.copier-answers.yml`; pull tooling updates with `task update`.

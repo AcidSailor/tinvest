@@ -12,7 +12,7 @@ contract release, plus a transport-agnostic **money** package for the API's
 go get github.com/acidsailor/tinvest
 ```
 
-Requires Go 1.26+. Authenticate with a T-Invest API token; target either the
+Requires Go 1.27+. Authenticate with a T-Invest API token; target either the
 production or sandbox endpoint via the constants in the root package.
 
 ## Packages
